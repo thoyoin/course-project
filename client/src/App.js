@@ -1,10 +1,11 @@
+import Registration from './components/Registration';
 import './index.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 function App() {
   return (
     <div className="App">
-
+        <Registration />
     </div>
   );
 }
