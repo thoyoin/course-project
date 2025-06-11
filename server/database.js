@@ -8,8 +8,8 @@ const sequelize = new Sequelize(
     process.env.DB_USER,
     process.env.DB_PASS,
     {
-        host: process.env.DB_HOST || 3306,
-        dialect: 'mysql',
+        host: process.env.DB_HOST || 5432,
+        dialect: 'postgres',
         logging: false,
     }
 );
