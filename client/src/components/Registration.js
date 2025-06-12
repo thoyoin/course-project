@@ -30,7 +30,7 @@ const Registration = () => {
             await axios.post('/api/auth/register', {name, email, password});
             const res = await axios.post('/api/auth/login', {email, password});
             localStorage.setItem('token', res.data.token);
-            localStorage.setItem('name', res.data.user.name);
+            localStorage.setItem('name', res.data.user ? res.data.user.name : '');
             navigate('/MainPage');
         } catch (err) {
             console.error('Registration error:', err);
