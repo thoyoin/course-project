@@ -28,6 +28,7 @@ const Login = () => {
                 return;
             }
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('name', res.data.user.name)
             navigate('/MainPage');
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
@@ -55,7 +56,7 @@ const Login = () => {
                         placeholder="name@example.com"
                         value={email}
                         onChange={e => setEmail(e.target.value)}/>
-                    <label for="floatingInput">Email address</label>
+                    <label htmlFor="floatingInput">Email address</label>
                     {errors.email && <div className="invalid-feedback d-block">{errors.email}</div>}
                 </div>
                 <div className="form-floating mb-3 w-50">
