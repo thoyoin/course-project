@@ -66,24 +66,45 @@ const Registration = () => {
                 {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
             </div>
             <div className="form-floating mb-3 w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type={showPassword ? 'text' : 'password'}
-                        className={`form-control ${errors.password ? 'is-invalid' : ''}`} id="floatingPassword" placeholder="Password"
-                        value={password} onChange={e => {
-                            setPassword(e.target.value);
-                            setErrors(prev => ({ ...prev, password: undefined }));
-                        }}/>
-                <label htmlFor="floatingPassword">Password</label>
-                <button type='button' data-bs-toggle="button" className="btn position-absolute top-50 end-0 translate-middle-y me-2" onClick={() => setShowPassword(prev => !prev)}>{showPassword ? hide : show}</button>
-                {errors.password && <div className='invalid-feedback'>{errors.password}</div>}
+                <div className="input-group">
+                    <input
+                    style={{ outline: 'none', boxShadow: 'none', height:'51px'}}
+                    type={showPassword ? 'text' : 'password'}
+                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                    id="floatingPassword"
+                    placeholder="Password"
+                    value={password}
+                    onChange={e => {
+                        setPassword(e.target.value);
+                        setErrors(prev => ({ ...prev, password: undefined }));
+                    }}
+                    />
+                    <button
+                        type="button"
+                        className="btn input-group-text btn-outline-success"
+                        data-bs-toggle='button'
+                        onClick={() => setShowPassword(prev => !prev)}
+                        tabIndex={-1}
+                    >
+                        {showPassword ? hide : show}
+                    </button>
+                </div>
+                {errors.password && <div className="invalid-feedback d-block">{errors.password}</div>}
             </div>
             <div className="form-floating w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type={showPassword ? 'text' : 'password'}
-                        className={`form-control ${errors.confirmation ? 'is-invalid' : ''}`} id="floatingPassword" placeholder="Password"
+                <div className='input-group'>
+                    <input 
+                        style={{outline:'none', boxShadow:'none', height:'51px'}} 
+                        type={showPassword ? 'text' : 'password'}
+                        className={`form-control ${errors.confirmation ? 'is-invalid' : ''}`} 
+                        id="floatingPassword" 
+                        placeholder="Confirm password"
                         value={confirmation} onChange={e => {
                             setConfirmation(e.target.value);
                             setErrors(prev => ({ ...prev, confirmation: undefined }));
                         }}/>
-                <label htmlFor="floatingPassword">Confirm password</label>
+                </div>
+                {/* <label htmlFor="floatingPassword">Confirm password</label> */}
                 {errors.confirmation && <div className='invalid-feedback'>{errors.confirmation}</div>}
             </div>
             <div className='text-center mt-5'>
