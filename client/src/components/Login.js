@@ -27,6 +27,7 @@ const Login = () => {
                 setErrors({ server: 'Invalid email or password' });
                 return;
             }
+            console.log('Login response:', res.data);
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('name', res.data.user.name)
             navigate('/MainPage');
