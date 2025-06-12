@@ -7,11 +7,11 @@ const Login = () => {
             <div className='container-sm w-50 p-4 border rounded d-flex flex-column justify-content-center align-items-center'>
                 <div className='text-center mb-5'><h3>Login</h3></div>
                 <div className="form-floating mb-3 w-50">
-                    <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com"/>
+                    <input style={{outline:'none', boxShadow:'none'}} type="email" className="form-control" id="floatingInput" placeholder="name@example.com"/>
                     <label for="floatingInput">Email address</label>
                 </div>
                 <div className="form-floating mb-3 w-50">
-                    <input type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
+                    <input style={{outline:'none', boxShadow:'none'}} type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
                     <label for="floatingPassword">Password</label>
                 </div>
                 <div className='text-center mt-5'><button type="submit" className="btn btn-outline-success">Sign In</button></div>
