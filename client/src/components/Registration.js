@@ -46,22 +46,30 @@ const Registration = () => {
             <div className='text-center mb-5'><h3>Registration</h3></div>
                 {errors.server && <p className="text-danger">{errors.server}</p>}
             <div className="form-floating mb-3 w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type="text" 
-                        className={`form-control ${errors.name ? 'is-invalid' : ''}`} id="floatingInput" placeholder="Name"
-                        value={name} onChange={e => {
-                            setName(e.target.value);
-                            setErrors(prev => ({ ...prev, name: undefined }));
-                        }}/>
+                <input 
+                    style={{outline:'none', boxShadow:'none'}} 
+                    type="text" 
+                    className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
+                    id="floatingInput" 
+                    placeholder="Name"
+                    value={name} onChange={e => {
+                        setName(e.target.value);
+                        setErrors(prev => ({ ...prev, name: undefined }));
+                    }}/>
                 <label htmlFor="floatingInput">Name</label>
                 {errors.name && <div className='invalid-feedback'>{errors.name}</div>}
             </div>
             <div className="form-floating mb-3 w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type="email" 
-                        className={`form-control ${errors.email ? 'is-invalid' : ''}`} id="floatingInput" placeholder="name@example.com"
-                        value={email} onChange={e => {
-                            setEmail(e.target.value);
-                            setErrors(prev => ({ ...prev, email: undefined }));
-                        }}/>
+                <input 
+                    style={{outline:'none', boxShadow:'none'}} 
+                    type="email" 
+                    className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
+                    id="floatingInput"
+                    placeholder="name@example.com"
+                    value={email} onChange={e => {
+                        setEmail(e.target.value);
+                        setErrors(prev => ({ ...prev, email: undefined }));
+                    }}/>
                 <label htmlFor="floatingInput">Email address</label>
                 {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
             </div>
@@ -104,7 +112,6 @@ const Registration = () => {
                             setErrors(prev => ({ ...prev, confirmation: undefined }));
                         }}/>
                 </div>
-                {/* <label htmlFor="floatingPassword">Confirm password</label> */}
                 {errors.confirmation && <div className='invalid-feedback'>{errors.confirmation}</div>}
             </div>
             <div className='text-center mt-5'>
