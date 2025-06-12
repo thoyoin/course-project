@@ -10,7 +10,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        setErrors('');
+        setErrors({});
         const newErrors = {};
 
         if (!email) newErrors.email = 'Please enter your email';
@@ -22,12 +22,19 @@ const Login = () => {
         };
 
         try {
-            const res = await axios.post('/api/auth/login', {email, password});
+            const res = await axios.post('/api/auth/login', { email, password });
+            if (!res.data.token) {
+                setErrors({ server: 'Invalid email or password' });
+                return;
+            }
             localStorage.setItem('token', res.data.token);
-            navigate('/MainPage')
+            navigate('/MainPage');
         } catch (err) {
-            console.error('Login error:', err);
-            setErrors({server: 'Invalid email or password'});
+            if (err.response && err.response.data && err.response.data.message) {
+                setErrors({ server: 'Invalid email or password' });
+            } else {
+                setErrors({ server: 'An error has occurred, please try again.' });
+            }
         }
     }
 
@@ -43,38 +50,45 @@ const Login = () => {
                     <input 
                         style={{outline:'none', boxShadow:'none'}} 
                         type="email" 
-                        className="form-control" 
+                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                         id="floatingInput" 
                         placeholder="name@example.com"
                         value={email}
                         onChange={e => setEmail(e.target.value)}/>
                     <label for="floatingInput">Email address</label>
+                    {errors.email && <div className="invalid-feedback d-block">{errors.email}</div>}
                 </div>
                 <div className="form-floating mb-3 w-50">
-                <div className="input-group">
-                    <input
-                    style={{ outline: 'none', boxShadow: 'none', height:'51px'}}
-                    type={showPassword ? 'text' : 'password'}
-                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                    id="floatingPassword"
-                    placeholder="Password"
-                    value={password}
-                    onChange={e => {
-                        setPassword(e.target.value);
-                        setErrors(prev => ({ ...prev, password: undefined }));
-                    }}
-                    />
-                    <button
-                        type="button"
-                        className="btn input-group-text btn-outline-success"
-                        data-bs-toggle='button'
-                        onClick={() => setShowPassword(prev => !prev)}
-                        tabIndex={-1}
-                    >
-                        {showPassword ? hide : show}
-                    </button>
+                    <div className="input-group">
+                        <input
+                        style={{ outline: 'none', boxShadow: 'none', height:'51px'}}
+                        type={showPassword ? 'text' : 'password'}
+                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                        id="floatingPassword"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => {
+                            setPassword(e.target.value);
+                            setErrors(prev => ({ ...prev, password: undefined }));
+                        }}
+                        />
+                        <button
+                            type="button"
+                            className="btn input-group-text btn-outline-success"
+                            data-bs-toggle='button'
+                            onClick={() => setShowPassword(prev => !prev)}
+                            tabIndex={-1}
+                        >
+                            {showPassword ? hide : show}
+                        </button>
+                    </div>
+                    {errors.password && <div className="invalid-feedback d-block">{errors.password}</div>}
                 </div>
-                </div>
+                {errors.server && (
+                        <div className="invalid-feedback d-block text-center">
+                            {errors.server}
+                        </div>
+                )}
                 <div className='text-center mt-5'><button type="submit" className="btn btn-outline-success" onClick={handleLogin}>Sign In</button></div>
                 <div className='d-flex flex-row justify-content-between w-100'>
                     <a className='link-secondary' href='/Registration'>Don't have an account?</a>
