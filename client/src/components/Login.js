@@ -23,13 +23,13 @@ const Login = () => {
 
         try {
             const res = await axios.post('/api/auth/login', { email, password });
+            console.log('Login response:', res.data);
             if (!res.data.token) {
                 setErrors({ server: 'Invalid email or password' });
                 return;
             }
-            console.log('Login response:', res.data);
             localStorage.setItem('token', res.data.token);
-            localStorage.setItem('name', res.data.user.name)
+            localStorage.setItem('name', res.data.user?.name || '');
             navigate('/MainPage');
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
