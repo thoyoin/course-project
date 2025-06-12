@@ -1,27 +1,94 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Registration = () => {
-  return (
-    <div className='container-fluid vh-100 text-bg-light d-flex flex-row justify-content-center align-items-center'>
-        <div className='container-sm w-50 p-4 border rounded d-flex flex-column justify-content-center align-items-center'>
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmation, setConfirmation] = useState('');
+    const [errors, setErrors] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+
+    const handleRegister = async () => {
+        setErrors({});
+        const newErrors = {};
+        
+        if (!name) newErrors.name = 'Name is required';
+        if (!email) newErrors.email = 'Email is required';
+        if (!password) newErrors.password = 'Password is required';
+        if (!confirmation) newErrors.confirmation = 'Please confirm your password';
+        if (password !== confirmation) newErrors.confirmation = 'Passwords do not match';
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return
+        };
+
+        try {
+            await axios.post('/api/auth/register', {name, email, password});
+            const res = await axios.post('/api/auth/login', {email, password});
+            localStorage.setItem('token', res.data.token);
+            navigate('/MainPage');
+        } catch (err) {
+            console.error('Registration error:', err);
+            setErrors({server: 'Registration failed'});
+        }
+    };
+
+    const show = <i class="bi bi-eye"></i>
+    const hide = <i class="bi bi-eye-slash"></i>
+
+    return (
+        <div className='container-fluid vh-100 d-flex flex-row justify-content-center align-items-center'>
+        <div className='container-sm w-50 text-bg-light p-4 border rounded d-flex flex-column justify-content-center align-items-center'>
             <div className='text-center mb-5'><h3>Registration</h3></div>
+                {errors.server && <p className="text-danger">{errors.server}</p>}
             <div className="form-floating mb-3 w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type="text" className="form-control" id="floatingInput" placeholder="Name"/>
+                <input style={{outline:'none', boxShadow:'none'}} type="text" 
+                        className={`form-control ${errors.name ? 'is-invalid' : ''}`} id="floatingInput" placeholder="Name"
+                        value={name} onChange={e => {
+                            setName(e.target.value);
+                            setErrors(prev => ({ ...prev, name: undefined }));
+                        }}/>
                 <label htmlFor="floatingInput">Name</label>
+                {errors.name && <div className='invalid-feedback'>{errors.name}</div>}
             </div>
             <div className="form-floating mb-3 w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type="email" className="form-control" id="floatingInput" placeholder="name@example.com"/>
+                <input style={{outline:'none', boxShadow:'none'}} type="email" 
+                        className={`form-control ${errors.email ? 'is-invalid' : ''}`} id="floatingInput" placeholder="name@example.com"
+                        value={email} onChange={e => {
+                            setEmail(e.target.value);
+                            setErrors(prev => ({ ...prev, email: undefined }));
+                        }}/>
                 <label htmlFor="floatingInput">Email address</label>
+                {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
             </div>
             <div className="form-floating mb-3 w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
+                <input style={{outline:'none', boxShadow:'none'}} type={showPassword ? 'text' : 'password'}
+                        className={`form-control ${errors.password ? 'is-invalid' : ''}`} id="floatingPassword" placeholder="Password"
+                        value={password} onChange={e => {
+                            setPassword(e.target.value);
+                            setErrors(prev => ({ ...prev, password: undefined }));
+                        }}/>
                 <label htmlFor="floatingPassword">Password</label>
+                <button type='button' data-bs-toggle="button" className="btn position-absolute top-50 end-0 translate-middle-y me-2" onClick={() => setShowPassword(prev => !prev)}>{showPassword ? hide : show}</button>
+                {errors.password && <div className='invalid-feedback'>{errors.password}</div>}
             </div>
             <div className="form-floating w-50">
-                <input style={{outline:'none', boxShadow:'none'}} type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
+                <input style={{outline:'none', boxShadow:'none'}} type={showPassword ? 'text' : 'password'}
+                        className={`form-control ${errors.confirmation ? 'is-invalid' : ''}`} id="floatingPassword" placeholder="Password"
+                        value={confirmation} onChange={e => {
+                            setConfirmation(e.target.value);
+                            setErrors(prev => ({ ...prev, confirmation: undefined }));
+                        }}/>
                 <label htmlFor="floatingPassword">Confirm password</label>
+                {errors.confirmation && <div className='invalid-feedback'>{errors.confirmation}</div>}
             </div>
-            <div className='text-center mt-5'><button type="submit" className="btn btn-outline-success">Sign Up</button></div>
+            <div className='text-center mt-5'>
+                <button type="submit" className="btn btn-outline-success" onClick={handleRegister}>Sign Up</button>
+            </div>
             <div className='d-flex flex-row justify-content-start w-100'>
                 <a className='link-secondary' href='/Login'>Already have an account?</a>
             </div>
@@ -30,4 +97,4 @@ const Registration = () => {
   )
 }
 
-export default Registration
+export default Registration;
