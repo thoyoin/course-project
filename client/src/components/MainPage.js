@@ -5,7 +5,7 @@ const MainPage = () => {
     const name = localStorage.getItem('name')
 
     return (
-        <div className='container-fluid d-flex flex-row justify-content-end align-items-center bg-light position-fixed top-0'>
+        <div className='container-fluid d-flex flex-row justify-content-end align-items-center bg-light position-fixed top-0 border border-top-0 border-start-0 border-end-0'>
             <form className="d-flex justify-content-center my-3 mx-auto w-100" role="search">
                 <div className='input-group' style={{maxWidth:'600px', height:'40px'}}>
                     <span className='input-group-text rounded-start-4'><i class="bi bi-search p-1"></i></span>

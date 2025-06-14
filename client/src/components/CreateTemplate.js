@@ -1,0 +1,52 @@
+import React from 'react'
+
+const CreateTemplate = () => {
+    const name = localStorage.getItem('name')
+    
+    return (
+        <div>
+            <div style={{height:'68px'}} className='container-fluid d-flex flex-row justify-content-start align-items-center position-fixed bg-light top-0 border border-top-0 border-start-0 border-end-0'>
+                <div className='ms-4'>
+                    <a href='#' className='text-success'><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
+                </div>
+                <div className='ms-4'>
+                    <h4 className='fw-bold m-0'>New template</h4>
+                </div>
+                <div className='dropdown ms-3 p-0 ms-auto' style={{width:'50px'}}>
+                    <a data-bs-toggle='dropdown' href='#' className='btn text-success px-2 py-0'>
+                        <i className="bi bi-person-circle fs-2 m-0 p-0"></i>
+                    </a>
+                    <ul className='dropdown-menu dropdown-menu-end bg-light bg-gradient bg-opacity-50' style={{width:'150px', backdropFilter:'blur(5px)'}}>
+                        <li>
+                            <p className='text-center my-3 fw-bolder'>Welcome, {name}!</p>
+                            <button
+                                className='btn btn-outline-success dropdown-item text-center'
+                                onClick={()=> {
+                                    localStorage.removeItem('token');
+                                    window.location.href = '/';
+                                }}
+                            >
+                                Log out
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div className='d-flex flex-column justify-content-start align-items-center'>
+                <div style={{maxWidth:'800px', height:'170px', marginTop:'80px'}} className=' bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
+                    <div style={{maxWidth:'800px', height:'170px'}} className='bg-light w-100 text-center rounded-4'>
+                        <div class="mb-3">
+                            <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" id="exampleInputEmail1" placeholder='Template name'/>
+                            <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className=" mt-4 form-control border-0 border-bottom border-success rounded-0 bg-light" id="exampleInputEmail1" placeholder='Description'/>
+                        </div>
+                    </div>
+                </div>
+                <div style={{maxWidth:'800px', height:'200px', marginTop:'15px'}} className=' bg-light w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
+
+                </div>
+            </div> 
+        </div>
+    )
+}
+
+export default CreateTemplate

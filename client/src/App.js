@@ -1,3 +1,4 @@
+import CreateTemplate from './components/CreateTemplate';
 import Login from './components/Login';
 import MainPage from './components/MainPage';
 import Registration from './components/Registration';
@@ -13,6 +14,7 @@ function App() {
         <Route path='/Login' element={<Login />} />
         <Route path='/Registration' element={<Registration />} />
         <Route path='/MainPage' element={<MainPage />} />
+        <Route path='/CreateTemplate' element={<CreateTemplate />} />
       </Routes>
     </div>
   );
