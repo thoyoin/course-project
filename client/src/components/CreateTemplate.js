@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
+/* import MDEditor from '@uiw/react-md-editor'; */
 
 const CreateTemplate = () => {
     const name = localStorage.getItem('name')
-    
+    const [description, setDescription] = useState('')
+
     return (
         <div>
-            <div style={{height:'68px'}} className='container-fluid d-flex flex-row justify-content-start align-items-center position-fixed bg-light top-0 border border-top-0 border-start-0 border-end-0'>
+            <div style={{height:'68px'}} className='container-fluid d-flex flex-row justify-content-start align-items-center position-fixed bg-light top-0 border-bottom'>
                 <div className='ms-4'>
-                    <a href='#' className='text-success'><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
+                    <a href='/MainPage' className='text-success'><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
                 </div>
                 <div className='ms-4'>
                     <h4 className='fw-bold m-0'>New template</h4>
@@ -33,15 +35,31 @@ const CreateTemplate = () => {
                 </div>
             </div>
             <div className='d-flex flex-column justify-content-start align-items-center'>
-                <div style={{maxWidth:'800px', height:'170px', marginTop:'80px'}} className=' bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
-                    <div style={{maxWidth:'800px', height:'170px'}} className='bg-light w-100 text-center rounded-4'>
-                        <div class="mb-3">
+                <div style={{maxWidth:'800px', minHeight:'170px', marginTop:'80px'}} className=' bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
+                    <div style={{maxWidth:'800px', minHeight:'170px'}} className='bg-light w-100 text-center rounded-4'>
+                        <div className="mb-3">
                             <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" id="exampleInputEmail1" placeholder='Template name'/>
-                            <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className=" mt-4 form-control border-0 border-bottom border-success rounded-0 bg-light" id="exampleInputEmail1" placeholder='Description'/>
+                            <textarea 
+                                ref={(el) => {
+                                    if (el) {
+                                    el.style.height = 'auto';
+                                    el.style.height = `${el.scrollHeight}px`;
+                                    }
+                                }}
+                                onInput={(e) => {
+                                    e.target.style.height = 'auto';
+                                    e.target.style.height = `${e.target.scrollHeight}px`;
+                                    setDescription(e.target.value);
+                                }}
+                                value={description}
+                                style={{outline: 'none', boxShadow: 'none', maxWidth: '800px', overflow: 'hidden', resize: 'none'}}
+                                className='form-control mt-4 border-0 border-bottom border-success rounded-0 bg-light'
+                                placeholder='Enter description'
+                            />
                         </div>
                     </div>
                 </div>
-                <div style={{maxWidth:'800px', height:'200px', marginTop:'15px'}} className=' bg-light w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
+                <div style={{maxWidth:'800px', height:'200px', marginTop:'15px'}} className=' bg-light w-100 mb-5 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
 
                 </div>
             </div> 
