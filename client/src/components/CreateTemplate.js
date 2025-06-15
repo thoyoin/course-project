@@ -5,6 +5,10 @@ import Select from 'react-select';
 const CreateTemplate = () => {
     const name = localStorage.getItem('name')
     const [description, setDescription] = useState('')
+    const [questionType, setQuestionType] = useState('short text')
+    const [checkboxOptions, setCheckboxOptions] = useState(['']);
+    const [optionError, setOptionError] = useState('');
+
     const items = [
         {value: 'short text', 
         label: (
@@ -86,49 +90,153 @@ const CreateTemplate = () => {
                         </div>
                     </div>
                 </div>
-                <div style={{maxWidth:'800px', height:'200px', marginTop:'15px'}} className=' bg-light w-100 mb-5 text-center border rounded-4 mx-3 d-flex flex-row justify-content-between'>
-                    <div>
-                        <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'300px'}} className="mt-4 fs-5 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" placeholder='Question'/>
+                <div style={{maxWidth:'800px', minHeight:'200px', marginTop:'15px'}} className=' bg-light w-100 mb-5 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
+                    <div className='d-flex flex-row justify-content-between'>
+                        <div className='w-100' style={{maxWidth:'300px'}}>
+                            <textarea 
+                                    ref={(el) => {
+                                        if (el) {
+                                        el.style.height = '40px';
+                                        el.style.height = `${el.scrollHeight}px`;
+                                        }
+                                    }}
+                                    onInput={(e) => {
+                                        e.target.style.height = '40px';
+                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                    }}
+                                    style={{outline: 'none', boxShadow: 'none', overflow: 'hidden', resize: 'none'}}
+                                    className='form-control mt-4 w-100 fs-5 border-0 border-bottom border-success rounded-0 bg-light'
+                                    placeholder='Question'
+                                />
+                        </div>
+                        <div>
+                            <Select
+                                isSearchable={false}
+                                options={items}
+                                defaultValue={items[0]}
+                                placeholder="Select question type"
+                                classNamePrefix="react-select"
+                                onChange={(selected) => setQuestionType(selected?.value)}
+                                styles={{
+                                    container: (base) => ({ 
+                                        ...base, 
+                                        width: '300px', 
+                                        margin:'15px'
+                                    }),
+                                    control: (base, state) => ({
+                                        ...base,
+                                        backgroundColor: '#f8f9fa',
+                                        borderColor: state.isFocused ? '#198754' : '#ccc',
+                                        boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
+                                        '&:hover': { borderColor: '#198754' },
+                                        minHeight: '45px',
+                                        fontWeight: 'light'
+                                    }),
+                                    menu: (base) => ({
+                                        ...base,
+                                        borderRadius: '8px',
+                                        padding: '5px',
+                                        backdropFilter:'blur(3px)',
+                                        backgroundColor: 'rgba(248, 249, 250, 0.5)'
+                                    }),
+                                    option: (base, state) => ({
+                                        ...base,
+                                        color: 'black',
+                                        padding: '10px',
+                                        marginBottom: '5px',
+                                        borderRadius: '5px',
+                                        backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.38)' : '',
+                                        cursor: 'pointer',
+                                    }),
+                                }}
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <Select
-                            isSearchable={false}
-                            options={items}
-                            placeholder="Select question type"
-                            classNamePrefix="react-select"
-                            styles={{
-                                container: (base) => ({ 
-                                    ...base, 
-                                    width: '300px', 
-                                    margin:'15px'
-                                }),
-                                control: (base, state) => ({
-                                    ...base,
-                                    backgroundColor: '#f8f9fa',
-                                    borderColor: state.isFocused ? '#198754' : '#ccc',
-                                    boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
-                                    '&:hover': { borderColor: '#198754' },
-                                    minHeight: '45px',
-                                    fontWeight: 'light'
-                                }),
-                                menu: (base) => ({
-                                    ...base,
-                                    borderRadius: '8px',
-                                    padding: '5px',
-                                    backdropFilter:'blur(3px)',
-                                    backgroundColor: 'rgba(248, 249, 250, 0.5)'
-                                }),
-                                option: (base, state) => ({
-                                    ...base,
-                                    color: 'black',
-                                    padding: '10px',
-                                    marginBottom: '5px',
-                                    borderRadius: '5px',
-                                    backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.38)' : '',
-                                    cursor: 'pointer',
-                                }),
-                            }}
-                        />
+                    <div className='d-flex flex-row justify-content-between'>
+                        {questionType === 'short text' && (
+                            <input
+                            style={{borderBottom:'1px dashed'}}
+                            type='text'
+                            className='form-control mt-2 w-50 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
+                            placeholder='Short answer'
+                            disabled
+                            />
+                        )}
+                        {questionType === 'long text' && (
+                            <input
+                            style={{borderBottom:'1px dashed'}}
+                            type='text'
+                            className='form-control mt-2 w-75 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
+                            placeholder='Detailed answer'
+                            disabled
+                            />
+                        )}
+                        {questionType === 'integer' && (
+                            <input
+                            style={{borderBottom:'1px dashed'}}
+                            type='number'
+                            className='form-control mt-2 w-50 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
+                            placeholder='123'
+                            disabled
+                            min={0}
+                            />
+                        )}
+                        {questionType === 'checkbox' && (
+                          <div className='w-100'>
+                            {checkboxOptions.map((opt, idx) => (
+                              <div key={idx} className='d-flex flex-row align-items-end mb-3'>
+                                <i className="bi bi-app fs-4 ms-4 me-3"></i>
+                                <input
+                                  style={{ outline: 'none', boxShadow: 'none' }}
+                                  type='text'
+                                  className='form-control mt-2 w-100 border-top-0 border-start-0 border-end-0 border-success rounded-0 bg-light'
+                                  placeholder={`Option ${idx + 1}`}
+                                  value={opt}
+                                  onChange={(e) => {
+                                    const updated = [...checkboxOptions];
+                                    updated[idx] = e.target.value;
+                                    setCheckboxOptions(updated);
+                                  }}
+                                />
+                                <button
+                                  className="btn btn-light mx-2"
+                                  onClick={() => {
+                                    if (checkboxOptions.length > 1) {
+                                      const updated = [...checkboxOptions];
+                                      updated.splice(idx, 1);
+                                      setCheckboxOptions(updated);
+                                    }
+                                  }}
+                                  disabled={checkboxOptions.length === 1}
+                                >
+                                  <i className="bi bi-x-lg"></i>
+                                </button>
+                              </div>
+                            ))}
+                            <div className='d-flex flex-row align-items-center mb-3'>
+                              <i className="bi bi-app fs-4 ms-4 me-3"></i>
+                              <button
+                                className='btn btn-light'
+                                onClick={() => {
+                                  if (checkboxOptions.length < 4) {
+                                    setCheckboxOptions([...checkboxOptions, '']);
+                                    setOptionError('');
+                                  } else {
+                                    setOptionError('Maximum 4 options allowed.');
+                                    setTimeout(() => {
+                                      setOptionError('');
+                                    }, 3000);
+                                  }
+                                }}
+                              >
+                                Add option
+                              </button>
+                              {optionError && (
+                                <span className="text-danger ms-3 small">{optionError}</span>
+                              )}
+                            </div>
+                          </div>
+                        )}
                     </div>
                 </div>
             </div> 
