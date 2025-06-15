@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Select from 'react-select';
 
 
@@ -8,6 +8,8 @@ const CreateTemplate = () => {
     const [questionType, setQuestionType] = useState('short text')
     const [checkboxOptions, setCheckboxOptions] = useState(['']);
     const [optionError, setOptionError] = useState('');
+    const [questionImage, setQuestionImage] = useState(null)
+    const fileInputRef = useRef();
 
     const items = [
         {value: 'short text', 
@@ -109,6 +111,43 @@ const CreateTemplate = () => {
                                     placeholder='Question'
                                 />
                         </div>
+                        <div className='d-flex align-items-center'>
+                            <i 
+                                className="bi bi-card-image fs-3 text-secondary"
+                                role='button'
+                                onClick={() => fileInputRef.current.click()}
+                                title='Attach image'
+                                >
+                            </i>
+                            <i 
+                                className="bi bi-x-lg fs-5 ms-3"
+                                onClick={() => setQuestionImage(null)}
+                                style={{cursor:'pointer'}}
+                                ></i>
+                            <input
+                                type='file'
+                                accept='image/*'
+                                ref={fileInputRef}
+                                style={{display:'none'}}
+                                onChange={async (e) => {
+                                    const file = e.target.files[0];
+                                    if (!file ) return;
+                                    const formData = new FormData();
+                                    formData.append('file', file)
+                                    formData.append('upload_preset', 'template_Images')
+                                    try {
+                                        const res = await fetch('https://api.cloudinary.com/v1_1/dhbcwjaky/image/upload', {
+                                            method: 'POST',
+                                            body: formData
+                                        });
+                                        const data = await res.json();
+                                        setQuestionImage(data.secure_url);
+                                    } catch (err) {
+                                        console.error('Image upload failed', err);
+                                    }
+                                }}
+                            />
+                        </div>
                         <div>
                             <Select
                                 isSearchable={false}
@@ -120,8 +159,8 @@ const CreateTemplate = () => {
                                 styles={{
                                     container: (base) => ({ 
                                         ...base, 
-                                        width: '300px', 
-                                        margin:'15px'
+                                        maxWidth: '300px', 
+                                        margin:'15px',
                                     }),
                                     control: (base, state) => ({
                                         ...base,
@@ -152,12 +191,17 @@ const CreateTemplate = () => {
                             />
                         </div>
                     </div>
+                    {questionImage && (
+                        <div className='w-100 px-4 my-3 d-flex flex-column justify-content-start align-items-center position-relative'>
+                            <img style={{maxHeight:'200px'}} src={questionImage} alt='questionImage' className='img-fluid rounded'></img>
+                        </div>
+                    )}
                     <div className='d-flex flex-row justify-content-between'>
                         {questionType === 'short text' && (
                             <input
                             style={{borderBottom:'1px dashed'}}
                             type='text'
-                            className='form-control mt-2 w-50 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
+                            className='form-control mt-2 mb-5 w-50 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
                             placeholder='Short answer'
                             disabled
                             />
@@ -166,7 +210,7 @@ const CreateTemplate = () => {
                             <input
                             style={{borderBottom:'1px dashed'}}
                             type='text'
-                            className='form-control mt-2 w-75 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
+                            className='form-control mt-2 mb-5 w-75 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
                             placeholder='Detailed answer'
                             disabled
                             />
@@ -175,7 +219,7 @@ const CreateTemplate = () => {
                             <input
                             style={{borderBottom:'1px dashed'}}
                             type='number'
-                            className='form-control mt-2 w-50 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
+                            className='form-control mt-2 mb-5 w-50 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-light'
                             placeholder='123'
                             disabled
                             min={0}
