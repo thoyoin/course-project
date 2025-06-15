@@ -36,7 +36,7 @@ const MainPage = () => {
                 </div>
             </div>
             <div className='d-flex flex-column justify-content-start align-items-center'>
-                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className=' bg-body w-100 text-center border-bottom mx-3 d-flex flex-column justify-content-center align-items-center'>
+                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className=' bg-body w-100 text-center border-bottom mx-3 d-flex flex-row justify-content-center align-items-center'>
                     <div style={{maxWidth:'200px'}} className='w-100'>
                         <h5 className='fw-light'>Create new</h5>
                         <button 

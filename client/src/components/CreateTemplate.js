@@ -1,10 +1,37 @@
 import React, { useState } from 'react'
-/* import MDEditor from '@uiw/react-md-editor'; */
+import Select from 'react-select';
+
 
 const CreateTemplate = () => {
     const name = localStorage.getItem('name')
     const [description, setDescription] = useState('')
-
+    const items = [
+        {value: 'short text', 
+        label: (
+            <span className='d-flex flex-row align-items-center'>
+                <i class="bi bi-text-left me-3 ms-2"></i>
+                Short text
+            </span>)},
+        {value: 'long text', 
+        label: (
+            <span className='d-flex flex-row align-items-center'>
+                <i class="bi bi-body-text me-3 ms-2"></i>
+                Long text
+            </span>)},
+        {value: 'integer', 
+        label: (
+            <span className='d-flex flex-row align-items-center'>
+                <i class="bi bi-123 me-3 ms-2"></i>
+                Integer
+            </span>)},
+        {value: 'checkbox', 
+        label: (
+            <span className='d-flex flex-row align-items-center'>
+                <i class="bi bi-check2-square me-3 ms-2"></i>
+                Checkbox
+            </span>)}
+    ];
+        
     return (
         <div>
             <div style={{height:'68px'}} className='container-fluid d-flex flex-row justify-content-start align-items-center position-fixed bg-light top-0 border-bottom'>
@@ -38,7 +65,7 @@ const CreateTemplate = () => {
                 <div style={{maxWidth:'800px', minHeight:'170px', marginTop:'80px'}} className=' bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
                     <div style={{maxWidth:'800px', minHeight:'170px'}} className='bg-light w-100 text-center rounded-4'>
                         <div className="mb-3">
-                            <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" id="exampleInputEmail1" placeholder='Template name'/>
+                            <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" placeholder='Template name'/>
                             <textarea 
                                 ref={(el) => {
                                     if (el) {
@@ -59,8 +86,50 @@ const CreateTemplate = () => {
                         </div>
                     </div>
                 </div>
-                <div style={{maxWidth:'800px', height:'200px', marginTop:'15px'}} className=' bg-light w-100 mb-5 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
-
+                <div style={{maxWidth:'800px', height:'200px', marginTop:'15px'}} className=' bg-light w-100 mb-5 text-center border rounded-4 mx-3 d-flex flex-row justify-content-between'>
+                    <div>
+                        <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'300px'}} className="mt-4 fs-5 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" placeholder='Question'/>
+                    </div>
+                    <div>
+                        <Select
+                            isSearchable={false}
+                            options={items}
+                            placeholder="Select question type"
+                            classNamePrefix="react-select"
+                            styles={{
+                                container: (base) => ({ 
+                                    ...base, 
+                                    width: '300px', 
+                                    margin:'15px'
+                                }),
+                                control: (base, state) => ({
+                                    ...base,
+                                    backgroundColor: '#f8f9fa',
+                                    borderColor: state.isFocused ? '#198754' : '#ccc',
+                                    boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
+                                    '&:hover': { borderColor: '#198754' },
+                                    minHeight: '45px',
+                                    fontWeight: 'light'
+                                }),
+                                menu: (base) => ({
+                                    ...base,
+                                    borderRadius: '8px',
+                                    padding: '5px',
+                                    backdropFilter:'blur(3px)',
+                                    backgroundColor: 'rgba(248, 249, 250, 0.5)'
+                                }),
+                                option: (base, state) => ({
+                                    ...base,
+                                    color: 'black',
+                                    padding: '10px',
+                                    marginBottom: '5px',
+                                    borderRadius: '5px',
+                                    backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.38)' : '',
+                                    cursor: 'pointer',
+                                }),
+                            }}
+                        />
+                    </div>
                 </div>
             </div> 
         </div>
