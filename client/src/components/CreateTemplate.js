@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react'
 import Select from 'react-select';
+import Creatable from 'react-select/creatable';
 
 
 const CreateTemplate = () => {
     const name = localStorage.getItem('name');
     const [description, setDescription] = useState('');
     const [optionError, setOptionError] = useState('');
+    const [typeError, setTypeError] = useState('');
     const [questionImage, setQuestionImage] = useState(null)
     const [newQuestion, setNewQuestion] = useState([
         {
@@ -45,19 +47,21 @@ const CreateTemplate = () => {
             </span>)}
     ];
 
-    const addNewQuestion = () => {
-        setNewQuestion([
-            ...newQuestion,
-            {
-                id: Date.now(),
-                text: '',
-                questionType: 'short text',
-                checkboxOptions: [''],
-                image: null
-            }
-        ]);
-    }
-        
+    const themes = [
+        {value: 'education',
+            label: 'Education'
+        },
+        {value: 'quiz',
+            label: 'Quiz'
+        },
+        {value: 'game',
+            label: 'Game'
+        },
+        {value: 'poll',
+            label: 'Poll'
+        }
+    ]
+
     return (
         <div>
             <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-start align-items-center position-fixed bg-light top-0 border-bottom'>
@@ -91,7 +95,47 @@ const CreateTemplate = () => {
                 <div style={{maxWidth:'800px', minHeight:'170px', marginTop:'80px'}} className='bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
                     <div style={{maxWidth:'800px', minHeight:'170px'}} className='bg-light w-100 text-center rounded-4'>
                         <div className="mb-3">
-                            <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" placeholder='Template name'/>
+                            <div className='d-flex flex-row'>
+                                <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" placeholder='Template name'/>
+                                <Creatable
+                                    options={themes}
+                                    isClearable={true}
+                                    placeholder="Theme"
+                                    classNamePrefix="react-select"
+                                    styles={{
+                                        container: (base) => ({ 
+                                            ...base, 
+                                            minWidth: '210px', 
+                                            margin:'15px',
+                                        }),
+                                        control: (base, state) => ({
+                                            ...base,
+                                            backgroundColor: '#f8f9fa',
+                                            borderColor: state.isFocused ? '#198754' : '#ccc',
+                                            boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
+                                            '&:hover': { borderColor: '#198754' },
+                                            minHeight: '45px',
+                                            fontWeight: 'light'
+                                        }),
+                                        menu: (base) => ({
+                                            ...base,
+                                            borderRadius: '8px',
+                                            padding: '5px',
+                                            backdropFilter:'blur(3px)',
+                                            backgroundColor: 'rgba(248, 249, 250, 0.5)'
+                                        }),
+                                        option: (base, state) => ({
+                                            ...base,
+                                            color: 'black',
+                                            padding: '10px',
+                                            marginBottom: '5px',
+                                            borderRadius: '5px',
+                                            backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.38)' : '',
+                                            cursor: 'pointer',
+                                        }),
+                                    }}
+                                />
+                            </div>
                             <textarea 
                                 ref={(el) => {
                                     if (el) {
@@ -192,7 +236,7 @@ const CreateTemplate = () => {
                                             styles={{
                                                 container: (base) => ({ 
                                                     ...base, 
-                                                    maxWidth: '300px', 
+                                                    minWidth: '120px', 
                                                     margin:'15px',
                                                 }),
                                                 control: (base, state) => ({
@@ -319,12 +363,52 @@ const CreateTemplate = () => {
                                 </div>
                             </div>
                         <div style={{maxWidth:'40px', height:'150px', marginTop:'15px'}} className="w-100 rounded-4 me-3 d-flex flex-column justify-content-center align-items-center">
-                            <button 
-                                className='btn btn-light rounded-top-4 rounded-bottom-0 h-100 border border-bottom-0'
-                                onClick={addNewQuestion}
-                            >
-                                <i class="bi bi-plus-circle fs-5"></i>
-                            </button>
+                            <div className='btn-group dropend h-100'>
+                                <button 
+                                    className='btn btn-light rounded-top-4 rounded-bottom-0 h-100 border border-bottom-0'
+                                    data-bs-toggle='dropdown'
+                                    aria-expanded='false'
+                                >
+                                    <i className="bi bi-plus-circle fs-5"></i>
+                                </button>
+                                <ul className='dropdown-menu bg-light rounded-3' style={{backdropFilter:'blur(3px)', backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
+                                    {items.map((item) => (
+                                        <li key={item.value} className='d-flex justify-content-center align-items-center' style={{height:'35px'}}>
+                                            <button
+                                                className='dropdown-item btn btn-light rounded-3'
+                                                style={{maxWidth:'130px', height:'35px'}}
+                                                type='button'
+                                                onClick={() => {
+                                                    const typeCounts = newQuestion.reduce((acc, q) => {
+                                                        acc[q.questionType] = (acc[q.questionType] || 0) + 1;
+                                                        return acc;
+                                                    }, {});
+                                                    const currentCount = typeCounts[item.value] || 0;
+                                                    if (currentCount >= 4) {
+                                                        setTypeError(`Maximum 4 ${item.value} questions allowed.`);
+                                                        setTimeout(() => {
+                                                            setTypeError('');
+                                                        }, 4000);
+                                                        return;
+                                                    }
+                                                    setNewQuestion([
+                                                        ...newQuestion,
+                                                        {
+                                                            id: Date.now(),
+                                                            text: '',
+                                                            questionType: item.value,
+                                                            checkboxOptions: [''],
+                                                            image: null
+                                                        }
+                                                    ]);
+                                                }}
+                                            >
+                                                {item.label}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                             <button 
                                 className='btn btn-light rounded-bottom-4 rounded-top-0 h-100 border border-top-0'
                                 onClick={() => {
@@ -333,12 +417,13 @@ const CreateTemplate = () => {
                                     setNewQuestion(updated)
                                 }}
                             >
-                                <i class="bi bi-trash fs-5"></i>
+                                <i className="bi bi-trash fs-5"></i>
                             </button>
                         </div>
                     </div>
                 </div> 
                 ))}
+                {typeError && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)', backgroundColor: 'rgba(249, 231, 74, 0.4)'}} className="alert alert-light position-fixed fw-bold" role="alert">{typeError}</div>}
             </div>
         </div>
     )
