@@ -1,0 +1,55 @@
+import React from 'react'
+
+const LogOutBtn = () => {
+    const name = localStorage.getItem('name')
+    const [currentTheme, setCurrentTheme] = React.useState(localStorage.getItem('theme') || 'auto');
+
+    const setTheme = (theme) => {
+        if (theme === 'auto') {
+            document.documentElement.setAttribute('data-bs-theme', 'light')
+            localStorage.setItem('theme', 'auto')
+        } else {
+            document.documentElement.setAttribute('data-bs-theme', theme)
+            localStorage.setItem('theme', theme)
+        }
+        setCurrentTheme(theme)
+    }
+
+    React.useEffect(() => {
+        setTheme(currentTheme);
+    }, []);
+
+    return (
+        <div className='dropdown ms-auto p-0' style={{width:'50px'}}>
+            <a data-bs-toggle='dropdown' href='#' className='btn text-success px-2 py-0'>
+                <i className="bi bi-person-circle fs-2 m-0 p-0"></i>
+            </a>
+            <ul className='dropdown-menu dropdown-menu-end bg-transparent bg-opacity-50' style={{width:'150px', backdropFilter:'blur(3px)'}}>
+                <li className='text-center'>
+                    <p className='text-center mt-3 mb-4 fw-bolder'>Welcome, {name}!</p>
+                    <div className="btn-group mb-4" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" className="btn-check" name="btnradio" id="light" autoComplete="off" onClick={() => setTheme('light')} checked={currentTheme === 'light'}/>
+                        <label className="btn btn-outline-success px-2" htmlFor="light"><i className="bi bi-brightness-low"></i></label>
+
+                        <input type="radio" className="btn-check" name="btnradio" id="auto" autoComplete="off" onClick={() => setTheme('auto')} checked={currentTheme === 'auto'}/>
+                        <label className="btn btn-outline-success px-2" htmlFor="auto"><i className="bi bi-circle-half"></i></label>
+
+                        <input type="radio" className="btn-check" name="btnradio" id="dark" autoComplete="off" onClick={() => setTheme('dark')} checked={currentTheme === 'dark'}/>
+                        <label className="btn btn-outline-success px-2" htmlFor="dark"><i className="bi bi-moon"></i></label>
+                    </div>
+                    <button
+                        className='btn btn-outline-success dropdown-item text-center'
+                        onClick={()=> {
+                            localStorage.removeItem('token');
+                            window.location.href = '/';
+                        }}
+                    >
+                        Log out
+                    </button>
+                </li>
+            </ul>
+        </div>
+    )
+}
+
+export default LogOutBtn

@@ -2,10 +2,10 @@ import React, { useState, useRef } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Creatable from 'react-select/creatable';
+import LogOutBtn from './LogOutBtn';
 
 
 const CreateTemplate = () => {
-    const name = localStorage.getItem('name');
     const [description, setDescription] = useState('');
     const [optionError, setOptionError] = useState('');
     const [typeError, setTypeError] = useState('');
@@ -20,6 +20,12 @@ const CreateTemplate = () => {
         }
     ]);
     const fileInputRef = useRef();
+
+    const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
+
+    React.useEffect(() => {
+        setColorMode(colorMode)
+    }, []);
 
     const items = [
         {value: 'short text', 
@@ -78,25 +84,7 @@ const CreateTemplate = () => {
                 <div className='ms-4'>
                     <h4 className='fw-bold m-0'>New template</h4>
                 </div>
-                <div className='dropdown ms-3 p-0 ms-auto' style={{width:'50px'}}>
-                    <a data-bs-toggle='dropdown' href='#' className='btn text-success px-2 py-0'>
-                        <i className="bi bi-person-circle fs-2 m-0 p-0"></i>
-                    </a>
-                    <ul className='dropdown-menu dropdown-menu-end bg-transparent bg-opacity-50' style={{width:'150px', backdropFilter:'blur(3px)'}}>
-                        <li>
-                            <p className='text-center my-3 fw-bolder'>Welcome, {name}!</p>
-                            <button
-                                className='btn btn-outline-success dropdown-item text-center'
-                                onClick={()=> {
-                                    localStorage.removeItem('token');
-                                    window.location.href = '/';
-                                }}
-                            >
-                                Log out
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                <LogOutBtn/>
             </div>
             <div className='d-flex flex-column justify-content-start align-items-center'>
                 <div style={{maxWidth:'800px', minHeight:'170px', marginTop:'80px'}} className='bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
@@ -110,6 +98,15 @@ const CreateTemplate = () => {
                                     isClearable={false}
                                     placeholder="Theme"
                                     classNamePrefix="react-select"
+                                    theme={(theme) => ({
+                                        ...theme,
+                                        colors: {
+                                            ...theme.colors,
+                                            primary:'rgba(123, 122, 122, 0.38)',
+                                            primary50:'rgba(123, 122, 122, 0.38)',
+                                            neutral80: colorMode === 'dark' ? 'white' : 'black'
+                                        }
+                                    })}
                                     styles={{
                                         container: (base) => ({ 
                                             ...base, 
@@ -169,6 +166,16 @@ const CreateTemplate = () => {
                                             placeholder='Enter tags...'
                                             isMulti
                                             options={tags}
+                                            theme={(theme) => ({
+                                                ...theme,
+                                                colors: {
+                                                    ...theme.colors,
+                                                    primary:'rgba(123, 122, 122, 0.38)',
+                                                    primary50:'rgba(123, 122, 122, 0.38)',
+                                                    neutral80: colorMode === 'dark' ? 'white' : 'black',
+                                                    neutral10: 'transparent'
+                                                }
+                                            })}
                                             styles={{
                                                 container: (base) => ({ 
                                                     ...base, 
@@ -201,11 +208,11 @@ const CreateTemplate = () => {
                                             }}
                                         />
                                         <div style={{height:'30px', margin:'15px 15px 0 0', width:'80px'}} className="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                            <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off"/>
-                                            <label className="btn btn-outline-success p-1" for="btnradio1"><i className="bi bi-unlock"></i></label>
+                                            <input type="radio" className="btn-check" name="btnradio" id="public" autocomplete="off"/>
+                                            <label className="btn btn-outline-success p-1" htmlFor="public"><i className="bi bi-unlock"></i></label>
     
-                                            <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
-                                            <label className="btn btn-outline-success p-1" for="btnradio2"><i className="bi bi-incognito"></i></label>
+                                            <input type="radio" className="btn-check" name="btnradio" id="private" autocomplete="off"/>
+                                            <label className="btn btn-outline-success p-1" htmlFor="private"><i className="bi bi-incognito"></i></label>
                                         </div>
                                     </div>
                             </div>
@@ -290,7 +297,7 @@ const CreateTemplate = () => {
                                                     ...theme.colors,
                                                     primary:'rgba(123, 122, 122, 0.38)',
                                                     primary50:'rgba(123, 122, 122, 0.38)',
-                                                    neutral80: 'white'
+                                                    neutral80: colorMode === 'dark' ? 'white' : 'black'
                                                 }
                                             })}
                                             onChange={(selected) => {
