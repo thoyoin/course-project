@@ -1,3 +1,4 @@
+import React from 'react';
 import CreateTemplate from './components/CreateTemplate';
 import Login from './components/Login';
 import MainPage from './components/MainPage';
@@ -8,7 +9,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Routes>
         <Route path='/' element={<Navigate to='/Login' replace />} />
         <Route path='/Login' element={<Login />} />

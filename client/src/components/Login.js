@@ -48,7 +48,7 @@ const Login = () => {
   return (
     <div>
         <div className='container-fluid vh-100 d-flex flex-row justify-content-center align-items-center'>
-            <div className='container-sm w-50 text-bg-light p-4 border rounded d-flex flex-column justify-content-center align-items-center'>
+            <div className='container-sm w-50 p-4 border rounded d-flex flex-column justify-content-center align-items-center'>
                 <div className='text-center mb-5'><h3>Login</h3></div>
                 <div className="form-floating mb-3 w-50">
                     <input 
