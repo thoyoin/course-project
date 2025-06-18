@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import Creatable from 'react-select/creatable';
 
 
@@ -54,13 +55,19 @@ const CreateTemplate = () => {
         {value: 'quiz',
             label: 'Quiz'
         },
-        {value: 'game',
-            label: 'Game'
-        },
         {value: 'poll',
             label: 'Poll'
+        },
+        {value: 'other',
+            label: 'Other'
         }
     ]
+
+    const tags = [
+
+    ];
+
+    const animatedComponents = makeAnimated()
 
     return (
         <div>
@@ -97,9 +104,10 @@ const CreateTemplate = () => {
                         <div className="mb-3">
                             <div className='d-flex flex-row'>
                                 <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-light" placeholder='Template name'/>
-                                <Creatable
+                                <Select
                                     options={themes}
-                                    isClearable={true}
+                                    isSearchable={false}
+                                    isClearable={false}
                                     placeholder="Theme"
                                     classNamePrefix="react-select"
                                     styles={{
@@ -122,7 +130,8 @@ const CreateTemplate = () => {
                                             borderRadius: '8px',
                                             padding: '5px',
                                             backdropFilter:'blur(3px)',
-                                            backgroundColor: 'rgba(248, 249, 250, 0.5)'
+                                            backgroundColor: 'rgba(248, 249, 250, 0.5)',
+                                            zIndex:'10'
                                         }),
                                         option: (base, state) => ({
                                             ...base,
@@ -136,23 +145,72 @@ const CreateTemplate = () => {
                                     }}
                                 />
                             </div>
-                            <textarea 
-                                ref={(el) => {
-                                    if (el) {
-                                    el.style.height = 'auto';
-                                    el.style.height = `${el.scrollHeight}px`;
-                                    }
-                                }}
-                                onInput={(e) => {
-                                    e.target.style.height = 'auto';
-                                    e.target.style.height = `${e.target.scrollHeight}px`;
-                                    setDescription(e.target.value);
-                                }}
-                                value={description}
-                                style={{outline: 'none', boxShadow: 'none', maxWidth: '800px', overflow: 'hidden', resize: 'none'}}
-                                className='form-control mt-4 border-0 border-bottom border-success rounded-0 bg-light'
-                                placeholder='Enter description'
-                            />
+                            <div className='d-flex flex-column'>
+                                <textarea 
+                                    ref={(el) => {
+                                        if (el) {
+                                        el.style.height = 'auto';
+                                        el.style.height = `${el.scrollHeight}px`;
+                                        }
+                                    }}
+                                    onInput={(e) => {
+                                        e.target.style.height = 'auto';
+                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                        setDescription(e.target.value);
+                                    }}
+                                    value={description}
+                                    style={{outline: 'none', boxShadow: 'none', maxWidth: '800px', overflow: 'hidden', resize: 'none'}}
+                                    className='form-control mt-4 border-0 border-bottom border-success rounded-0 bg-light'
+                                    placeholder='Enter description'
+                                />
+                                    <div className='d-flex flex-row justify-content-between align-items-center'>
+                                        <Creatable
+                                            closeMenuOnSelect={false}
+                                            components={animatedComponents}
+                                            placeholder='Enter tags...'
+                                            isMulti
+                                            options={tags}
+                                            styles={{
+                                                container: (base) => ({ 
+                                                    ...base, 
+                                                    minWidth: '210px',
+                                                    margin:'15px 15px 1px 15px',
+                                                }),
+                                                control: (base, state) => ({
+                                                    ...base,
+                                                    backgroundColor: '#f8f9fa',
+                                                    borderColor: state.isFocused ? '#198754' : '#ccc',
+                                                    boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
+                                                    '&:hover': { borderColor: '#198754' },
+                                                    maxHeight: '30px',
+                                                    fontWeight: 'light'
+                                                }),
+                                                menu: (base) => ({
+                                                    ...base,
+                                                    borderRadius: '8px',
+                                                    padding: '5px 0 5px 0',
+                                                    backdropFilter:'blur(3px)',
+                                                    backgroundColor: 'rgba(248, 249, 250, 0.5)',
+                                                }),
+                                                option: (base, state) => ({
+                                                    ...base,
+                                                    color: 'black',
+                                                    padding: '5px',
+                                                    backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.38)' : '',
+                                                    cursor: 'pointer',
+                                                    maxHeight: '40px'
+                                                }),
+                                            }}
+                                        />
+                                        <div style={{height:'30px', margin:'15px 15px 0 0', width:'80px'}} className="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                            <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off"/>
+                                            <label className="btn btn-outline-success p-1" for="btnradio1"><i className="bi bi-unlock"></i></label>
+    
+                                            <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
+                                            <label className="btn btn-outline-success p-1" for="btnradio2"><i className="bi bi-incognito"></i></label>
+                                        </div>
+                                    </div>
+                            </div>
                         </div>
                     </div>
                 </div>
