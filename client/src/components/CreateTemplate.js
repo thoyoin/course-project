@@ -3,25 +3,81 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Creatable from 'react-select/creatable';
 import LogOutBtn from './LogOutBtn';
-
+import { useFormik } from 'formik';
+import useLocalStorage from 'react-localstorage-hook';
 
 const CreateTemplate = () => {
-    const [description, setDescription] = useState('');
-    const [optionError, setOptionError] = useState('');
     const [typeError, setTypeError] = useState('');
+    const [optionError, setOptionError] = useState('');
+    const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
     const [questionImage, setQuestionImage] = useState(null)
-    const [newQuestion, setNewQuestion] = useState([
-        {
+    const [savedForm, setSavedForm] = useLocalStorage('savedForm', {
+        description: '',
+        newQuestion: [
+            {
+                id: Date.now(),
+                text: '',
+                questionType: 'short text',
+                checkboxOptions: [''],
+                image: null,
+            }
+        ],
+        tags: [],
+        templateName: '',
+        visibility: 'public',
+    });
+
+    const formik = useFormik({
+        initialValues: savedForm,
+        onSubmit: (values) => {
+            setSavedForm(values);
+            console.log('Form submitted:', values);
+        }
+    })
+
+    const handleAddOption = (index) => {
+        const updatedQuestions = [...formik.values.newQuestion];
+        if (updatedQuestions[index].checkboxOptions.length < 4) {
+            updatedQuestions[index].checkboxOptions.push('');
+            formik.setFieldValue('newQuestion', updatedQuestions);
+        } else {
+            setOptionError(`Maximum 4 options allowed.`);
+            setTimeout(() => {
+                setOptionError('');
+            }, 3000);
+            return;
+        }
+    };
+
+    const handleAddQuestion = (type) => {
+        const typeCounts = formik.values.newQuestion.reduce((acc, q) => {
+            acc[q.questionType] = (acc[q.questionType] || 0) + 1;
+            return acc;
+        }, {});
+        const currentCount = typeCounts[type] || 0;
+        const updatedQuestions = [...formik.values.newQuestion];
+        if (currentCount >= 4) {
+            setTypeError(`Maximum 4 ${type} questions allowed.`);
+            setTimeout(() => {
+                setTypeError('');
+            }, 4000);
+            return;
+        }
+        updatedQuestions.push({
             id: Date.now(),
             text: '',
-            questionType: 'short text',
+            questionType: type,
             checkboxOptions: [''],
-            image: null
-        }
-    ]);
-    const fileInputRef = useRef();
+            image: null,
+        });
+        formik.setFieldValue('newQuestion', updatedQuestions);
+    };
 
-    const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
+    React.useEffect(() => {
+        setSavedForm(formik.values);
+    }, [formik.values]);
+
+    const fileInputRef = useRef();
 
     React.useEffect(() => {
         setColorMode(colorMode)
@@ -69,9 +125,7 @@ const CreateTemplate = () => {
         }
     ]
 
-    const tags = [
-
-    ];
+    const tags = [];
 
     const animatedComponents = makeAnimated()
 
@@ -91,13 +145,25 @@ const CreateTemplate = () => {
                     <div style={{maxWidth:'800px', minHeight:'170px'}} className='bg-body-tertiary w-100 text-center rounded-4'>
                         <div className="mb-3">
                             <div className='d-flex flex-row'>
-                                <input type="text" style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-body-tertiary" placeholder='Template name'/>
+                                <input 
+                                    type="text" 
+                                    name='templateName'
+                                    style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} 
+                                    className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
+                                    placeholder='Template name'
+                                    value={formik.values.templateName}
+                                    onChange={formik.handleChange}
+                                    />
                                 <Select
                                     options={themes}
                                     isSearchable={false}
                                     isClearable={false}
                                     placeholder="Theme"
                                     classNamePrefix="react-select"
+                                    value={themes.find((theme) => theme.value === formik.values.theme)} 
+                                    onChange={(selectedOption) => {
+                                        formik.setFieldValue('theme', selectedOption ? selectedOption.value : '');
+                                    }}
                                     theme={(theme) => ({
                                         ...theme,
                                         colors: {
@@ -152,9 +218,10 @@ const CreateTemplate = () => {
                                     onInput={(e) => {
                                         e.target.style.height = 'auto';
                                         e.target.style.height = `${e.target.scrollHeight}px`;
-                                        setDescription(e.target.value);
+                                        formik.setFieldValue('description', e.target.value);
                                     }}
-                                    value={description}
+                                    value={formik.values.description}
+                                    onChange={formik.handleChange}
                                     style={{outline: 'none', boxShadow: 'none', maxWidth: '800px', overflow: 'hidden', resize: 'none'}}
                                     className='form-control mt-4 border-0 border-bottom border-success rounded-0 bg-body-tertiary'
                                     placeholder='Enter description'
@@ -165,7 +232,12 @@ const CreateTemplate = () => {
                                             components={animatedComponents}
                                             placeholder='Enter tags...'
                                             isMulti
+                                            name='tags'
                                             options={tags}
+                                            value={formik.values.tags}
+                                            onChange={(selectedOptions) => {
+                                                formik.setFieldValue('tags', selectedOptions || []);
+                                            }}
                                             theme={(theme) => ({
                                                 ...theme,
                                                 colors: {
@@ -219,7 +291,7 @@ const CreateTemplate = () => {
                         </div>
                     </div>
                 </div>
-                {newQuestion.map((q,index) => (
+                {formik.values.newQuestion.map((q,index) => (
                     <div key={q.id} className='mb-4 w-100'>
                         <div className='d-flex flex-row w-100 justify-content-center align-items-center'>
                             <div style={{maxWidth:'745px', minHeight:'200px', marginTop:'15px'}} className='bg-body-tertiary w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
@@ -235,11 +307,12 @@ const CreateTemplate = () => {
                                                 onInput={(e) => {
                                                     e.target.style.height = '40px';
                                                     e.target.style.height = `${e.target.scrollHeight}px`;
-                                                    const updated = [...newQuestion];
-                                                    updated[index].text = e.targer.value;
-                                                    setNewQuestion(updated)
+                                                    const updated = [...formik.values.newQuestion];
+                                                    updated[index].text = e.target.value;
+                                                    formik.setFieldValue('newQuestion', updated)
                                                 }}
                                                 value={q.text}
+                                                onChange={formik.handleChange}
                                                 style={{outline: 'none', boxShadow: 'none', overflow: 'hidden', resize: 'none'}}
                                                 className='form-control mt-4 w-100 fs-5 border-0 border-bottom border-success rounded-0 bg-body-tertiary'
                                                 placeholder='Question'
@@ -300,10 +373,10 @@ const CreateTemplate = () => {
                                                     neutral80: colorMode === 'dark' ? 'white' : 'black'
                                                 }
                                             })}
-                                            onChange={(selected) => {
-                                                const updated = [...newQuestion];
-                                                updated[index].questionType = selected?.value;
-                                                setNewQuestion(updated);
+                                            onChange={(selectedOption) => {
+                                                const updatedQuestions = [...formik.values.newQuestion];
+                                                updatedQuestions[index].questionType = selectedOption.value;
+                                                formik.setFieldValue('newQuestion', updatedQuestions);
                                             }}
                                             styles={{
                                                 container: (base) => ({ 
@@ -329,7 +402,6 @@ const CreateTemplate = () => {
                                                 }),
                                                 option: (base, state) => ({
                                                     ...base,
-
                                                     padding: '10px',
                                                     marginBottom: '5px',
                                                     borderRadius: '5px',
@@ -386,18 +458,18 @@ const CreateTemplate = () => {
                                             placeholder={`Option ${idx + 1}`}
                                             value={opt}
                                             onChange={(e) => {
-                                                const updated = [...newQuestion];
-                                                updated[index].checkboxOptions[idx] = e.target.value;
-                                                setNewQuestion(updated);
+                                                const updatedQuestions = [...formik.values.newQuestion];
+                                                updatedQuestions[opt].checkboxOptions[idx] = e.target.value;
+                                                formik.setFieldValue('newQuestion', updatedQuestions);
                                             }}
                                             />
                                             <button
                                             className="btn mx-2 px-1 py-0"
                                             onClick={() => {
                                                 if (q.checkboxOptions.length > 1) {
-                                                const updated = [...newQuestion];
+                                                const updated = [...formik.values.newQuestion];
                                                 updated[index].checkboxOptions.splice(idx, 1);
-                                                setNewQuestion(updated);
+                                                formik.setFieldValue('newQuestion', updated);
                                                 }
                                             }}
                                             disabled={q.checkboxOptions.length === 1}
@@ -410,19 +482,7 @@ const CreateTemplate = () => {
                                         <i className="bi bi-app fs-4 ms-4 me-3"></i>
                                         <button
                                             className='btn '
-                                            onClick={() => {
-                                            if (q.checkboxOptions.length < 4) {
-                                                const updated = [...newQuestion]
-                                                updated[index].checkboxOptions.push('');
-                                                setNewQuestion(updated);
-                                                setOptionError('');
-                                            } else {
-                                                setOptionError('Maximum 4 options allowed.');
-                                                setTimeout(() => {
-                                                setOptionError('');
-                                                }, 3000);
-                                            }
-                                            }}
+                                            onClick={() => handleAddOption(index)}
                                         >
                                             Add option
                                         </button>
@@ -450,30 +510,7 @@ const CreateTemplate = () => {
                                                 className='dropdown-item btn btn-light rounded-3'
                                                 style={{maxWidth:'130px', height:'35px'}}
                                                 type='button'
-                                                onClick={() => {
-                                                    const typeCounts = newQuestion.reduce((acc, q) => {
-                                                        acc[q.questionType] = (acc[q.questionType] || 0) + 1;
-                                                        return acc;
-                                                    }, {});
-                                                    const currentCount = typeCounts[item.value] || 0;
-                                                    if (currentCount >= 4) {
-                                                        setTypeError(`Maximum 4 ${item.value} questions allowed.`);
-                                                        setTimeout(() => {
-                                                            setTypeError('');
-                                                        }, 4000);
-                                                        return;
-                                                    }
-                                                    setNewQuestion([
-                                                        ...newQuestion,
-                                                        {
-                                                            id: Date.now(),
-                                                            text: '',
-                                                            questionType: item.value,
-                                                            checkboxOptions: [''],
-                                                            image: null
-                                                        }
-                                                    ]);
-                                                }}
+                                                onClick={() => handleAddQuestion(item.value)}
                                             >
                                                 {item.label}
                                             </button>
@@ -484,9 +521,9 @@ const CreateTemplate = () => {
                             <button 
                                 className='btn rounded-bottom-4 rounded-top-0 h-100 border border-top-0'
                                 onClick={() => {
-                                    const updated = newQuestion.filter(q => q.id !== newQuestion[index].id);
-                                    if (newQuestion.length > 1)
-                                    setNewQuestion(updated)
+                                    const updated = formik.values.newQuestion.filter(q => q.id !== formik.values.newQuestion[index].id);
+                                    if (formik.values.newQuestion.length > 1)
+                                    formik.setFieldValue('newQuestion', updated)
                                 }}
                             >
                                 <i className="bi bi-trash fs-5"></i>
