@@ -5,6 +5,7 @@ import Creatable from 'react-select/creatable';
 import LogOutBtn from './LogOutBtn';
 import { useFormik } from 'formik';
 import useLocalStorage from 'react-localstorage-hook';
+import ModalPublishBtn from './ModalPublishBtn';
 
 const CreateTemplate = () => {
     const [typeError, setTypeError] = useState('');
@@ -131,14 +132,15 @@ const CreateTemplate = () => {
 
     return (
         <div>
-            <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-start align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
-                <div className='ms-4'>
+            <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
+                <div className='ms-4 d-flex flex-row align-items-center gap-4'>
                     <a href='/MainPage' className='text-success'><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
-                </div>
-                <div className='ms-4'>
                     <h4 className='fw-bold m-0'>New template</h4>
                 </div>
-                <LogOutBtn/>
+                <div className='d-flex flex-row gap-5 align-items-center'>
+                    <ModalPublishBtn/>
+                    <LogOutBtn/>
+                </div>
             </div>
             <div className='d-flex flex-column justify-content-start align-items-center'>
                 <div style={{maxWidth:'800px', minHeight:'170px', marginTop:'80px'}} className='bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
@@ -279,13 +281,6 @@ const CreateTemplate = () => {
                                                 }),
                                             }}
                                         />
-                                        <div style={{height:'30px', margin:'15px 15px 0 0', width:'80px'}} className="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                            <input type="radio" className="btn-check" name="btnradio" id="public" autocomplete="off"/>
-                                            <label className="btn btn-outline-success p-1" htmlFor="public"><i className="bi bi-unlock"></i></label>
-    
-                                            <input type="radio" className="btn-check" name="btnradio" id="private" autocomplete="off"/>
-                                            <label className="btn btn-outline-success p-1" htmlFor="private"><i className="bi bi-incognito"></i></label>
-                                        </div>
                                     </div>
                             </div>
                         </div>
