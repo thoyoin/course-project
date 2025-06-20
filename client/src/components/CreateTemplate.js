@@ -485,7 +485,7 @@ const CreateTemplate = () => {
                                             value={opt}
                                             onChange={(e) => {
                                                 const updatedQuestions = [...formik.values.newQuestion];
-                                                updatedQuestions[idx].checkboxOptions[opt] = e.target.value;
+                                                updatedQuestions[index].checkboxOptions[idx] = e.target.value;
                                                 formik.setFieldValue('newQuestion', updatedQuestions);
                                             }}
                                             />
