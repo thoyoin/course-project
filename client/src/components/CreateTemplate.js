@@ -40,14 +40,7 @@ const CreateTemplate = () => {
                 newQuestion: data.newQuestion || [],
             });
             console.log('Template data:', data);
-    
-            /* formik.setValues({
-                templateName: data.templateName || '',
-                description: data.description || '',
-                tags: data.tags || [],
-                visibility: data.visibility || 'public',
-                newQuestion: data.newQuestion || [],
-            }); */
+
             formik.setValues({
                 ...formik.values,
                 ...data,
@@ -110,7 +103,7 @@ const CreateTemplate = () => {
     };
 
     React.useEffect(() => {
-        if (templateId && formik.values.templateName) {
+        if (templateId) {
             setSavedForm(formik.values);
         }
     }, [formik.values, templateId]);
