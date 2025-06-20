@@ -32,7 +32,6 @@ const CreateTemplate = () => {
         initialValues: savedForm,
         onSubmit: (values) => {
             setSavedForm(values);
-            console.log('Form submitted:', values);
         }
     })
 
@@ -80,9 +79,9 @@ const CreateTemplate = () => {
 
     const fileInputRef = useRef();
 
-    React.useEffect(() => {
-        setColorMode(colorMode)
-    }, []);
+        React.useEffect(() => {
+            setColorMode(colorMode)
+        }, []);
 
     const items = [
         {value: 'short text', 

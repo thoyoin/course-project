@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Select from 'react-select';
 
 const ModalPublishBtn = () => {
+    const [accessType, setAccessType] = useState('public');
+
     const access = [
         {value:'public',
             label: (
@@ -23,6 +25,10 @@ const ModalPublishBtn = () => {
 
     const colorMode = localStorage.getItem('theme')
 
+    const handlePublish = () => {
+        
+    }
+
     return (
         <div>
             <button style={{marginRight:'100px', height:'35px'}} className='btn btn-success py-1 px-3' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -41,8 +47,9 @@ const ModalPublishBtn = () => {
                             options={access}
                             isSearchable={false}
                             isClearable={false}
-                            placeholder="Theme"
+                            placeholder="Access"
                             classNamePrefix="react-select"
+                            onChange={(selected) => setAccessType(selected.value)}
                             theme={(theme) => ({
                                 ...theme,
                                 colors: {
@@ -88,7 +95,7 @@ const ModalPublishBtn = () => {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-success">Publish</button>
+                        <button type="button" className="btn btn-success" onClick={() => handlePublish(accessType)}>Publish</button>
                     </div>
                     </div>
                 </div>

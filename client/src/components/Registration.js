@@ -10,6 +10,9 @@ const Registration = () => {
     const [errors, setErrors] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const savedTheme = localStorage.getItem('theme')
+
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
 
     const handleRegister = async () => {
         setErrors({});

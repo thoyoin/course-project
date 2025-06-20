@@ -1,22 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 const LogOutBtn = () => {
     const name = localStorage.getItem('name')
-    const [currentTheme, setCurrentTheme] = React.useState(localStorage.getItem('theme') || 'auto');
+    const [currentTheme, setCurrentTheme] = useState(localStorage.getItem('theme') || 'auto');
 
     const setTheme = (theme) => {
-        if (theme === 'auto') {
-            document.documentElement.setAttribute('data-bs-theme', 'light')
-            localStorage.setItem('theme', 'auto')
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', theme)
-            localStorage.setItem('theme', theme)
+        const oldTheme = localStorage.getItem('theme') || 'auto';
+        if (theme !== oldTheme) {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            localStorage.setItem('theme', theme);
+            setCurrentTheme(theme);
+            window.location.reload();
         }
-        setCurrentTheme(theme)
-    }
+    };
 
-    React.useEffect(() => {
-        setTheme(currentTheme);
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme') || 'auto';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme); 
+        setCurrentTheme(savedTheme);
     }, []);
 
     return (

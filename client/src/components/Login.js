@@ -8,6 +8,9 @@ const Login = () => {
     const [errors, setErrors] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const savedTheme = localStorage.getItem('theme')
+
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
 
     const handleLogin = async () => {
         setErrors({});
