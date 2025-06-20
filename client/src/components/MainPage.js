@@ -27,7 +27,7 @@ const MainPage = () => {
                 throw new Error(`Ошибка ${response.status}: ${text}`);
             }
 
-            const data = JSON.parse(text);
+            const data = text ? JSON.parse(text) : {};
 
             console.log('Template created:', data);
             navigate(`/CreateTemplate/${data.id}`)
