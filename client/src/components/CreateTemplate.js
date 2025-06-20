@@ -136,7 +136,7 @@ const CreateTemplate = () => {
         {value: 'checkbox', 
         label: (
             <span className='d-flex flex-row align-items-center'>
-                <i class="bi bi-check2-square me-3 ms-2"></i>
+                <i className="bi bi-check2-square me-3 ms-2"></i>
                 Checkbox
             </span>)}
     ];
@@ -485,7 +485,7 @@ const CreateTemplate = () => {
                                             value={opt}
                                             onChange={(e) => {
                                                 const updatedQuestions = [...formik.values.newQuestion];
-                                                updatedQuestions[opt].checkboxOptions[idx] = e.target.value;
+                                                updatedQuestions[idx].checkboxOptions[opt] = e.target.value;
                                                 formik.setFieldValue('newQuestion', updatedQuestions);
                                             }}
                                             />

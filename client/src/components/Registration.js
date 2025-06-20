@@ -42,8 +42,8 @@ const Registration = () => {
         }
     };
 
-    const show = <i class="bi bi-eye"></i>
-    const hide = <i class="bi bi-eye-slash"></i>
+    const show = <i className="bi bi-eye"></i>
+    const hide = <i className="bi bi-eye-slash"></i>
 
     return (
         <div className='container-fluid vh-100 d-flex flex-row justify-content-center align-items-center'>

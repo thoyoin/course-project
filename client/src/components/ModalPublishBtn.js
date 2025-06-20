@@ -56,7 +56,7 @@ const ModalPublishBtn = ({templateId}) => {
                 <i className="bi bi-upload me-2"></i>
                 Publish
             </button>
-            <div className="modal fade" id="staticBackdrop" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal fade" id="staticBackdrop" data-bs-keyboard="true" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                     <div className="modal-header">

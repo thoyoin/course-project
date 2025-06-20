@@ -29,13 +29,13 @@ const LogOutBtn = () => {
                 <li className='text-center'>
                     <p className='text-center mt-3 mb-4 fw-bolder'>Welcome, {name}!</p>
                     <div className="btn-group mb-4" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" className="btn-check" name="btnradio" id="light" autoComplete="off" onClick={() => setTheme('light')} checked={currentTheme === 'light'}/>
+                        <input type="radio" className="btn-check" name="btnradio" id="light" autoComplete="off" onClick={() => setTheme('light')} defaultChecked={currentTheme === 'light'}/>
                         <label className="btn btn-outline-success px-2" htmlFor="light"><i className="bi bi-brightness-low"></i></label>
 
-                        <input type="radio" className="btn-check" name="btnradio" id="auto" autoComplete="off" onClick={() => setTheme('auto')} checked={currentTheme === 'auto'}/>
+                        <input type="radio" className="btn-check" name="btnradio" id="auto" autoComplete="off" onClick={() => setTheme('auto')} defaultChecked={currentTheme === 'auto'}/>
                         <label className="btn btn-outline-success px-2" htmlFor="auto"><i className="bi bi-circle-half"></i></label>
 
-                        <input type="radio" className="btn-check" name="btnradio" id="dark" autoComplete="off" onClick={() => setTheme('dark')} checked={currentTheme === 'dark'}/>
+                        <input type="radio" className="btn-check" name="btnradio" id="dark" autoComplete="off" onClick={() => setTheme('dark')} defaultChecked={currentTheme === 'dark'}/>
                         <label className="btn btn-outline-success px-2" htmlFor="dark"><i className="bi bi-moon"></i></label>
                     </div>
                     <button
