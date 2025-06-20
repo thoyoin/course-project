@@ -15,7 +15,7 @@ function App() {
         <Route path='/Login' element={<Login />} />
         <Route path='/Registration' element={<Registration />} />
         <Route path='/MainPage' element={<MainPage />} />
-        <Route path='/CreateTemplate' element={<CreateTemplate />} />
+        <Route path='/CreateTemplate/:templateId' element={<CreateTemplate />} />
       </Routes>
     </div>
   );

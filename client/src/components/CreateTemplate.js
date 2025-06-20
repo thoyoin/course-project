@@ -6,6 +6,7 @@ import LogOutBtn from './LogOutBtn';
 import { useFormik } from 'formik';
 import useLocalStorage from 'react-localstorage-hook';
 import ModalPublishBtn from './ModalPublishBtn';
+import { useParams } from 'react-router-dom';
 
 const CreateTemplate = () => {
     const [typeError, setTypeError] = useState('');
