@@ -1,5 +1,20 @@
 const { Template } = require('../models');
 
+exports.createTemplate = async (req, res) => {
+    try {
+        const newTemplate = await Template.create({
+            templateName: '',
+            description: '',
+            visibility: 'private',
+        });
+
+        res.status(201).json({ id: newTemplate.id });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to create template' });
+    }
+};
+
 exports.publishTemplate = async (req, res) => {
     try {
     const { templateId, access } = req.body;

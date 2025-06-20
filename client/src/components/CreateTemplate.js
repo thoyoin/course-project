@@ -29,6 +29,41 @@ const CreateTemplate = () => {
         visibility: 'public',
     });
 
+    const { templateId } = useParams();
+
+    React.useEffect(() => {
+        const fetchTemplate = async () => {
+            const response = await fetch(`/api/templates/${templateId}`);
+            const data = await response.json();
+            setSavedForm({
+                ...data,
+                newQuestion: data.newQuestion || [],
+            });
+            console.log('Template data:', data);
+    
+            /* formik.setValues({
+                templateName: data.templateName || '',
+                description: data.description || '',
+                tags: data.tags || [],
+                visibility: data.visibility || 'public',
+                newQuestion: data.newQuestion || [],
+            }); */
+            formik.setValues({
+                ...formik.values,
+                ...data,
+                newQuestion: data.newQuestion?.length ? data.newQuestion : [{
+                    templateName: '',
+                    description: '',
+                    type: 'short text',
+                  }]
+            });
+        };
+    
+        if (templateId) {
+            fetchTemplate();
+        }
+    }, [templateId]);
+
     const formik = useFormik({
         initialValues: savedForm,
         onSubmit: (values) => {
@@ -75,8 +110,10 @@ const CreateTemplate = () => {
     };
 
     React.useEffect(() => {
-        setSavedForm(formik.values);
-    }, [formik.values]);
+        if (templateId && formik.values.templateName) {
+            setSavedForm(formik.values);
+        }
+    }, [formik.values, templateId]);
 
     const fileInputRef = useRef();
 
@@ -138,7 +175,7 @@ const CreateTemplate = () => {
                     <h4 className='fw-bold m-0'>New template</h4>
                 </div>
                 <div className='d-flex flex-row gap-5 align-items-center'>
-                    <ModalPublishBtn/>
+                    <ModalPublishBtn templateId={templateId}/>
                     <LogOutBtn/>
                 </div>
             </div>
@@ -286,7 +323,8 @@ const CreateTemplate = () => {
                         </div>
                     </div>
                 </div>
-                {formik.values.newQuestion.map((q,index) => (
+                {console.log('newQuestion:', formik.values.newQuestion)}
+                {formik.values.newQuestion?.map((q,index) => (
                     <div key={q.id} className='mb-4 w-100'>
                         <div className='d-flex flex-row w-100 justify-content-center align-items-center'>
                             <div style={{maxWidth:'745px', minHeight:'200px', marginTop:'15px'}} className='bg-body-tertiary w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>

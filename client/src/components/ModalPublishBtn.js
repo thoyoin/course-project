@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
 
-const ModalPublishBtn = () => {
+const ModalPublishBtn = ({templateId}) => {
     const [accessType, setAccessType] = useState('public');
 
     const access = [
@@ -25,9 +25,30 @@ const ModalPublishBtn = () => {
 
     const colorMode = localStorage.getItem('theme')
 
-    const handlePublish = () => {
-        
-    }
+    const handlePublish = async () => {
+        try {
+            const response = await fetch(`/api/templates/${templateId}/publish`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    visibility: accessType,
+                }),
+            });
+
+            if (response.ok) {
+                alert('Template published successfully!');
+            } else {
+                const errorData = await response.json();
+                console.error('Failed to publish template:', errorData.message);
+                alert('Failed to publish template.');
+            }
+        } catch (error) {
+            console.error('Error publishing template:', error);
+            alert('An error occurred while publishing the template.');
+        }
+    };
 
     return (
         <div>

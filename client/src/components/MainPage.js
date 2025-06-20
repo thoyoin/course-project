@@ -5,6 +5,38 @@ import LogOutBtn from './LogOutBtn'
 const MainPage = () => {
     const navigate = useNavigate();
 
+    const createNewTemplate = async () => {
+        try {
+            const response = await fetch('/api/templates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    templateName: 'New Template',
+                    description: '',
+                    tags: [],
+                    visibility: 'private',
+                    questions: [],
+                }),
+            });
+
+            const text = await response.text()
+
+            if (!response.ok) {
+                throw new Error(`Ошибка ${response.status}: ${text}`);
+            }
+
+            const data = JSON.parse(text);
+
+            console.log('Template created:', data);
+            navigate(`/CreateTemplate/${data.id}`)
+
+        } catch (error) {
+            console.error('Error creating template:', error);
+        }
+    };
+
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
             <div className='container-fluid d-flex flex-row justify-content-end align-items-center bg-body-tertiary position-fixed top-0 border-bottom'>
@@ -23,9 +55,7 @@ const MainPage = () => {
                         <button 
                             style={{maxWidth:'160px', height:'120px'}} 
                             className='btn btn-outline-light border border-success text-success w-100 m-3'
-                            onClick={() => {
-                                navigate('/CreateTemplate')
-                            }}
+                            onClick={createNewTemplate}
                             >
                             <i className="bi bi-plus-square-dotted fs-1"></i>
                         </button>
