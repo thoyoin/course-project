@@ -2,11 +2,6 @@ const { Template } = require('../models');
 
 exports.createTemplate = async (req, res) => {
     try {
-        /* const newTemplate = await Template.create({
-            templateName: '',
-            description: '',
-            visibility: 'private',
-        }); */
         const { templateName, description, tags, visibility, questions, userId } = req.body;
 
         const newTemplate = await Template.create({
