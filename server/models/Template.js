@@ -9,6 +9,10 @@ const Template = sequelize.define('Template', {
     description: {
         type: DataTypes.TEXT,
     },
+    isPublished: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
     visibility: {
         type: DataTypes.STRING,
         defaultValue: 'private',

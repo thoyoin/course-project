@@ -18,6 +18,36 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/all', async (req, res) => {
+    try {
+        const templates = await Template.findAll({
+            order: [['updatedAt', 'DESC']],
+        });
+
+        res.status(200).json(templates);
+    } catch (err) {
+        console.error('Error fetching templates:', err);
+        res.status(500).json({message: 'Failed to fetch templates'});
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedTemplate = await Template.destroy({ where: { id } });
+
+        if (!deletedTemplate) {
+            return res.status(404).json({ message: 'Template not found' });
+        }
+
+        res.status(200).json({ message: 'Template deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting template:', err);
+        res.status(500).json({ message: 'Failed to delete template' });
+    }
+})
+
 router.put('/templates/:id/publish', async (req, res) => {
     try {
         const { id } = req.params;

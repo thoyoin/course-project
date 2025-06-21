@@ -7,9 +7,12 @@ import { useFormik } from 'formik';
 import useLocalStorage from 'react-localstorage-hook';
 import ModalPublishBtn from './ModalPublishBtn';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CreateTemplate = () => {
+    const navigate = useNavigate();
     const [typeError, setTypeError] = useState('');
+    const [deleteAlert, setDeleteAlert] = useState('');
     const [optionError, setOptionError] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
     const [questionImage, setQuestionImage] = useState(null)
@@ -160,6 +163,26 @@ const CreateTemplate = () => {
 
     const animatedComponents = makeAnimated()
 
+    const handleDeleteTemplate = async () => {
+        try {
+            const response = await fetch(`/api/templates/${templateId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete template')
+            }
+            
+            setDeleteAlert('Template deleted successfully!')
+            setTimeout(() => {
+                setDeleteAlert('')
+                navigate('/MainPage');
+            }, 1000);
+        } catch (err) {
+            console.error('Error deleting template:', err);
+        }
+    }
+
     return (
         <div>
             <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
@@ -168,6 +191,31 @@ const CreateTemplate = () => {
                     <h4 className='fw-bold m-0'>New template</h4>
                 </div>
                 <div className='d-flex flex-row gap-5 align-items-center'>
+                    <button 
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                        style={{height:'35px'}} 
+                        className='btn btn-danger px-3 py-2 d-flex flex-row align-items-center'
+                    >
+                        <i class="bi bi-trash me-2"></i>
+                        Delete
+                    </button>
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete this template?</h1>
+                            </div>
+                            <div class="modal-footer ">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                onClick={() => {
+                                    handleDeleteTemplate();
+                                }}>Delete</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                     <ModalPublishBtn templateId={templateId}/>
                     <LogOutBtn/>
                 </div>
@@ -316,7 +364,6 @@ const CreateTemplate = () => {
                         </div>
                     </div>
                 </div>
-                {console.log('newQuestion:', formik.values.newQuestion)}
                 {formik.values.newQuestion?.map((q,index) => (
                     <div key={q.id} className='mb-4 w-100'>
                         <div className='d-flex flex-row w-100 justify-content-center align-items-center'>
@@ -559,6 +606,7 @@ const CreateTemplate = () => {
                 </div> 
                 ))}
                 {typeError && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)', backgroundColor: 'rgba(249, 231, 74, 0.4)'}} className="alert alert-light position-fixed fw-bold" role="alert">{typeError}</div>}
+                {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
             </div>
         </div>
     )
