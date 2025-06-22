@@ -8,7 +8,7 @@ const MainPage = () => {
 
     const fetchTemplates = async () => {
         try {
-            const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates/all');
+            const response = await fetch('/api/templates/all');
             if (!response.ok) {
                 throw new Error('Failed to fetch templates');
             }
