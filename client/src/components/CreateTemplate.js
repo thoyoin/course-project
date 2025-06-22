@@ -197,18 +197,18 @@ const CreateTemplate = () => {
                         style={{height:'35px'}} 
                         className='btn btn-danger px-3 py-2 d-flex flex-row align-items-center'
                     >
-                        <i class="bi bi-trash me-2"></i>
+                        <i className="bi bi-trash me-2"></i>
                         Delete
                     </button>
-                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete this template?</h1>
+                    <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content">
+                            <div className="modal-header">
+                                <h1 className="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete this template?</h1>
                             </div>
-                            <div class="modal-footer ">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            <div className="modal-footer ">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
                                 onClick={() => {
                                     handleDeleteTemplate();
                                 }}>Delete</button>
@@ -300,6 +300,7 @@ const CreateTemplate = () => {
                                         e.target.style.height = `${e.target.scrollHeight}px`;
                                         formik.setFieldValue('description', e.target.value);
                                     }}
+                                    name='description'
                                     value={formik.values.description}
                                     onChange={formik.handleChange}
                                     style={{outline: 'none', boxShadow: 'none', maxWidth: '800px', overflow: 'hidden', resize: 'none'}}
@@ -384,6 +385,7 @@ const CreateTemplate = () => {
                                                     updated[index].text = e.target.value;
                                                     formik.setFieldValue('newQuestion', updated)
                                                 }}
+                                                name='text'
                                                 value={q.text}
                                                 onChange={formik.handleChange}
                                                 style={{outline: 'none', boxShadow: 'none', overflow: 'hidden', resize: 'none'}}

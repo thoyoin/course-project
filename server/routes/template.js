@@ -5,19 +5,6 @@ const templateController = require('../controllers/templateController')
 
 router.post('/', templateController.createTemplate);
 
-router.get('/:id', async (req, res) => {
-    try {
-    const template = await Template.findByPk(req.params.id);
-    if (!template) {
-        return res.status(404).json({ message: 'Template not found' });
-    }
-    res.json(template);
-    } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Failed to fetch template' });
-    }
-});
-
 router.get('/all', async (req, res) => {
     try {
         const templates = await Template.findAll({
@@ -28,6 +15,19 @@ router.get('/all', async (req, res) => {
     } catch (err) {
         console.error('Error fetching templates:', err);
         res.status(500).json({message: 'Failed to fetch templates'});
+    }
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+    const template = await Template.findByPk(req.params.id);
+    if (!template) {
+        return res.status(404).json({ message: 'Template not found' });
+    }
+    res.json(template);
+    } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch template' });
     }
 });
 

@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LogOutBtn from './LogOutBtn'
 
 const MainPage = () => {
     const navigate = useNavigate();
+    const [templates, setTemplates] = useState([]);
+
+    const fetchTemplates = async () => {
+        try {
+            const response = await fetch('/api/templates/all');
+            if (!response.ok) {
+                throw new Error('Failed to fetch templates');
+            }
+            const data = await response.json();
+            setTemplates(data);
+        } catch (error) {
+            console.error('Error fetching templates:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchTemplates();
+    }, []);
 
     const createNewTemplate = async () => {
         try {
@@ -49,9 +67,9 @@ const MainPage = () => {
                 <LogOutBtn/>
             </div>
             <div className='d-flex flex-column justify-content-start align-items-center'>
-                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className='bg-body w-100 text-center border-bottom mx-3 d-flex flex-row justify-content-center align-items-center'>
-                    <div style={{maxWidth:'200px'}} className='w-100'>
-                        <h5 className='fw-light'>Create new</h5>
+                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className='bg-body w-100 text-center border-bottom mx-3 d-flex flex-row justify-content-center align-items-start'>
+                    <div style={{maxWidth:'200px'}} className='w-100 mt-5'>
+                        <h5 className='fw-bold'>Create new</h5>
                         <button 
                             style={{maxWidth:'160px', height:'120px'}} 
                             className='btn btn-outline-light border border-success text-success w-100 m-3'
@@ -60,10 +78,27 @@ const MainPage = () => {
                             <i className="bi bi-plus-square-dotted fs-1"></i>
                         </button>
                     </div>
+                    {templates.map((template) => (
+                        <div style={{maxWidth:'200px'}} className='w-100 mt-5'>
+                        <h5 className='fw-bold'>{template.templateName}</h5>
+                        <button 
+                            style={{maxWidth:'160px', height:'120px'}} 
+                            className='btn btn-outline-light border border-success text-success w-100 m-3'
+                            onClick={() => navigate(`/CreateTemplate/${template.id}`)}
+                            >
+                                <i class="bi bi-pencil me-2"></i>
+                                Edit
+                        </button>
+                        <span className={`badge ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
+                            {template.isPublished ? 'Published' : 'Draft'}
+                        </span>
+                     </div>
+                    ))}
                 </div>
             </div> 
             <div style={{flexGrow:'1'}} className='d-flex flex-column justify-content-start align-items-center'>
                 <div style={{maxWidth:'100%', height:'100%'}} className='bg-body-tertiary w-100 text-center mx-3 d-flex flex-column justify-content-start'>
+                    
                 </div>
             </div> 
         </div>
