@@ -8,7 +8,7 @@ const MainPage = () => {
 
     const fetchTemplates = async () => {
         try {
-            const response = await fetch('/api/templates/all');
+            const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates/all');
             if (!response.ok) {
                 throw new Error('Failed to fetch templates');
             }
@@ -98,7 +98,7 @@ const MainPage = () => {
             </div> 
             <div style={{flexGrow:'1'}} className='d-flex flex-column justify-content-start align-items-center'>
                 <div style={{maxWidth:'100%', height:'100%'}} className='bg-body-tertiary w-100 text-center mx-3 d-flex flex-column justify-content-start'>
-                    
+
                 </div>
             </div> 
         </div>
