@@ -17,15 +17,6 @@ app.use(cors({
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/templates', templateRoutes)
-app.use('/run-migrations', async (req, res) => {
-    try {
-        await sequelize.sync({ force: true });
-        res.status(200).send('Migrations applied successfully!');
-    } catch (error) {
-        console.error('Error running migrations:', error);
-        res.status(500).send('Failed to apply migrations.');
-    }
-});
 
 app.get('/', (req, res) => {
   res.send('API is working!');
