@@ -32,7 +32,7 @@ const MainPage = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    templateName: 'New Template',
+                    templateName: '',
                     description: '',
                     tags: [],
                     visibility: 'private',
