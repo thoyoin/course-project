@@ -36,7 +36,7 @@ const CreateTemplate = () => {
 
     React.useEffect(() => {
         const fetchTemplate = async () => {
-            const response = await fetch(`/api/templates/${templateId}`);
+            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`);
             const data = await response.json();
             setSavedForm({
                 ...data,
@@ -165,7 +165,7 @@ const CreateTemplate = () => {
 
     const handleDeleteTemplate = async () => {
         try {
-            const response = await fetch(`/api/templates/${templateId}`, {
+            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`, {
                 method: 'DELETE',
             });
 
