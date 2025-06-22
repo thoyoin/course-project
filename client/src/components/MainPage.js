@@ -13,6 +13,7 @@ const MainPage = () => {
                 throw new Error('Failed to fetch templates');
             }
             const data = await response.json();
+            console.log('Fetched templates:', data);
             setTemplates(data);
         } catch (error) {
             console.error('Error fetching templates:', error);
@@ -25,7 +26,7 @@ const MainPage = () => {
 
     const createNewTemplate = async () => {
         try {
-            const response = await fetch('/api/templates', {
+            const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

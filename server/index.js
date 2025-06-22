@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://course-project-bjk6.onrender.com', 'https://course-project-back-tv8f.onrender.com'],
+    origin: ['http://localhost:3000', 'https://course-project-bjk6.onrender.com'],
     credentials: true,
 }));
 
