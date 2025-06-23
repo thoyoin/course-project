@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LogOutBtn from './LogOutBtn'
+import { useMediaQuery } from 'react-responsive'
 
 const MainPage = () => {
     const navigate = useNavigate();
     const [templates, setTemplates] = useState([]);
+    
+    const isLaptop = useMediaQuery({maxWidth: 1024})
+    const isTablet = useMediaQuery({maxWidth: 768})
+    const isMobile = useMediaQuery({maxWidth: 599})
+    const isLil = useMediaQuery({maxWidth: 469})
+    const visibleTemplates = isLil ? 1 : isMobile ? 2 : isTablet ? 3 : isLaptop ? 4 : 5;
 
-    const fetchTemplates = async () => {
+    const TemplatesGallery = async () => {
         try {
             const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates/all');
             if (!response.ok) {
@@ -21,8 +28,9 @@ const MainPage = () => {
     }
 
     useEffect(() => {
-        fetchTemplates();
+        TemplatesGallery();
     }, []);
+
 
     const createNewTemplate = async () => {
         try {
@@ -67,9 +75,9 @@ const MainPage = () => {
                 </form>
                 <LogOutBtn/>
             </div>
-            <div className='d-flex flex-column justify-content-start align-items-center'>
-                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className='bg-body w-100 text-center border-bottom mx-3 d-flex flex-row justify-content-center align-items-start'>
-                    <div style={{maxWidth:'200px'}} className='w-100 mt-5'>
+            <div className='d-flex flex-column justify-content-center align-items-center'>
+                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className='bg-body w-100 text-center border-bottom mx-3 d-flex flex-row justify-content-center align-items-center'>
+                    <div style={{maxWidth:'200px', minWidth:'120px'}} className='w-100 mx-2 d-flex flex-column align-items-center'>
                         <h5 className='fw-bold'>Create new</h5>
                         <button 
                             style={{maxWidth:'160px', height:'120px'}} 
@@ -79,22 +87,27 @@ const MainPage = () => {
                             <i className="bi bi-plus-square-dotted fs-1"></i>
                         </button>
                     </div>
-                    {templates.map((template) => (
-                        <div style={{maxWidth:'200px'}} className='w-100 mt-5'>
+                    {templates.slice(0, visibleTemplates).map((template) => (
+                        <div style={{maxWidth:'200px', minWidth:'120px'}} className='w-100 mx-2 d-flex flex-column align-items-center'>
                         <h5 className='fw-bold'>{template.templateName}</h5>
                         <button 
                             style={{maxWidth:'160px', height:'120px'}} 
-                            className='btn btn-outline-light border border-success text-success w-100 m-3'
+                            className='btn btn-outline-light border border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-between'
                             onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                             >
-                                <i class="bi bi-pencil me-2"></i>
-                                Edit
+                                <div className='d-flex flex-grow-1 flex-row justify-content-center align-items-center mb-2'>
+                                    <i class="bi bi-pencil me-2"></i>
+                                    Edit
+                                </div>
+                                <span className={`badge w-50 opacity-75 ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
+                                    {template.isPublished ? 'Published' : 'Draft'}
+                                </span>
                         </button>
-                        <span className={`badge ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
-                            {template.isPublished ? 'Published' : 'Draft'}
-                        </span>
                      </div>
                     ))}
+                    <div className='ms-3 me-4'>
+                        <a href='#' className='link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover'>View All</a>
+                    </div>
                 </div>
             </div> 
             <div style={{flexGrow:'1'}} className='d-flex flex-column justify-content-start align-items-center'>
