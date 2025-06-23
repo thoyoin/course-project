@@ -68,4 +68,24 @@ router.put('/templates/:id/publish', async (req, res) => {
     }
 });
 
+router.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+
+        const updatedTemplate = await Template.update(updatedData, {
+            where: { id },
+        });
+
+        if (updatedTemplate[0] === 0) {
+            return res.status(404).json({ message: 'Template not found' });
+        }
+
+        res.status(200).json({ message: 'Template updated successfully' });
+    } catch (err) {
+        console.error('Error updating template:', err);
+        res.status(500).json({ message: 'Failed to update template' });
+    }
+});
+
 module.exports = router;

@@ -16,7 +16,7 @@ const CreateTemplate = () => {
     const [optionError, setOptionError] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
     const [questionImage, setQuestionImage] = useState(null)
-    
+
     const { templateId } = useParams();
 
     const storageKey = `template-${templateId || 'new'}`;
@@ -206,6 +206,47 @@ const CreateTemplate = () => {
             console.error('Error deleting template:', err);
         }
     }
+
+    const saveTemplateToServer = async () => {
+        try {
+            const payload = {
+                ...formik.values,
+                newQuestion: formik.values.newQuestion.map((q) => ({
+                    ...q,
+                    checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
+                })),
+            };
+    
+            console.log('Payload being sent:', payload);
+    
+            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
+                method: templateId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to save template: ${errorText}`);
+            }
+    
+            console.log('Template saved to server');
+        } catch (error) {
+            console.error('Error saving template:', error);
+        }
+    };
+
+    useEffect(() => {
+        const handleBeforeUnload = async () => {
+            await saveTemplateToServer();
+        };
+
+        return () => {
+            handleBeforeUnload();
+        };
+    }, [formik.values, templateId]);
 
     return (
         <div>
