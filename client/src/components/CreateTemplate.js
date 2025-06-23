@@ -697,7 +697,7 @@ const CreateTemplate = () => {
                 ))}
                 {typeError && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)', backgroundColor: 'rgba(249, 231, 74, 0.4)'}} className="alert alert-light position-fixed fw-bold" role="alert">{typeError}</div>}
                 {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
-                {isSaving && <div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div>}
+                {isSaving && <div style={{bottom:'0', zIndex:'100'}} className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>}
             </div>
         </div>
     )
