@@ -16,6 +16,8 @@ const CreateTemplate = () => {
     const [optionError, setOptionError] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
     const [questionImage, setQuestionImage] = useState(null)
+    const [isNavigating, setIsNavigating] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const { templateId } = useParams();
 
@@ -217,8 +219,6 @@ const CreateTemplate = () => {
                 })),
             };
     
-            console.log('Payload being sent:', payload);
-    
             const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
                 method: templateId ? 'PUT' : 'POST',
                 headers: {
@@ -239,20 +239,43 @@ const CreateTemplate = () => {
     };
 
     useEffect(() => {
-        const handleBeforeUnload = async () => {
-            await saveTemplateToServer();
+        const handleBeforeUnload = async (event) => {
+            if (!isNavigating) {
+                event.preventDefault();
+                await saveTemplateToServer();
+            }
         };
 
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
         return () => {
-            handleBeforeUnload();
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            if (!isNavigating) {
+                saveTemplateToServer();
+            }
         };
-    }, [formik.values, templateId]);
+    }, [templateId, isNavigating]);
+
+    const handleNavigateToMainPage = async (event) => {
+        event.preventDefault();
+        setIsNavigating(true);
+        setIsSaving(true)
+        try {
+            await saveTemplateToServer();
+            navigate('/MainPage');
+        } catch (error) {
+            console.error('Failed to save template before navigating:', error);
+        } finally {
+            setIsNavigating(false);
+            setIsSaving(false);
+        }
+    };
 
     return (
         <div>
             <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
                 <div className='ms-4 d-flex flex-row align-items-center gap-4'>
-                    <a href='/MainPage' className='text-success'><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
+                    <a href='/MainPage' className='text-success' onClick={handleNavigateToMainPage}><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
                     <h4 className='fw-bold m-0'>New template</h4>
                 </div>
                 <div className='d-flex flex-row gap-5 align-items-center'>
@@ -674,6 +697,7 @@ const CreateTemplate = () => {
                 ))}
                 {typeError && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)', backgroundColor: 'rgba(249, 231, 74, 0.4)'}} className="alert alert-light position-fixed fw-bold" role="alert">{typeError}</div>}
                 {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
+                {isSaving && <div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div>}
             </div>
         </div>
     )
