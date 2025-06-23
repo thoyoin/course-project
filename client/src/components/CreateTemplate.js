@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Creatable from 'react-select/creatable';
@@ -16,56 +16,82 @@ const CreateTemplate = () => {
     const [optionError, setOptionError] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
     const [questionImage, setQuestionImage] = useState(null)
-    const [savedForm, setSavedForm] = useLocalStorage('savedForm', {
-        description: '',
-        newQuestion: [
-            {
-                id: Date.now(),
-                text: '',
-                questionType: 'short text',
-                checkboxOptions: [''],
-                image: null,
-            }
-        ],
-        tags: [],
+    
+    const { templateId } = useParams();
+
+    const storageKey = `template-${templateId || 'new'}`;
+
+    const [savedForm, setSavedForm] = useLocalStorage(storageKey, {
         templateName: '',
+        description: '',
+        newQuestion: [{
+            id: Date.now(),
+            text: '',
+            questionType: 'short text',
+            checkboxOptions: [''],
+            image: null,
+        }],
+        tags: [],
         visibility: 'public',
     });
 
-    const { templateId } = useParams();
-
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchTemplate = async () => {
             const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`);
             const data = await response.json();
-            setSavedForm({
-                ...data,
-                newQuestion: data.newQuestion || [],
-            });
-            console.log('Template data:', data);
-
-            formik.setValues({
-                ...formik.values,
-                ...data,
-                newQuestion: data.newQuestion?.length ? data.newQuestion : [{
-                    templateName: '',
-                    description: '',
-                    type: 'short text',
-                  }]
-            });
+            
+        if (data) {
+            const localData = localStorage.getItem('savedForm');
+            if (!localData || localData === '{}' || localData === 'null') {
+                setSavedForm({
+                    ...data,
+                    newQuestion: data.newQuestion || [{
+                        id: Date.now(),
+                        text: '',
+                        questionType: 'short text',
+                        checkboxOptions: [''],
+                        image: null,
+                    }],
+                });
+                } else {
+                    console.log('Skipped overwriting: localStorage has data');
+                }
         };
-    
+        }
+
         if (templateId) {
             fetchTemplate();
-        }
-    }, [templateId]);
+            } else {
+                const localDraft = localStorage.getItem('savedForm');
+                if (!localDraft) {
+                setSavedForm({
+                    templateName: '',
+                    description: '',
+                    newQuestion: [{
+                        id: Date.now(),
+                        text: '',
+                        questionType: 'short text',
+                        checkboxOptions: [''],
+                        image: null,
+                    }],
+                    tags: [],
+                    visibility: 'public',
+                });
+                }
+            }
+        }, [templateId]);
 
+    const initialValues = React.useMemo(() => savedForm, [savedForm]);
+    
     const formik = useFormik({
-        initialValues: savedForm,
+        initialValues,
+        enableReinitialize: true,
         onSubmit: (values) => {
             setSavedForm(values);
         }
     })
+
+    console.log('Saved form:', savedForm);
 
     const handleAddOption = (index) => {
         const updatedQuestions = [...formik.values.newQuestion];
@@ -105,17 +131,15 @@ const CreateTemplate = () => {
         formik.setFieldValue('newQuestion', updatedQuestions);
     };
 
-    React.useEffect(() => {
-        if (templateId) {
-            setSavedForm(formik.values);
-        }
+    useEffect(() => {
+        setSavedForm(formik.values);
     }, [formik.values, templateId]);
 
     const fileInputRef = useRef();
 
-        React.useEffect(() => {
-            setColorMode(colorMode)
-        }, []);
+    useEffect(() => {
+        setColorMode(colorMode)
+    }, []);
 
     const items = [
         {value: 'short text', 
