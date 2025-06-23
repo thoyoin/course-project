@@ -93,7 +93,7 @@ const CreateTemplate = () => {
         }
     })
 
-    console.log('Saved form:', savedForm);
+    /* console.log('Saved form:', savedForm); */
 
     const handleAddOption = (index) => {
         const updatedQuestions = [...formik.values.newQuestion];
