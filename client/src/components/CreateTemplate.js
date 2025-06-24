@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Creatable from 'react-select/creatable';
-import LogOutBtn from './LogOutBtn';
 import { useFormik } from 'formik';
 import useLocalStorage from 'react-localstorage-hook';
+import LogOutBtn from './LogOutBtn';
 import ModalPublishBtn from './ModalPublishBtn';
+import ChangeLang from './ChangeLang';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'
 
 const CreateTemplate = () => {
     const navigate = useNavigate();
@@ -18,6 +20,8 @@ const CreateTemplate = () => {
     const [questionImage, setQuestionImage] = useState(null)
     const [isNavigating, setIsNavigating] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+
+    const { t } = useTranslation();
 
     const { templateId } = useParams();
 
@@ -146,40 +150,48 @@ const CreateTemplate = () => {
         label: (
             <span className='d-flex flex-row align-items-center'>
                 <i className="bi bi-text-left me-3 ms-2"></i>
-                Short text
+                {t('short-text')}
             </span>)},
         {value: 'long text', 
         label: (
             <span className='d-flex flex-row align-items-center'>
                 <i className="bi bi-body-text me-3 ms-2"></i>
-                Long text
+                {t('long-text')}
             </span>)},
         {value: 'integer', 
         label: (
             <span className='d-flex flex-row align-items-center'>
                 <i className="bi bi-123 me-3 ms-2"></i>
-                Integer
+                {t('int')}
             </span>)},
         {value: 'checkbox', 
         label: (
             <span className='d-flex flex-row align-items-center'>
                 <i className="bi bi-check2-square me-3 ms-2"></i>
-                Checkbox
+                {t('checkbox')}
             </span>)}
     ];
 
     const themes = [
         {value: 'education',
-            label: 'Education'
+            label: (
+                <span>{t('education')}</span>
+            ),
         },
         {value: 'quiz',
-            label: 'Quiz'
+            label: (
+                <span>{t('quiz')}</span>
+            ),
         },
         {value: 'poll',
-            label: 'Poll'
+            label: (
+                <span>{t('poll')}</span>
+            ),
         },
         {value: 'other',
-            label: 'Other'
+            label: (
+                <span>{t('other')}</span>
+            ),
         }
     ]
 
@@ -276,33 +288,34 @@ const CreateTemplate = () => {
                     <a href='/MainPage' className='text-success' onClick={handleNavigateToMainPage}><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
                     <h4 className='fw-bold m-0'>New template</h4>
                 </div>
-                <div className='d-flex flex-row gap-5 align-items-center'>
+                <div className='d-flex flex-row align-items-center'>
                     <button 
                         data-bs-toggle="modal"
                         data-bs-target="#deleteModal"
                         style={{height:'35px'}} 
-                        className='btn btn-danger px-3 py-2 d-flex flex-row align-items-center'
+                        className='btn btn-danger mx-5 px-3 py-2 d-flex flex-row align-items-center'
                     >
                         <i className="bi bi-trash me-2"></i>
-                        Delete
+                        {t('delete')}
                     </button>
                     <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered">
                             <div className="modal-content">
                             <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete this template?</h1>
+                                <h1 className="modal-title fs-5" id="exampleModalLabel">{t('sure?')}</h1>
                             </div>
                             <div className="modal-footer ">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{t('cancel')}</button>
                                 <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
                                 onClick={() => {
                                     handleDeleteTemplate();
-                                }}>Delete</button>
+                                }}>{t('delete')}</button>
                             </div>
                             </div>
                         </div>
                     </div>
                     <ModalPublishBtn templateId={templateId}/>
+                    <ChangeLang/>
                     <LogOutBtn/>
                 </div>
             </div>
@@ -316,7 +329,7 @@ const CreateTemplate = () => {
                                     name='templateName'
                                     style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} 
                                     className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
-                                    placeholder='Template name'
+                                    placeholder={t('template-name')}
                                     value={formik.values.templateName}
                                     onChange={formik.handleChange}
                                     />
@@ -324,7 +337,7 @@ const CreateTemplate = () => {
                                     options={themes}
                                     isSearchable={false}
                                     isClearable={false}
-                                    placeholder="Theme"
+                                    placeholder={t('theme')}
                                     classNamePrefix="react-select"
                                     value={themes.find((theme) => theme.value === formik.values.theme)} 
                                     onChange={(selectedOption) => {
@@ -391,13 +404,13 @@ const CreateTemplate = () => {
                                     onChange={formik.handleChange}
                                     style={{outline: 'none', boxShadow: 'none', maxWidth: '800px', overflow: 'hidden', resize: 'none'}}
                                     className='form-control mt-4 border-0 border-bottom border-success rounded-0 bg-body-tertiary'
-                                    placeholder='Enter description'
+                                    placeholder={t('description')}
                                 />
                                     <div className='d-flex flex-row justify-content-between align-items-center'>
                                         <Creatable
                                             closeMenuOnSelect={false}
                                             components={animatedComponents}
-                                            placeholder='Enter tags...'
+                                            placeholder={t('tags')}
                                             isMulti
                                             name='tags'
                                             options={tags}
@@ -476,7 +489,7 @@ const CreateTemplate = () => {
                                                 onChange={formik.handleChange}
                                                 style={{outline: 'none', boxShadow: 'none', overflow: 'hidden', resize: 'none'}}
                                                 className='form-control mt-4 w-100 fs-5 border-0 border-bottom border-success rounded-0 bg-body-tertiary'
-                                                placeholder='Question'
+                                                placeholder={t('question')}
                                             />
                                     </div>
                                     <div className='d-flex align-items-center'>
@@ -584,7 +597,7 @@ const CreateTemplate = () => {
                                         style={{borderBottom:'1px dashed'}}
                                         type='text'
                                         className='form-control mt-2 mb-5 w-50 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-body-tertiary'
-                                        placeholder='Short answer'
+                                        placeholder={t('short')}
                                         disabled
                                         />
                                     )}
@@ -593,7 +606,7 @@ const CreateTemplate = () => {
                                         style={{borderBottom:'1px dashed'}}
                                         type='text'
                                         className='form-control mt-2 mb-5 w-75 border-top-0 border-start-0 border-end-0 border-secondary-subtle rounded-0 bg-body-tertiary'
-                                        placeholder='Detailed answer'
+                                        placeholder={t('detailed')}
                                         disabled
                                         />
                                     )}
@@ -616,7 +629,7 @@ const CreateTemplate = () => {
                                             style={{ outline: 'none', boxShadow: 'none' }}
                                             type='text'
                                             className='form-control mt-2 w-100 border-top-0 border-start-0 border-end-0 border-success rounded-0 bg-body-tertiary'
-                                            placeholder={`Option ${idx + 1}`}
+                                            placeholder={`${t('opt')} ${idx + 1}`}
                                             value={opt}
                                             onChange={(e) => {
                                                 const updatedQuestions = [...formik.values.newQuestion];
@@ -645,7 +658,7 @@ const CreateTemplate = () => {
                                             className='btn '
                                             onClick={() => handleAddOption(index)}
                                         >
-                                            Add option
+                                            {t('add-option')}
                                         </button>
                                         {optionError && (
                                             <span className="text-danger ms-3 small">{optionError}</span>

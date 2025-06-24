@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LogOutBtn from './LogOutBtn'
 import { useMediaQuery } from 'react-responsive'
+import ChangeLang from './ChangeLang'
+import { useTranslation } from 'react-i18next'
+
 
 const MainPage = () => {
     const navigate = useNavigate();
     const [templates, setTemplates] = useState([]);
-/*     const [viewAll, setViewAll] = useState(false); */
-    const [selectedLanguage, setSelectedLanguage] = useState('English');
+    /* const [viewAll, setViewAll] = useState(false); */
     const isLaptop = useMediaQuery({maxWidth: 1024})
     const isTablet = useMediaQuery({maxWidth: 768})
     const isMobile = useMediaQuery({maxWidth: 599})
     const isLil = useMediaQuery({maxWidth: 469})
+    const { t } = useTranslation();
 
     const visibleTemplates = isLil ? 1 : isMobile ? 2 : isTablet ? 3 : isLaptop ? 4 : 5;
 
@@ -29,7 +32,6 @@ const MainPage = () => {
         }
     }
 
-    
     useEffect(() => {
         TemplatesGallery();
     }, []);
@@ -76,25 +78,16 @@ const MainPage = () => {
                 <form className="d-flex justify-content-center my-3 mx-auto w-100" role="search">
                     <div className='input-group' style={{maxWidth:'600px', height:'40px'}}>
                         <span className='input-group-text rounded-start-4'><i className="bi bi-search p-1"></i></span>
-                        <input style={{boxShadow:'none'}} className="form-control rounded-end-4" type="search" placeholder="Search" aria-label="Search"/>
+                        <input style={{boxShadow:'none'}} className="form-control rounded-end-4" type="search" placeholder={t('search')} aria-label="Search"/>
                     </div>
                 </form>
-                <div className="dropdown me-5">
-                    <button className="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {selectedLanguage}
-                    </button>
-                    <ul className="dropdown-menu custom-dropdown">
-                        <li><h6 className="dropdown-header">Pick language</h6></li>
-                        <li><a className="dropdown-item" href="#" onClick={() => setSelectedLanguage('English')}>English</a></li>
-                        <li><a className="dropdown-item" href="#" onClick={() => setSelectedLanguage('Spanish')}>Spanish</a></li>
-                    </ul>
-                </div>
+                <ChangeLang/>
                 <LogOutBtn/>
             </div>
             <div className='d-flex flex-column justify-content-center align-items-center'>
                 <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className='bg-body w-100 text-center border-bottom mx-3 d-flex flex-row justify-content-center align-items-center'>
                     <div style={{maxWidth:'200px', minWidth:'120px'}} className='w-100 mx-2 d-flex flex-column align-items-center'>
-                        <h5 className='fw-bold'>Create new</h5>
+                        <h5 className='fw-bold'>{t('create-new')}</h5>
                         <button 
                             style={{maxWidth:'160px', height:'120px'}} 
                             className='btn btn-outline-light border border-success text-success w-100 m-3'
@@ -104,19 +97,16 @@ const MainPage = () => {
                         </button>
                     </div>
                     {templates.slice(0, visibleTemplates).map((template) => (
-                        <div style={{maxWidth:'200px', minWidth:'120px'}} className='w-100 mx-2 d-flex flex-column align-items-center'>
+                        <div style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative w-100 mx-2 d-flex flex-column align-items-center'>
                         <h5 className='fw-bold'>{template.templateName}</h5>
                         <button 
-                            style={{maxWidth:'160px', height:'120px'}} 
-                            className='btn btn-outline-light border border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-between'
+                            style={{maxWidth:'160px', height:'120px', overflow: 'hidden'}} 
+                            className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-center'
                             onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                             >
-                                <div className='d-flex flex-grow-1 flex-row justify-content-center align-items-center mb-2'>
-                                    <i className="bi bi-pencil me-2"></i>
-                                    Edit
-                                </div>
-                                <span className={`badge w-50 opacity-75 ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
-                                    {template.isPublished ? 'Published' : 'Draft'}
+                                {template.description || t('no-desc')}
+                                <span style={{top:'170px'}} className={`badge position-absolute w-50 opacity-75 ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
+                                    {template.isPublished ? t('published') : t('draft')}
                                 </span>
                         </button>
                      </div>

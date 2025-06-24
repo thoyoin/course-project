@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
+import { useTranslation } from 'react-i18next'
 
 const ModalPublishBtn = ({templateId}) => {
     const [accessType, setAccessType] = useState('public');
+    
+    const { t } = useTranslation();
+    
 
     const access = [
         {value:'public',
             label: (
                 <span className='d-flex flex-row align-items-center'>
                     <i className="bi bi-unlock me-2"></i>
-                    Public
+                    {t('public')}
                 </span>
             )
         },
@@ -17,7 +21,7 @@ const ModalPublishBtn = ({templateId}) => {
             label: (
                 <span className='d-flex flex-row align-items-center'>
                     <i className="bi bi-incognito me-2"></i>
-                    Private
+                    {t('private')}
                 </span>
             )
         }
@@ -52,23 +56,23 @@ const ModalPublishBtn = ({templateId}) => {
 
     return (
         <div>
-            <button style={{marginRight:'100px', height:'35px'}} className='btn btn-success py-1 px-3' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button style={{ height:'35px'}} className='btn btn-success py-1 px-3 me-5' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <i className="bi bi-upload me-2"></i>
-                Publish
+                {t('publish')}
             </button>
             <div className="modal fade" id="staticBackdrop" data-bs-keyboard="true" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                     <div className="modal-header">
-                        <h1 className="modal-title fs-4" id="staticBackdropLabel">Publication</h1>
+                        <h1 className="modal-title fs-4" id="staticBackdropLabel">{t('publication')}</h1>
                     </div>
                     <div className="modal-body d-flex flex-row align-items-center">
-                        <h5 className='fw-light'>Shared access:</h5>
+                        <h5 className='fw-light'>{t('shared-access')}:</h5>
                         <Select
                             options={access}
                             isSearchable={false}
                             isClearable={false}
-                            placeholder="Access"
+                            placeholder={t('access')}
                             classNamePrefix="react-select"
                             onChange={(selected) => setAccessType(selected.value)}
                             theme={(theme) => ({
@@ -115,8 +119,8 @@ const ModalPublishBtn = ({templateId}) => {
                         />
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-success" onClick={() => handlePublish(accessType)}>Publish</button>
+                        <button type="button" className="btn" data-bs-dismiss="modal">{t('cancel')}</button>
+                        <button type="button" className="btn btn-success" onClick={() => handlePublish(accessType)}>{t('publish')}</button>
                     </div>
                     </div>
                 </div>
