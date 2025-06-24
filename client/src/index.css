@@ -19,3 +19,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
     background-color: rgba(0, 0, 0, 0.225) !important;
     backdrop-filter:blur(2px) !important;
 }
+
+.dropdown-item:focus {
+    background-color: #19875498 !important;
+}

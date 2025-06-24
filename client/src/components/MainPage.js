@@ -6,11 +6,13 @@ import { useMediaQuery } from 'react-responsive'
 const MainPage = () => {
     const navigate = useNavigate();
     const [templates, setTemplates] = useState([]);
-    
+/*     const [viewAll, setViewAll] = useState(false); */
+    const [selectedLanguage, setSelectedLanguage] = useState('English');
     const isLaptop = useMediaQuery({maxWidth: 1024})
     const isTablet = useMediaQuery({maxWidth: 768})
     const isMobile = useMediaQuery({maxWidth: 599})
     const isLil = useMediaQuery({maxWidth: 469})
+
     const visibleTemplates = isLil ? 1 : isMobile ? 2 : isTablet ? 3 : isLaptop ? 4 : 5;
 
     const TemplatesGallery = async () => {
@@ -27,11 +29,15 @@ const MainPage = () => {
         }
     }
 
+    
     useEffect(() => {
         TemplatesGallery();
     }, []);
-
-
+    
+/*     useEffect(() => {
+        templates.length > 1 ? setViewAll(true) : setViewAll(false)
+    }) */
+    
     const createNewTemplate = async () => {
         try {
             const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates', {
@@ -73,6 +79,16 @@ const MainPage = () => {
                         <input style={{boxShadow:'none'}} className="form-control rounded-end-4" type="search" placeholder="Search" aria-label="Search"/>
                     </div>
                 </form>
+                <div className="dropdown me-5">
+                    <button className="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {selectedLanguage}
+                    </button>
+                    <ul className="dropdown-menu custom-dropdown">
+                        <li><h6 className="dropdown-header">Pick language</h6></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => setSelectedLanguage('English')}>English</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => setSelectedLanguage('Spanish')}>Spanish</a></li>
+                    </ul>
+                </div>
                 <LogOutBtn/>
             </div>
             <div className='d-flex flex-column justify-content-center align-items-center'>
@@ -96,7 +112,7 @@ const MainPage = () => {
                             onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                             >
                                 <div className='d-flex flex-grow-1 flex-row justify-content-center align-items-center mb-2'>
-                                    <i class="bi bi-pencil me-2"></i>
+                                    <i className="bi bi-pencil me-2"></i>
                                     Edit
                                 </div>
                                 <span className={`badge w-50 opacity-75 ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
@@ -105,10 +121,17 @@ const MainPage = () => {
                         </button>
                      </div>
                     ))}
-                    <div className='ms-3 me-4'>
-                        <a href='#' className='link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover'>View All</a>
-                    </div>
+                    {/* {viewAll &&
+                        <div className='ms-3 me-4'>
+                            <a href='#viewAll' role="button" aria-expanded="false" aria-controls="viewAll" data-bs-toggle="collapse" className='link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover'>View All</a>
+                        </div>
+                    } */}
                 </div>
+                {/* <div className="collapse w-100 border-0" id="viewAll">
+                    <div className="card card-body w-100">
+                        Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                    </div>
+                </div> */}
             </div> 
             <div style={{flexGrow:'1'}} className='d-flex flex-column justify-content-start align-items-center'>
                 <div style={{maxWidth:'100%', height:'100%'}} className='bg-body-tertiary w-100 text-center mx-3 d-flex flex-column justify-content-start'>
