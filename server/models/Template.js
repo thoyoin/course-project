@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
 
 const Template = sequelize.define('Template', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+    },
     templateName: {
         type: DataTypes.STRING,
         allowNull:false,
