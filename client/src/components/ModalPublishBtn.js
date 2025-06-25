@@ -127,13 +127,12 @@ const ModalPublishBtn = ({templateId}) => {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn" data-bs-dismiss="modal">{t('cancel')}</button>
-                        <button type="button" className="btn btn-success" onClick={() => handlePublish(accessType)}>{t('publish')}</button>
+                        <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => handlePublish(accessType)}>{t('publish')}</button>
                     </div>
                     </div>
                 </div>
                 </div>
-                {publishAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{publishAlert}</div>}
-
+                {publishAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{publishAlert}</div>}
         </div>
     )
 }
