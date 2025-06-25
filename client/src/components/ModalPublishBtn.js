@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom';
 
 const ModalPublishBtn = ({templateId}) => {
     const [accessType, setAccessType] = useState('public');
+    const navigate = useNavigate();
+    const [publishAlert, setPublishAlert] = useState('');
+    
     
     const { t } = useTranslation();
-    
 
     const access = [
         {value:'public',
@@ -42,7 +45,11 @@ const ModalPublishBtn = ({templateId}) => {
             });
 
             if (response.ok) {
-                alert('Template published successfully!');
+                setPublishAlert('Template published successfully!')
+                setTimeout(() => {
+                    setPublishAlert('')
+                    navigate('/MainPage');
+                }, 1000);
             } else {
                 const errorData = await response.json();
                 console.error('Failed to publish template:', errorData.message);
@@ -125,6 +132,8 @@ const ModalPublishBtn = ({templateId}) => {
                     </div>
                 </div>
                 </div>
+                {publishAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{publishAlert}</div>}
+
         </div>
     )
 }

@@ -3,7 +3,9 @@ const router = express.Router();
 const { Template } = require('../models');
 const templateController = require('../controllers/templateController')
 
-router.post('/', templateController.createTemplate);
+const authenticate = require('../middleware/authenticate');
+
+router.post('/', authenticate, templateController.createTemplate);
 
 router.get('/all', async (req, res) => {
     try {
@@ -52,10 +54,6 @@ router.put('/:id/publish', async (req, res) => {
     try {
         const { id } = req.params;
         const { visibility } = req.body;
-
-        if (!['public', 'private'].includes(visibility)) {
-            return res.status(400).json({ message: 'Invalid visibility value' });
-        }
 
         const template = await Template.findByPk(id);
         if (!template) {
