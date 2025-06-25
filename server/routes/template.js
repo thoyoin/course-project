@@ -51,20 +51,25 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id/publish', async (req, res) => {
     try {
         const { id } = req.params;
+        const { visibility } = req.body;
 
-        const updatedTemplate = await Template.update(
-            { visibility: 'public' },
-            { where: { id } }
-        );
+        if (!['public', 'private'].includes(visibility)) {
+            return res.status(400).json({ message: 'Invalid visibility value' });
+        }
 
-        if (updatedTemplate[0] === 0) {
+        const template = await Template.findByPk(id);
+        if (!template) {
             return res.status(404).json({ message: 'Template not found' });
         }
 
-        res.status(200).json({ message: 'Template published successfully' });
+        template.visibility = visibility;
+        template.isPublished = true;
+        await template.save();
+
+        res.status(200).json({ message: `Template visibility updated to '${visibility}'` });
     } catch (error) {
-        console.error('Error publishing template:', error);
-        res.status(500).json({ message: 'Failed to publish template' });
+        console.error('Error updating visibility:', error);
+        res.status(500).json({ message: 'Failed to update template visibility' });
     }
 });
 
