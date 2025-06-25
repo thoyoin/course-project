@@ -3,11 +3,11 @@ import Select from 'react-select';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom';
 
-const ModalPublishBtn = ({templateId}) => {
+const ModalPublishBtn = ({templateId, formikValues}) => {
     const [accessType, setAccessType] = useState('public');
-    const navigate = useNavigate();
     const [publishAlert, setPublishAlert] = useState('');
-    
+    const [saveAlert, setSaveAlert] = useState('');
+    const navigate = useNavigate();
     const { t } = useTranslation();
 
     const access = [
@@ -30,6 +30,44 @@ const ModalPublishBtn = ({templateId}) => {
     ];
 
     const colorMode = localStorage.getItem('theme')
+
+    const saveTemplateToServer = async () => {
+        try {
+            const payload = {
+                ...formikValues,
+                newQuestion: formikValues.newQuestion.map((q) => ({
+                    ...q,
+                    checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
+                })),
+            };
+    
+            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
+                method: templateId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            if (!response.ok) {
+                const errorText = await response.text();
+                setSaveAlert('Failed to save template.');
+                setTimeout(() => {
+                    setSaveAlert('')
+                }, 2000);
+                throw new Error(`Failed to save template: ${errorText}`);
+            } else {
+                setSaveAlert('Template saved successfully!');
+                setTimeout(() => {
+                    setSaveAlert('')
+                }, 2000);
+            }
+    
+            console.log('Template saved to server');
+        } catch (error) {
+            console.error('Error saving template:', error);
+        }
+    };
 
     const handlePublish = async () => {
         try {
@@ -68,7 +106,7 @@ const ModalPublishBtn = ({templateId}) => {
         <div>
             <button style={{ height:'35px'}} className='btn btn-success py-1 px-3 me-5' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <i className="bi bi-upload me-2"></i>
-                {t('publish')}
+                {t('save&publish')}
             </button>
             <div className="modal fade" id="staticBackdrop" data-bs-keyboard="true" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
@@ -129,13 +167,15 @@ const ModalPublishBtn = ({templateId}) => {
                         />
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn" data-bs-dismiss="modal">{t('cancel')}</button>
+                        {/* <button type="button" className="btn" data-bs-dismiss="modal">{t('cancel')}</button> */}
+                        <button className='btn btn-outline-success' onClick={() => saveTemplateToServer()}>{t('save')}</button>
                         <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => handlePublish(accessType)}>{t('publish')}</button>
                     </div>
                     </div>
                 </div>
                 </div>
                 {publishAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{publishAlert}</div>}
+                {saveAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{saveAlert}</div>}
         </div>
     )
 }

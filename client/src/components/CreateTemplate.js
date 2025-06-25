@@ -24,7 +24,6 @@ const CreateTemplate = () => {
     const { t } = useTranslation();
 
     const { templateId } = useParams();
-    const { templateData } = useParams();
 
     const storageKey = `template-${templateId || 'new'}`;
 
@@ -220,42 +219,13 @@ const CreateTemplate = () => {
         }
     }
 
-    const saveTemplateToServer = async () => {
-        try {
-            const payload = {
-                ...formik.values,
-                newQuestion: formik.values.newQuestion.map((q) => ({
-                    ...q,
-                    checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
-                })),
-            };
-    
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
-                method: templateId ? 'PUT' : 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Failed to save template: ${errorText}`);
-            }
-    
-            console.log('Template saved to server');
-        } catch (error) {
-            console.error('Error saving template:', error);
-        }
-    };
-
-    useEffect(() => {
+/*     useEffect(() => {
         const handleBeforeUnload = async (event) => {
             if (!isNavigating) {
                 event.preventDefault();
                 await saveTemplateToServer();
             }
-        };
+        }
 
         window.addEventListener('beforeunload', handleBeforeUnload);
 
@@ -265,9 +235,9 @@ const CreateTemplate = () => {
                 saveTemplateToServer();
             }
         };
-    }, [templateId, isNavigating]);
+    }, [templateId, isNavigating]); */
 
-    const handleNavigateToMainPage = async (event) => {
+/*     const handleNavigateToMainPage = async (event) => {
         event.preventDefault();
         setIsNavigating(true);
         setIsSaving(true)
@@ -280,13 +250,13 @@ const CreateTemplate = () => {
             setIsNavigating(false);
             setIsSaving(false);
         }
-    };
+    }; */
 
     return (
         <div>
             <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
                 <div className='ms-4 d-flex flex-row align-items-center gap-4'>
-                    <a href='/MainPage' className='text-success' onClick={handleNavigateToMainPage}><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
+                    <a href='/MainPage' className='text-success' onClick={() => navigate('/MainPage')}><i className="bi bi-file-earmark-text-fill fs-2"></i></a>
                     <h4 className='fw-bold m-0'>New template</h4>
                 </div>
                 <div className='d-flex flex-row align-items-center'>
@@ -315,7 +285,7 @@ const CreateTemplate = () => {
                             </div>
                         </div>
                     </div>
-                    <ModalPublishBtn templateId={templateId} templateData={templateData}/>
+                    <ModalPublishBtn templateId={templateId} formikValues={formik.values}/>
                     <ChangeLang/>
                     <LogOutBtn/>
                 </div>
