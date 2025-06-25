@@ -61,7 +61,6 @@ router.put('/:id/publish', async (req, res) => {
         }
 
         template.visibility = visibility;
-        template.isPublished = true;
         await template.save();
 
         res.status(200).json({ message: `Template visibility updated to '${visibility}'` });

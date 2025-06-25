@@ -24,6 +24,7 @@ const CreateTemplate = () => {
     const { t } = useTranslation();
 
     const { templateId } = useParams();
+    const { templateData } = useParams();
 
     const storageKey = `template-${templateId || 'new'}`;
 
@@ -314,7 +315,7 @@ const CreateTemplate = () => {
                             </div>
                         </div>
                     </div>
-                    <ModalPublishBtn templateId={templateId}/>
+                    <ModalPublishBtn templateId={templateId} templateData={templateData}/>
                     <ChangeLang/>
                     <LogOutBtn/>
                 </div>
