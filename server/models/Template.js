@@ -19,7 +19,7 @@ const Template = sequelize.define('Template', {
     },
     ownerId: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     questions: {
         type: DataTypes.JSON,
