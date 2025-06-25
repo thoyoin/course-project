@@ -8,7 +8,6 @@ const ModalPublishBtn = ({templateId}) => {
     const navigate = useNavigate();
     const [publishAlert, setPublishAlert] = useState('');
     
-    
     const { t } = useTranslation();
 
     const access = [
