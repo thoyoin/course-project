@@ -31,7 +31,7 @@ const ModalPublishBtn = ({templateId}) => {
 
     const handlePublish = async () => {
         try {
-            const response = await fetch(`/api/templates/${templateId}/publish`, {
+            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}/publish`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

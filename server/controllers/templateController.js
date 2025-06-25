@@ -4,6 +4,8 @@ exports.createTemplate = async (req, res) => {
     try {
         const { templateName, description, tags, visibility, questions } = req.body;
 
+        console.log(req.userId)
+
         const newTemplate = await Template.create({
             templateName: templateName || '',
             description: description || '',
