@@ -41,13 +41,14 @@ const MainPage = () => {
     }) */
     
     const createNewTemplate = async () => {
-        const ownerId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
 
         try {
             const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     templateName: '',
@@ -55,7 +56,6 @@ const MainPage = () => {
                     tags: [],
                     visibility: 'private',
                     questions: [],
-                    ownerId,
                 }),
             });
 
