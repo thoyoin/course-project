@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const { sequelize } = require('./models/index');
 const authRoutes = require('./routes/auth');
 const templateRoutes = require('./routes/template');
+const { FORCE } = require('sequelize/lib/index-hints');
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5050;
 
-sequelize.sync()
+sequelize.sync({force: true})
   .then(() => {
     console.log('Database connected');
     app.listen(PORT, () => {
