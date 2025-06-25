@@ -41,6 +41,8 @@ const MainPage = () => {
     }) */
     
     const createNewTemplate = async () => {
+        const ownerId = localStorage.getItem('userId');
+
         try {
             const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates', {
                 method: 'POST',
@@ -53,6 +55,7 @@ const MainPage = () => {
                     tags: [],
                     visibility: 'private',
                     questions: [],
+                    ownerId,
                 }),
             });
 
@@ -101,7 +104,7 @@ const MainPage = () => {
                         <h5 className='fw-bold'>{template.templateName}</h5>
                         <button 
                             style={{maxWidth:'160px', height:'120px', overflow: 'hidden'}} 
-                            className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-center'
+                            className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'
                             onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                             >
                                 {template.description || t('no-desc')}

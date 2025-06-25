@@ -17,8 +17,9 @@ const Template = sequelize.define('Template', {
         type: DataTypes.STRING,
         defaultValue: 'private',
     },
-    userId: {
-        type: DataTypes.INTEGER,
+    ownerId: {
+        type: DataTypes.UUID,
+        allowNull: false,
     },
     questions: {
         type: DataTypes.JSON,

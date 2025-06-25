@@ -35,6 +35,14 @@ const Login = () => {
             }
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('name', res.data.user?.name || '');
+
+            try {
+                const tokenPayload = JSON.parse(atob(res.data.token.split('.')[1]));
+                localStorage.setItem('userId', tokenPayload.userId);
+            } catch (err) {
+                console.error('Failed to decode token:', err);
+            }
+
             navigate('/MainPage');
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {

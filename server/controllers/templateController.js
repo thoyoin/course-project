@@ -2,7 +2,7 @@ const { Template } = require('../models');
 
 exports.createTemplate = async (req, res) => {
     try {
-        const { templateName, description, tags, visibility, questions, userId } = req.body;
+        const { templateName, description, tags, visibility, questions } = req.body;
 
         const newTemplate = await Template.create({
             templateName: templateName || '',
@@ -10,7 +10,7 @@ exports.createTemplate = async (req, res) => {
             tags: tags || [],
             visibility: visibility || 'private',
             questions: questions || [],
-            userId: userId || null,
+            ownerId: req.userId,
         });
 
         res.status(201).json({ id: newTemplate.id });

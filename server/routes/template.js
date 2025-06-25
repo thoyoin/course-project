@@ -48,7 +48,7 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-router.put('/templates/:id/publish', async (req, res) => {
+router.put('/template/:id/publish', async (req, res) => {
     try {
         const { id } = req.params;
 
