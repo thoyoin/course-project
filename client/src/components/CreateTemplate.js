@@ -9,7 +9,7 @@ import ModalPublishBtn from './ModalPublishBtn';
 import ChangeLang from './ChangeLang';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 const CreateTemplate = () => {
     const navigate = useNavigate();

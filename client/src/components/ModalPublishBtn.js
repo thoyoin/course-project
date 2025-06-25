@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom';
 
-const ModalPublishBtn = ({templateId, templateData}) => {
+const ModalPublishBtn = ({templateId}) => {
     const [accessType, setAccessType] = useState('public');
     const navigate = useNavigate();
     const [publishAlert, setPublishAlert] = useState('');
@@ -37,13 +37,12 @@ const ModalPublishBtn = ({templateId, templateData}) => {
             const token = localStorage.getItem('token');
 
             const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`, {
-                method: 'PUT',
+                method: templateId ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    ...templateData,
                     visibility: accessType,
                     isPublished: true,
                 }),
