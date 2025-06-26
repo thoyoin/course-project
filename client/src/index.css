@@ -15,11 +15,27 @@ img{vertical-align: top;}
 h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
 
 .modal-backdrop {
-    z-index: -1 !important;
+    z-index: 0 !important;
     background-color: rgba(0, 0, 0, 0.225) !important;
     backdrop-filter:blur(2px) !important;
 }
 
 .dropdown-item:focus {
     background-color: #19875498 !important;
+}
+
+.link-ease-in-out::after {
+    background-color: green;
+    display: block;
+    content: "";
+    height: 2px;
+    width: 0%;
+    -webkit-transition: width .3s ease-in-out;
+    -moz--transition: width .3s ease-in-out;
+    transition: width .3s ease-in-out;
+}
+
+.link-ease-in-out:hover:after,
+.link-ease-in-out:focus:after {
+    width: 100%;
 }
