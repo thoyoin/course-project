@@ -39,6 +39,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                     ...q,
                     checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
                 })),
+                visibility: accessType,
             };
     
             const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
@@ -73,16 +74,23 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
         try {
             const token = localStorage.getItem('token');
 
+            const payload = {
+                ...formikValues,
+                newQuestion: formikValues.newQuestion.map((q) => ({
+                    ...q,
+                    checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
+                })),
+                visibility: accessType,
+                isPublished: true,
+            };
+
             const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`, {
                 method: templateId ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    visibility: accessType,
-                    isPublished: true,
-                }),
+                body: JSON.stringify({payload}),
             });
 
             if (response.ok) {
