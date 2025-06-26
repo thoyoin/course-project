@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const ModalPublishBtn = ({templateId, formikValues}) => {
     const [accessType, setAccessType] = useState('public');
     const [publishAlert, setPublishAlert] = useState('');
+    const [publishErrorAlert, setPublishErrorAlert] = useState('');
     const [saveAlert, setSaveAlert] = useState('');
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -84,7 +85,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                 isPublished: true,
             };
 
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`, {
+            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
                 method: templateId ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -98,15 +99,21 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                 setTimeout(() => {
                     setPublishAlert('')
                     navigate('/MainPage');
-                }, 1000);
+                }, 2000);
             } else {
                 const errorData = await response.json();
                 console.error('Failed to publish template:', errorData.message);
-                alert('Failed to publish template.');
+                setPublishErrorAlert('Failed to publish template.')
+                setTimeout(() => {
+                    setPublishErrorAlert('')
+                }, 2000);
             }
         } catch (error) {
             console.error('Error publishing template:', error);
-            alert('An error occurred while publishing the template.');
+            setPublishErrorAlert('An error occurred while publishing the template.')
+                setTimeout(() => {
+                    setPublishErrorAlert('')
+                }, 2000);
         }
     };
 
@@ -183,6 +190,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                 </div>
                 </div>
                 {publishAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{publishAlert}</div>}
+                {publishErrorAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-danger position-fixed fw-bold" role="alert">{publishErrorAlert}</div>}
                 {saveAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{saveAlert}</div>}
         </div>
     )
