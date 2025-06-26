@@ -3,15 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ChangeLang from './ChangeLang';
 import LogOutBtn from './LogOutBtn';
 import { useTranslation } from 'react-i18next';
-import ModalPublishBtn from './ModalPublishBtn';
 
 const FormPage = () => {
-    const { templateId, formikValues } = useParams();
+    const { templateId } = useParams();
     const [template, setTemplate] = useState(null);
     const [answers, setAnswers] = useState({});
     const navigate = useNavigate();
     const { t } = useTranslation();
-
 
     useEffect(() => {
         const fetchTemplate = async () => {
@@ -56,10 +54,25 @@ const FormPage = () => {
         }
     };
 
-    if (!template) return <p>Loading template...</p>;
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (Object.keys(answers).length > 0) {
+                e.preventDefault();
+                e.returnValue = ''; 
+            }
+        };
+      
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [answers]);
+    
+    if (!template) {
+        return <div className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>;
+    };
 
     console.log('Loaded template:', template);
-    console.log('Template questions:', template.questions);
 
     return (
         <div>
@@ -94,7 +107,6 @@ const FormPage = () => {
                             </div>
                         </div>
                     </div>
-                    <ModalPublishBtn templateId={templateId} /* formikValues={formik.values} *//>
                     <ChangeLang/>
                     <LogOutBtn/>
                 </div>
@@ -111,12 +123,12 @@ const FormPage = () => {
                             </div>
                     </div>
                 <form style={{maxWidth:'700px'}} className='w-100 text-center' onSubmit={handleSubmit}>
-                    {(template.questions || template.newQuestion)?.map((q, idx) => (
+                    {template.questions?.map((q, idx) => (
                         <div key={idx} className="mb-4">
-                        <div className='d-flex flex-row justify-content-center align-items-center'>
-                                    <div style={{minHeight:'150px', marginTop:'15px'}} className='bg-body-tertiary w-100 mx-3 text-start border rounded-4 d-flex flex-column justify-content-start'>
-                                        <label className="form-label p-4 fs-5">{q.text}</label>
-                                        {q.questionType === 'short text' && (
+                            <div className='d-flex flex-row justify-content-center align-items-center'>
+                                <div style={{minHeight:'150px', marginTop:'15px'}} className='bg-body-tertiary w-100 mx-3 text-start border rounded-4 d-flex flex-column justify-content-start'>
+                                    <label className="form-label p-4 fs-5">{q.text}</label>
+                                    {q.questionType === 'short text' && (
                                         <input
                                             type="text" 
                                             placeholder={t('myAnswer')}
@@ -124,15 +136,33 @@ const FormPage = () => {
                                             className="form-control w-50 ms-4 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                             onChange={e => handleChange(idx, e.target.value)} />
                                         )}
+                                        {q.questionType === 'integer' && (
+                                        <input
+                                            type="number" 
+                                            placeholder={t('myAnswer')}
+                                            style={{outline:'none', boxShadow:'none'}} 
+                                            className="form-control w-50 ms-4 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
+                                            onChange={e => handleChange(idx, e.target.value)} />
+                                        )}
                                         {q.questionType === 'long text' && (
-                                        <textarea className="form-control" onChange={e => handleChange(idx, e.target.value)} />
+                                        <textarea 
+                                            ref={(el) => {
+                                                if (el) {
+                                                el.style.height = '20px';
+                                                el.style.height = `${el.scrollHeight}px`;
+                                                }
+                                            }}
+                                            placeholder={t('myAnswer')}
+                                            style={{outline:'none', boxShadow:'none', overflow: 'hidden', resize: 'none'}} 
+                                            className="form-control ms-4 mb-4 p-0 w-50 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
+                                            onChange={e => handleChange(idx, e.target.value)} />
                                         )}
                                         {q.questionType === 'checkbox' && q.checkboxOptions?.map((opt, i) => (
                                         <div key={i} className="form-check">
                                             <input
                                             type="checkbox"
-                                            className="form-check-input ms-1"
-                                            style={{outline:'none', boxShadow:'none'}}
+                                            className="form-check-input ms-1 mb-3"
+                                            style={{outline:'none', boxShadow:'none', accentColor:'black'}}
                                             id={`check-${idx}-${i}`}
                                             onChange={e => {
                                                 const prev = answers[idx] || [];
@@ -144,10 +174,10 @@ const FormPage = () => {
                                             />
                                             <label className="form-check-label ms-3" htmlFor={`check-${idx}-${i}`}>{opt}</label>
                                         </div>
-                                        ))}
-                                    </div>
+                                    ))}
                                 </div>
-                    </div>
+                            </div>
+                        </div>
                     ))}
                     <button type="submit" className="btn btn-success mt-2 mb-5 mx-3">Submit form</button>
                 </form>

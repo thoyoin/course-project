@@ -39,3 +39,11 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
 .link-ease-in-out:focus:after {
     width: 100%;
 }
+
+.form-check-input:checked {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+}
+.form-check-input:focus {
+    border-color: #198754 !important;
+}
