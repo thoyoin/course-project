@@ -36,7 +36,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
         try {
             const payload = {
                 ...formikValues,
-                questions: formikValues.questions.map((q) => ({
+                newQuestion: formikValues.newQuestion.map((q) => ({
                     ...q,
                     checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
                 })),
@@ -77,7 +77,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
 
             const payload = {
                 ...formikValues,
-                questions: formikValues.questions.map((q) => ({
+                newQuestion: formikValues.newQuestion.map((q) => ({
                     ...q,
                     checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
                 })),

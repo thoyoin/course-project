@@ -30,7 +30,7 @@ const CreateTemplate = () => {
     const [savedForm, setSavedForm] = useLocalStorage(storageKey, {
         templateName: '',
         description: '',
-        questions: [{
+        newQuestion: [{
             id: Date.now(),
             text: '',
             questionType: 'short text',
@@ -51,7 +51,7 @@ const CreateTemplate = () => {
             if (!localData || localData === '{}' || localData === 'null') {
                 setSavedForm({
                     ...data,
-                    questions: data.questions || [{
+                    newQuestion: data.newQuestion || [{
                         id: Date.now(),
                         text: '',
                         questionType: 'short text',
@@ -73,7 +73,7 @@ const CreateTemplate = () => {
                 setSavedForm({
                     templateName: '',
                     description: '',
-                    questions: [{
+                    newQuestion: [{
                         id: Date.now(),
                         text: '',
                         questionType: 'short text',
@@ -98,10 +98,10 @@ const CreateTemplate = () => {
     })
 
     const handleAddOption = (index) => {
-        const updatedQuestions = [...formik.values.questions];
-        if (updatedQuestions[index].checkboxOptions.length < 4) {
-            updatedQuestions[index].checkboxOptions.push('');
-            formik.setFieldValue('newQuestion', updatedQuestions);
+        const updatednewQuestion = [...formik.values.newQuestion];
+        if (updatednewQuestion[index].checkboxOptions.length < 4) {
+            updatednewQuestion[index].checkboxOptions.push('');
+            formik.setFieldValue('newQuestion', updatednewQuestion);
         } else {
             setOptionError(`Maximum 4 options allowed.`);
             setTimeout(() => {
@@ -112,27 +112,27 @@ const CreateTemplate = () => {
     };
 
     const handleAddQuestion = (type) => {
-        const typeCounts = formik.values.questions.reduce((acc, q) => {
+        const typeCounts = formik.values.newQuestion.reduce((acc, q) => {
             acc[q.questionType] = (acc[q.questionType] || 0) + 1;
             return acc;
         }, {});
         const currentCount = typeCounts[type] || 0;
-        const updatedQuestions = [...formik.values.questions];
+        const updatednewQuestion = [...formik.values.newQuestion];
         if (currentCount >= 4) {
-            setTypeError(`Maximum 4 ${type} questions allowed.`);
+            setTypeError(`Maximum 4 ${type} newQuestion allowed.`);
             setTimeout(() => {
                 setTypeError('');
             }, 4000);
             return;
         }
-        updatedQuestions.push({
+        updatednewQuestion.push({
             id: Date.now(),
             text: '',
             questionType: type,
             checkboxOptions: [''],
             image: null,
         });
-        formik.setFieldValue('questions', updatedQuestions);
+        formik.setFieldValue('newQuestion', updatednewQuestion);
     };
 
     useEffect(() => {
@@ -519,9 +519,9 @@ const CreateTemplate = () => {
                                                 }
                                             })}
                                             onChange={(selectedOption) => {
-                                                const updatedQuestions = [...formik.values.newQuestion];
-                                                updatedQuestions[index].questionType = selectedOption.value;
-                                                formik.setFieldValue('newQuestion', updatedQuestions);
+                                                const updatednewQuestion = [...formik.values.newQuestion];
+                                                updatednewQuestion[index].questionType = selectedOption.value;
+                                                formik.setFieldValue('newQuestion', updatednewQuestion);
                                             }}
                                             styles={{
                                                 container: (base) => ({ 
@@ -603,9 +603,9 @@ const CreateTemplate = () => {
                                             placeholder={`${t('opt')} ${idx + 1}`}
                                             value={opt}
                                             onChange={(e) => {
-                                                const updatedQuestions = [...formik.values.newQuestion];
-                                                updatedQuestions[index].checkboxOptions[idx] = e.target.value;
-                                                formik.setFieldValue('newQuestion', updatedQuestions);
+                                                const updatednewQuestion = [...formik.values.newQuestion];
+                                                updatednewQuestion[index].checkboxOptions[idx] = e.target.value;
+                                                formik.setFieldValue('newQuestion', updatednewQuestion);
                                             }}
                                             />
                                             <button
