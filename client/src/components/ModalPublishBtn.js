@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom';
 
 const ModalPublishBtn = ({templateId, formikValues}) => {
-    const [accessType, setAccessType] = useState('public');
+    const [accessType, setAccessType] = useState('private');
     const [publishAlert, setPublishAlert] = useState('');
     const [publishErrorAlert, setPublishErrorAlert] = useState('');
     const [saveAlert, setSaveAlert] = useState('');
@@ -137,6 +137,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                             isClearable={false}
                             placeholder={t('access')}
                             classNamePrefix="react-select"
+                            value={access.find(option => option.value === accessType)}
                             onChange={(selected) => setAccessType(selected.value)}
                             theme={(theme) => ({
                                 ...theme,
