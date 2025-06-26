@@ -30,7 +30,7 @@ const CreateTemplate = () => {
     const [savedForm, setSavedForm] = useLocalStorage(storageKey, {
         templateName: '',
         description: '',
-        newQuestion: [{
+        questions: [{
             id: Date.now(),
             text: '',
             questionType: 'short text',
@@ -51,7 +51,7 @@ const CreateTemplate = () => {
             if (!localData || localData === '{}' || localData === 'null') {
                 setSavedForm({
                     ...data,
-                    newQuestion: data.newQuestion || [{
+                    questions: data.questions || [{
                         id: Date.now(),
                         text: '',
                         questionType: 'short text',
@@ -73,7 +73,7 @@ const CreateTemplate = () => {
                 setSavedForm({
                     templateName: '',
                     description: '',
-                    newQuestion: [{
+                    questions: [{
                         id: Date.now(),
                         text: '',
                         questionType: 'short text',
@@ -98,7 +98,7 @@ const CreateTemplate = () => {
     })
 
     const handleAddOption = (index) => {
-        const updatedQuestions = [...formik.values.newQuestion];
+        const updatedQuestions = [...formik.values.questions];
         if (updatedQuestions[index].checkboxOptions.length < 4) {
             updatedQuestions[index].checkboxOptions.push('');
             formik.setFieldValue('newQuestion', updatedQuestions);
@@ -112,12 +112,12 @@ const CreateTemplate = () => {
     };
 
     const handleAddQuestion = (type) => {
-        const typeCounts = formik.values.newQuestion.reduce((acc, q) => {
+        const typeCounts = formik.values.questions.reduce((acc, q) => {
             acc[q.questionType] = (acc[q.questionType] || 0) + 1;
             return acc;
         }, {});
         const currentCount = typeCounts[type] || 0;
-        const updatedQuestions = [...formik.values.newQuestion];
+        const updatedQuestions = [...formik.values.questions];
         if (currentCount >= 4) {
             setTypeError(`Maximum 4 ${type} questions allowed.`);
             setTimeout(() => {
@@ -132,7 +132,7 @@ const CreateTemplate = () => {
             checkboxOptions: [''],
             image: null,
         });
-        formik.setFieldValue('newQuestion', updatedQuestions);
+        formik.setFieldValue('questions', updatedQuestions);
     };
 
     useEffect(() => {
