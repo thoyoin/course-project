@@ -90,7 +90,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id/updateOrder', async (req, res) => {
+/* router.put('/:id/updateOrder', async (req, res) => {
     const { id } = req.params;
     const { questions } = req.body;
 
@@ -111,6 +111,6 @@ router.put('/:id/updateOrder', async (req, res) => {
         console.error('Error updating question order:', error);
         res.status(500).json({ message: 'Failed to update question order' });
     }
-})
+}) */
 
 module.exports = router;

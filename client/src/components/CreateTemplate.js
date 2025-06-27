@@ -98,6 +98,12 @@ const CreateTemplate = () => {
         }
     })
 
+    const [localQuestions, setLocalQuestions] = useState(savedForm.newQuestion);
+
+    useEffect(() => {
+        setLocalQuestions(formik.values.newQuestion);
+    }, [formik.values.newQuestion]);
+
     const handleAddOption = (index) => {
         const updatednewQuestion = [...formik.values.newQuestion];
         if (updatednewQuestion[index].checkboxOptions.length < 4) {
@@ -223,48 +229,56 @@ const CreateTemplate = () => {
     const questionContainerRef = useRef(null);
 
     useEffect(() => {
-        if (questionContainerRef.current) {
-            Sortable.create(questionContainerRef.current, {
-                group: 'drag', 
-                animation: 400, 
-                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                handle: '.drag-handle', 
-                onEnd: (event) => {
-                    const { oldIndex, newIndex } = event;
-                    if (oldIndex !== newIndex) {
-                        const updatedQuestions = [...formik.values.newQuestion];
-                        const [movedItem] = updatedQuestions.splice(oldIndex, 1);
-                        updatedQuestions.splice(newIndex, 0, movedItem);
-
-                        formik.setFieldValue('newQuestion', updatedQuestions);
-
-                        saveQuestionOrder(updatedQuestions);
-                    }
-                }
-            })
-        }
+        setLocalQuestions(formik.values.newQuestion);
     }, [formik.values.newQuestion]);
 
-    const saveQuestionOrder = async (updatedQuestions) => {
-        try {
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}/updateOrder`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ questions: updatedQuestions }),
+    useEffect(() => {
+        if (questionContainerRef.current) {
+            const sortable = Sortable.create(questionContainerRef.current, {
+                group: 'drag',
+                animation: 400,
+                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                handle: '.drag-handle',
+                dataIdAttr: 'data-id',
+                onEnd: (event) => {
+                    const order = sortable.toArray();
+                    const map = new Map(localQuestions.map(q => [String(q.id), q]));
+                    const reordered = order.map(id => map.get(id)).filter(Boolean);
+
+                    if (reordered.length !== localQuestions.length) {
+                    console.warn('Order mismatch after drag', {
+                        before: localQuestions,
+                        after: reordered,
+                    });
+                    return;
+                    }
+
+                    formik.setFieldValue('newQuestion', reordered);
+                    setLocalQuestions(reordered);
+                }
             });
     
-            if (!response.ok) {
-                throw new Error('Failed to save question order');
-            }
-    
-            console.log('Question order saved successfully');
-            setSavedForm((prev) => ({ ...prev, newQuestion: updatedQuestions }));
-        } catch (error) {
-            console.error('Error saving question order:', error);
+            return () => sortable.destroy();
         }
-    };
+    }, [localQuestions]);
+
+/*     const addQuestion = () => {
+        const newQ = {
+          id: Date.now(),
+          text: '',
+          questionType: 'short text',
+          checkboxOptions: [''],
+          image: null,
+        };
+    
+        setLocalQuestions(prev => [...prev, newQ]);
+    
+        // Обновление formik с задержкой, чтобы дождаться рендера
+        setTimeout(() => {
+          formik.setFieldValue('newQuestion', [...formik.values.newQuestion, newQ]);
+        }, 0);
+      }; */
+    
 
     return (
         <div>
@@ -315,7 +329,7 @@ const CreateTemplate = () => {
                                     style={{outline:'none', boxShadow:'none', maxWidth:'800px'}} 
                                     className="mt-4 fs-3 fw-bold form-control border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                     placeholder={t('template-name')}
-                                    value={formik.values.templateName}
+                                    value={formik.values.templateName || ''}
                                     onChange={formik.handleChange}
                                     />
                                 <Select
@@ -451,7 +465,8 @@ const CreateTemplate = () => {
                 </div>
                 <div ref={questionContainerRef} style={{maxWidth:'825px'}} className='w-100'>
                     {formik.values.newQuestion?.map((q,index) => (
-                        <div id='drag' key={q.id} className='mb-4'>
+                        q && q.text !== undefined ? (
+                        <div id='drag' key={q.id} data-id={q.id} className='mb-4'>
                             <div className='d-flex flex-row justify-content-center align-items-center'>
                                 <div style={{minHeight:'200px', marginTop:'15px'}} className='bg-body-tertiary w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
                                         <div className="drag-handle" style={{ cursor: 'grab' }}>
@@ -470,11 +485,11 @@ const CreateTemplate = () => {
                                                         e.target.style.height = '40px';
                                                         e.target.style.height = `${e.target.scrollHeight}px`;
                                                         const updated = [...formik.values.newQuestion];
-                                                        updated[index].text = e.target.value;
+                                                        updated[index].text = e.target.value || '';
                                                         formik.setFieldValue('newQuestion', updated)
                                                     }}
                                                     name='text'
-                                                    value={q.text}
+                                                    value={q.text ?? ''}
                                                     onChange={formik.handleChange}
                                                     style={{outline: 'none', boxShadow: 'none', overflow: 'hidden', resize: 'none'}}
                                                     className='form-control mt-4 w-100 fs-5 border-0 border-bottom border-success rounded-0 bg-body-tertiary'
@@ -524,7 +539,7 @@ const CreateTemplate = () => {
                                             <Select
                                                 isSearchable={false}
                                                 options={items}
-                                                value={items.find(item => item.value === q.questionType)}
+                                                value={items.find(item => item.value === q.questionType) || items[0]}
                                                 placeholder="Select question type"
                                                 classNamePrefix="react-select"
                                                 theme={(theme) => ({
@@ -619,7 +634,7 @@ const CreateTemplate = () => {
                                                 type='text'
                                                 className='form-control mt-2 w-100 border-top-0 border-start-0 border-end-0 border-success rounded-0 bg-body-tertiary'
                                                 placeholder={`${t('opt')} ${idx + 1}`}
-                                                value={opt}
+                                                value={opt || ''}
                                                 onChange={(e) => {
                                                     const updatednewQuestion = [...formik.values.newQuestion];
                                                     updatednewQuestion[index].checkboxOptions[idx] = e.target.value;
@@ -693,7 +708,7 @@ const CreateTemplate = () => {
                                 </button>
                             </div>
                         </div>
-                    </div> 
+                    </div> ) : (console.error('Invalid question:', q))
                     ))}
                  </div>
                 {typeError && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)', backgroundColor: 'rgba(249, 231, 74, 0.4)'}} className="alert alert-light position-fixed fw-bold" role="alert">{typeError}</div>}
