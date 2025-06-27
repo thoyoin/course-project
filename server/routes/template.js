@@ -94,6 +94,9 @@ router.put('/:id/updateOrder', async (req, res) => {
     const { id } = req.params;
     const { questions } = req.body;
 
+    console.log('Received ID:', id);
+    console.log('Received Questions:', questions);
+
     try {
         const template = await Template.findByPk(id);
         if (!template) {
