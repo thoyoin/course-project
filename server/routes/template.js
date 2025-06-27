@@ -90,7 +90,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id/updatedOrder', async (req, res) => {
+router.put('/:id/updateOrder', async (req, res) => {
     const { id } = req.params;
     const { questions } = req.body;
 
