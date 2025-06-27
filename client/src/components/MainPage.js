@@ -101,7 +101,7 @@ const MainPage = () => {
                     </div>
                     {templates.slice(0, visibleTemplates).map((template) => (
                         <div style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative w-100 mx-2 d-flex flex-column align-items-center'>
-                        <h5 className='fw-bold'>{template.templateName}</h5>
+                        <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName}</h5>
                         <button 
                             style={{maxWidth:'160px', height:'120px', overflow: 'hidden'}} 
                             className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'

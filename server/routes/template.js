@@ -90,4 +90,24 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+router.put('/:id/updatedOrder', async (req, res) => {
+    const { id } = req.params;
+    const { questions } = req.body;
+
+    try {
+        const template = await Template.findByPk(id);
+        if (!template) {
+            return res.status(404).json({ message: 'Template not found' });
+        }
+
+        template.questions = questions;
+        await template.save();
+
+        res.status(200).json({ message: 'Question order updated successfully' });
+    } catch (error) {
+        console.error('Error updating question order:', error);
+        res.status(500).json({ message: 'Failed to update question order' });
+    }
+})
+
 module.exports = router;
