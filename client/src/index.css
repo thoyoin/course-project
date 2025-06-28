@@ -47,3 +47,16 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
 .form-check-input:focus {
     border-color: #198754 !important;
 }
+
+.tab-btn.active {
+    color: #212529 !important;
+    background-color: #f8f9fa !important;
+    border-top-color: rgb(222, 226, 230) !important;
+    border-right-color: rgb(222, 226, 230) !important;
+    border-bottom-color: #f8f9fa !important;
+    border-left-color: rgb(222, 226, 230) !important;
+}
+
+.tab-btn {
+    color: #1a8654 !important;
+}

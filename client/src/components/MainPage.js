@@ -93,7 +93,7 @@ const MainPage = () => {
                 <LogOutBtn/>
             </div>
             <div className='d-flex flex-column justify-content-center align-items-center'>
-                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className='bg-body w-100 text-center border-bottom mx-3 d-flex flex-row justify-content-center align-items-center'>
+                <div style={{maxWidth:'100%', height:'300px', marginTop:'68px'}} className='bg-body w-100 text-center mx-3 d-flex flex-row justify-content-center align-items-center'>
                     <div style={{maxWidth:'200px', minWidth:'120px'}} className='w-100 mx-2 d-flex flex-column align-items-center'>
                         <h5 className='fw-bold'>{t('create-new')}</h5>
                         <button 
@@ -106,7 +106,7 @@ const MainPage = () => {
                     </div>
                     {templates.slice(0, visibleTemplates).map((template) => (
                         <div style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative w-100 mx-2 d-flex flex-column align-items-center'>
-                        <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
+                        <h5 style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
                         <button 
                             style={{maxWidth:'160px', height:'120px', overflow: 'hidden'}} 
                             className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'
@@ -132,8 +132,29 @@ const MainPage = () => {
                 </div> */}
             </div> 
             <div style={{flexGrow:'1'}} className='d-flex flex-column justify-content-start align-items-center'>
-                <div style={{maxWidth:'100%', height:'100%'}} className='bg-body-tertiary w-100 text-center mx-3 d-flex flex-column justify-content-start'>
+                <div style={{maxWidth:'100%', height:'100%'}} className='w-100 text-center mx-3 d-flex flex-column justify-content-start'>
+                    <ul className="nav nav-tabs d-flex flex-row justify-content-center" id="myTab" role="tablist">
+                        <li className="nav-item" role="presentation">
+                            <button className="nav-link active tab-btn" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="templates" aria-selected="true">
+                                Мои шаблоны
+                            </button>
+                        </li>
+                        <li className="nav-item" role="presentation">
+                            <button className="nav-link tab-btn" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">
+                                Мои формы
+                            </button>
+                        </li>
+                    </ul>
+                    <div className="tab-content bg-body-tertiary" id="myTabContent" style={{flexGrow: 1}}>
+                        <div className="tab-pane fade show active" id="templates" role="tabpanel" aria-labelledby="templates-tab">
 
+                        <p className="mt-3">Вы создали {templates.length} шаблон(ов).</p>
+                        </div>
+                        <div className="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
+
+                            <p className="mt-3">Ваши заполненные формы появятся здесь.</p>
+                        </div>
+                    </div>
                 </div>
             </div> 
         </div>
