@@ -156,25 +156,25 @@ const CreateTemplate = () => {
         {value: 'short text', 
         label: (
             <span className='d-flex flex-row align-items-center'>
-                <i className="bi bi-text-left me-3 ms-2"></i>
+                <i className="bi bi-text-left me-3 ms-1"></i>
                 {t('short-text')}
             </span>)},
         {value: 'long text', 
         label: (
             <span className='d-flex flex-row align-items-center'>
-                <i className="bi bi-body-text me-3 ms-2"></i>
+                <i className="bi bi-body-text me-3 ms-1"></i>
                 {t('long-text')}
             </span>)},
         {value: 'integer', 
         label: (
             <span className='d-flex flex-row align-items-center'>
-                <i className="bi bi-123 me-3 ms-2"></i>
+                <i className="bi bi-123 me-3 ms-1"></i>
                 {t('int')}
             </span>)},
         {value: 'checkbox', 
         label: (
             <span className='d-flex flex-row align-items-center'>
-                <i className="bi bi-check2-square me-3 ms-2"></i>
+                <i className="bi bi-check2-square me-3 ms-1"></i>
                 {t('checkbox')}
             </span>)}
     ];
@@ -376,7 +376,7 @@ const CreateTemplate = () => {
                                         }),
                                         option: (base, state) => ({
                                             ...base,
-                                            padding: '10px',
+                                            padding: '9px',
                                             marginBottom: '5px',
                                             borderRadius: '5px',
                                             backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.19)' : '',
@@ -492,7 +492,7 @@ const CreateTemplate = () => {
                                                     value={q.text ?? ''}
                                                     onChange={formik.handleChange}
                                                     style={{outline: 'none', boxShadow: 'none', overflow: 'hidden', resize: 'none'}}
-                                                    className='form-control mt-4 w-100 fs-5 border-0 border-bottom border-success rounded-0 bg-body-tertiary'
+                                                    className='form-control mt-4 mb-4 w-100 fs-5 border-0 border-bottom border-success rounded-0 bg-body-tertiary'
                                                     placeholder={t('question')}
                                                 />
                                         </div>
@@ -580,7 +580,7 @@ const CreateTemplate = () => {
                                                     }),
                                                     option: (base, state) => ({
                                                         ...base,
-                                                        padding: '10px',
+                                                        padding: '9px',
                                                         marginBottom: '5px',
                                                         borderRadius: '5px',
                                                         backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.19)' : '',
