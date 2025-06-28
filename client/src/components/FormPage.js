@@ -128,12 +128,17 @@ const FormPage = () => {
                             <div className='d-flex flex-row justify-content-center align-items-center'>
                                 <div style={{minHeight:'150px', marginTop:'15px'}} className='bg-body-tertiary w-100 mx-3 text-start border rounded-4 d-flex flex-column justify-content-start'>
                                     <label className="form-label p-4 fs-5">{q.text}</label>
-                                    {q.questionType === 'short text' && (
+                                    {q.image && (
+                                            <div className='w-100 px-4 my-3 d-flex flex-column justify-content-start align-items-center position-relative'>
+                                                <img style={{maxHeight:'200px'}} src={q.image} alt='questionImage' className='img-fluid rounded'></img>
+                                            </div>
+                                        )}
+                                        {q.questionType === 'short text' && (
                                         <input
                                             type="text" 
                                             placeholder={t('myAnswer')}
                                             style={{outline:'none', boxShadow:'none'}} 
-                                            className="form-control w-50 ms-4 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
+                                            className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                             onChange={e => handleChange(idx, e.target.value)} />
                                         )}
                                         {q.questionType === 'integer' && (
@@ -141,7 +146,7 @@ const FormPage = () => {
                                             type="number" 
                                             placeholder={t('myAnswer')}
                                             style={{outline:'none', boxShadow:'none'}} 
-                                            className="form-control w-50 ms-4 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
+                                            className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                             onChange={e => handleChange(idx, e.target.value)} />
                                         )}
                                         {q.questionType === 'long text' && (
@@ -154,7 +159,7 @@ const FormPage = () => {
                                             }}
                                             placeholder={t('myAnswer')}
                                             style={{outline:'none', boxShadow:'none', overflow: 'hidden', resize: 'none'}} 
-                                            className="form-control ms-4 mb-4 p-0 w-50 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
+                                            className="form-control ms-4 mb-4 mt-2 p-0 w-50 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                             onChange={e => handleChange(idx, e.target.value)} />
                                         )}
                                         {q.questionType === 'checkbox' && q.checkboxOptions?.map((opt, i) => (

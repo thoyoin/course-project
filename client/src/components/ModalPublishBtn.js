@@ -183,7 +183,6 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                         />
                     </div>
                     <div className="modal-footer">
-                        {/* <button type="button" className="btn" data-bs-dismiss="modal">{t('cancel')}</button> */}
                         <button className='btn btn-outline-success' onClick={() => saveTemplateToServer()}>{t('save')}</button>
                         <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => handlePublish(accessType)}>{t('publish')}</button>
                     </div>

@@ -21,18 +21,18 @@ app.use('/api/templates', templateRoutes);
 app.use('/app/forms', formRoutes);
 
 app.get('/', (req, res) => {
-  res.send('API is working!');
+    res.send('API is working!');
 });
 
 const PORT = process.env.PORT || 5050;
 
 sequelize.sync()
-  .then(() => {
-    console.log('Database connected');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+    .then(() => {
+        console.log('Database connected');
+        app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('Database connection failed:', err);
     });
-  })
-  .catch(err => {
-    console.error('Database connection failed:', err);
-  });
