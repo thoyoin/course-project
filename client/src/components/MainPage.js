@@ -62,6 +62,7 @@ const MainPage = () => {
                 const data = await response.json();
                 const userForms = data.filter(f => f.respondentId === currentUserId);
                 setUserForms(userForms);
+                console.log('User forms:', userForms);
             } catch (err) {
                 console.error('Error to fetch forms', err);
             }
