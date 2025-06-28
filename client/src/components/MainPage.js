@@ -9,7 +9,8 @@ import { jwtDecode } from 'jwt-decode';
 const MainPage = () => {
     const navigate = useNavigate();
     const [templates, setTemplates] = useState([]);
-    const [publishedTemp, setPublishedTemp] = useState([])
+    const [publishedTemp, setPublishedTemp] = useState([]);
+    const [userForms, setUserForms] = useState([]);
     /* const [viewAll, setViewAll] = useState(false); */
     const isLaptop = useMediaQuery({maxWidth: 1024})
     const isTablet = useMediaQuery({maxWidth: 875})
@@ -19,7 +20,7 @@ const MainPage = () => {
 
     const visibleTemplates = isLil ? 1 : isMobile ? 2 : isTablet ? 3 : isLaptop ? 4 : 5;
 
-    const UserTemplateDrafts = async () => {
+    const getUserTemplateDrafts = async () => {
         try {
             const token = localStorage.getItem('token');
             const decoded = token ? jwtDecode(token) : null;
@@ -40,7 +41,32 @@ const MainPage = () => {
     }
 
     useEffect(() => {
-        UserTemplateDrafts();
+        getUserTemplateDrafts();
+    }, []);
+
+    useEffect(() => {
+        const getUserForms = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const decoded = token ? jwtDecode(token) : null;
+                const currentUserId = decoded?.userId;
+
+                const response = await fetch('https://course-project-back-tv8f.onrender.com/api/forms', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch forms.');
+                }
+                const data = await response.json();
+                const userForms = data.filter(f => f.respondentId === currentUserId);
+                setUserForms(userForms);
+            } catch (err) {
+                console.error('Error to fetch forms', err);
+            }
+        };
+        getUserForms();
     }, []);
     
 /*     useEffect(() => {
@@ -178,8 +204,24 @@ const MainPage = () => {
                             ))}
                         </div>
                         </div>
-                        <div className="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
-                            <p className="mt-3">{t('filled-forms')}</p>
+                        <div className="tab-pane fade mt-3 mx-5" id="forms" role="tabpanel" aria-labelledby="forms-tab">
+                            {userForms.length === 0 ? (
+                                <p className="mt-3">{t('no-forms')}</p>
+                            ) : (
+                                <div className="d-flex flex-wrap justify-content-center px-3">
+                                {userForms.map((form, index) => (
+                                    <div key={index} className="card m-2 shadow-sm border border-secondary w-100" style={{ maxWidth: '16rem', minHeight: '8rem' }}>
+                                    <div className="card-body d-flex flex-column justify-content-between align-items-center">
+                                        <h6 className="card-subtitle mb-2 text-muted">{t('submitted')}:</h6>
+                                        <p className="text-muted small">{new Date(form.createdAt).toLocaleDateString()}</p>
+                                        <a href={`/FormResponse/${form.id}`} className="btn btn-sm btn-outline-secondary mt-2">
+                                        {t('view')}
+                                        </a>
+                                    </div>
+                                    </div>
+                                ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
