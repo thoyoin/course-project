@@ -11,8 +11,8 @@ exports.createTemplate = async (req, res) => {
             tags: tags || [],
             visibility: visibility || 'private',
             questions: questions || [],
-            ownerId: req.userId,
-        });
+            ownerId: req.userId || 1,
+        }); 
 
         res.status(201).json({ id: newTemplate.id });
     } catch (err) {

@@ -4,7 +4,7 @@ import LogOutBtn from './LogOutBtn'
 import { useMediaQuery } from 'react-responsive'
 import ChangeLang from './ChangeLang'
 import { useTranslation } from 'react-i18next'
-
+import { jwtDecode } from 'jwt-decode';
 
 const MainPage = () => {
     const navigate = useNavigate();
@@ -20,13 +20,18 @@ const MainPage = () => {
 
     const TemplatesGallery = async () => {
         try {
+            const token = localStorage.getItem('token');
+            const decoded = token ? jwtDecode(token) : null;
+            const currentUserId = decoded?.userId;
+
             const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates/all');
             if (!response.ok) {
                 throw new Error('Failed to fetch templates');
             }
             const data = await response.json();
-            console.log('Fetched templates:', data);
-            setTemplates(data);
+            const userTemplates = data.filter(template => template.ownerId === currentUserId);
+            console.log('Your templates:', userTemplates);
+            setTemplates(userTemplates);
         } catch (error) {
             console.error('Error fetching templates:', error);
         }
