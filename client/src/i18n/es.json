@@ -39,5 +39,10 @@
     "no-desc": "Sin descripción",
     "draft": "Borrador",
     "published": "Publicado",
-    "myAnswer": "Mi respuesta"
+    "myAnswer": "Mi respuesta",
+    "view": "Ver",
+    "unknown": "Desconocido",
+    "my-temp": "Mis plantillas",
+    "my-forms": "Mis formularios",
+    "edit": "Editar"
 }

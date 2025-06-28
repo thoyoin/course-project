@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ChangeLang from './ChangeLang';
 import LogOutBtn from './LogOutBtn';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from 'react-responsive'
 
 const FormPage = () => {
     const { templateId } = useParams();
@@ -10,6 +11,8 @@ const FormPage = () => {
     const [answers, setAnswers] = useState({});
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    const isTablet = useMediaQuery({maxWidth: 580})
 
     useEffect(() => {
         const fetchTemplate = async () => {
@@ -79,18 +82,27 @@ const FormPage = () => {
             <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
                 <div className='ms-4 d-flex flex-row align-items-center gap-4'>
                     <a href='/MainPage' className='text-success link-ease-in-out' onClick={() => navigate('/MainPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
-                    <h4 className='fw-bold m-0'>{template.templateName}</h4>
+                    {!isTablet && <h4 className='fw-bold m-0'>{template.templateName}</h4>}
                 </div>
                 <div className='d-flex flex-row align-items-center'>
+                    <button 
+                        className='btn btn-success mx-3 px-2'
+                        style={{height:'35px', minWidth:'65px'}}
+                        onClick={() => navigate(`/CreateTemplate/${template.id}`)}
+                        >
+                        <i class="bi bi-pencil me-2"></i>
+                        {t('edit')}
+                    </button>
                     <button 
                         data-bs-toggle="modal"
                         data-bs-target="#deleteModal"
                         style={{height:'35px'}} 
-                        className='btn btn-danger mx-5 px-3 py-2 d-flex flex-row align-items-center'
-                    >
+                        className='btn btn-danger px-2 py-2 d-flex flex-row align-items-center'
+                        >
                         <i className="bi bi-trash me-2"></i>
                         {t('delete')}
                     </button>
+                    
                     <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered">
                             <div className="modal-content">

@@ -39,5 +39,10 @@
     "no-desc": "No description",
     "draft": "Draft",
     "published": "Published",
-    "myAnswer": "My answer"
+    "myAnswer": "My answer",
+    "view": "View",
+    "unknown": "Unknown",
+    "my-temp": "My templates",
+    "my-forms": "My forms",
+    "edit": "Edit"
 }

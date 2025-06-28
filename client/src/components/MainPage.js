@@ -11,14 +11,14 @@ const MainPage = () => {
     const [templates, setTemplates] = useState([]);
     /* const [viewAll, setViewAll] = useState(false); */
     const isLaptop = useMediaQuery({maxWidth: 1024})
-    const isTablet = useMediaQuery({maxWidth: 768})
-    const isMobile = useMediaQuery({maxWidth: 599})
-    const isLil = useMediaQuery({maxWidth: 469})
+    const isTablet = useMediaQuery({maxWidth: 875})
+    const isMobile = useMediaQuery({maxWidth: 685})
+    const isLil = useMediaQuery({maxWidth: 485})
     const { t } = useTranslation();
 
     const visibleTemplates = isLil ? 1 : isMobile ? 2 : isTablet ? 3 : isLaptop ? 4 : 5;
 
-    const TemplatesGallery = async () => {
+    const UserTemplateDrafts = async () => {
         try {
             const token = localStorage.getItem('token');
             const decoded = token ? jwtDecode(token) : null;
@@ -29,7 +29,7 @@ const MainPage = () => {
                 throw new Error('Failed to fetch templates');
             }
             const data = await response.json();
-            const userTemplates = data.filter(template => template.ownerId === currentUserId);
+            const userTemplates = data.filter(template => template.ownerId === currentUserId).filter(template => template.isPublished === false);
             console.log('Your templates:', userTemplates);
             setTemplates(userTemplates);
         } catch (error) {
@@ -38,7 +38,7 @@ const MainPage = () => {
     }
 
     useEffect(() => {
-        TemplatesGallery();
+        UserTemplateDrafts();
     }, []);
     
 /*     useEffect(() => {
@@ -81,8 +81,8 @@ const MainPage = () => {
     };
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <div className='container-fluid d-flex flex-row justify-content-end align-items-center bg-body-tertiary position-fixed top-0 border-bottom'>
+        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column'}}>
+            <div style={{zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-end align-items-center bg-body-tertiary position-fixed top-0 border-bottom'>
                 <form className="d-flex justify-content-center my-3 mx-auto w-100" role="search">
                     <div className='input-group' style={{maxWidth:'600px', height:'40px'}}>
                         <span className='input-group-text rounded-start-4'><i className="bi bi-search p-1"></i></span>
@@ -106,13 +106,13 @@ const MainPage = () => {
                     </div>
                     {templates.slice(0, visibleTemplates).map((template) => (
                         <div style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative w-100 mx-2 d-flex flex-column align-items-center'>
-                        <h5 style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
+                        <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
                         <button 
-                            style={{maxWidth:'160px', height:'120px', overflow: 'hidden'}} 
+                            style={{maxWidth:'160px', height:'120px'}} 
                             className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'
                             onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                             >
-                                {template.description || t('no-desc')}
+                                <p style={{maxWidth:'140px', maxHeight:'120px', whiteSpace:'normal', overflowWrap: 'break-word'}}>{template.description || t('no-desc')}</p>
                                 <span style={{top:'170px'}} className={`badge position-absolute w-50 opacity-75 ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
                                     {template.isPublished ? t('published') : t('draft')}
                                 </span>
@@ -136,22 +136,34 @@ const MainPage = () => {
                     <ul className="nav nav-tabs d-flex flex-row justify-content-center" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
                             <button className="nav-link active tab-btn" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="templates" aria-selected="true">
-                                Мои шаблоны
+                                {t('my-temp')}
                             </button>
                         </li>
                         <li className="nav-item" role="presentation">
                             <button className="nav-link tab-btn" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">
-                                Мои формы
+                                {t('my-forms')}
                             </button>
                         </li>
                     </ul>
                     <div className="tab-content bg-body-tertiary" id="myTabContent" style={{flexGrow: 1}}>
-                        <div className="tab-pane fade show active" id="templates" role="tabpanel" aria-labelledby="templates-tab">
-
-                        <p className="mt-3">Вы создали {templates.length} шаблон(ов).</p>
+                        <div className="tab-pane fade show active mt-3 mx-5" id="templates" role="tabpanel" aria-labelledby="templates-tab">
+                        <div className="d-flex flex-wrap justify-content-center px-3">
+                            {templates.filter(t => t.isPublished).map((template, index) => (
+                                <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
+                                    <div className="card-body d-flex flex-column justify-content-between align-items-center">
+                                        <h5 className="card-title">{template.templateName || t('unknown')}</h5>
+                                        <div className="w-100">
+                                            <div style={{maxWidth:'15rem'}} className='w-100 mb-2 border-bottom border-success'><p style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-text mb-2">{template.description || t('no-desc')}</p></div>
+                                            <a href={`/FormPage/${template.id}`} style={{minWidth:'70px'}} className="btn btn-sm btn-outline-success mt-2">
+                                            {t('view')}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                         </div>
                         <div className="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
-
                             <p className="mt-3">Ваши заполненные формы появятся здесь.</p>
                         </div>
                     </div>

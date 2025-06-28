@@ -14,7 +14,7 @@ const ChangeLang = () => {
     }
 
   return (
-    <div className='dropdown me-5'>
+    <div className='dropdown mx-5'>
         <button className="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-translate"></i>
         </button>
