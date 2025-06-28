@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 const MainPage = () => {
     const navigate = useNavigate();
     const [templates, setTemplates] = useState([]);
+    const [publishedTemp, setPublishedTemp] = useState([])
     /* const [viewAll, setViewAll] = useState(false); */
     const isLaptop = useMediaQuery({maxWidth: 1024})
     const isTablet = useMediaQuery({maxWidth: 875})
@@ -29,10 +30,10 @@ const MainPage = () => {
                 throw new Error('Failed to fetch templates');
             }
             const data = await response.json();
-            console.log('All templates:', data)
-            const userTemplates = data.filter(template => template.ownerId === currentUserId).filter(template => template.isPublished === false);
-            console.log('Your templates:', userTemplates);
-            setTemplates(userTemplates);
+            const userTemplates = data.filter(template => template.ownerId === currentUserId);
+            console.log('Your drafts:', userTemplates);
+            setTemplates(userTemplates.filter(template => template.isPublished === false));
+            setPublishedTemp(userTemplates.filter(template => template.isPublished));
         } catch (error) {
             console.error('Error fetching templates:', error);
         }
@@ -149,7 +150,7 @@ const MainPage = () => {
                     <div className="tab-content bg-body-tertiary" id="myTabContent" style={{flexGrow: 1}}>
                         <div className="tab-pane fade show active mt-3 mx-5" id="templates" role="tabpanel" aria-labelledby="templates-tab">
                         <div className="d-flex flex-wrap justify-content-center px-3">
-                            {templates.filter(t => t.isPublished).map((template, index) => (
+                            {publishedTemp.filter(t => t.isPublished).map((template, index) => (
                                 <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
                                     <div className="card-body d-flex flex-column justify-content-between align-items-center">
                                         <h5 className="card-title">{template.templateName || t('unknown')}</h5>
