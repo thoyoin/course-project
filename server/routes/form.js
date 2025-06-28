@@ -9,8 +9,8 @@ router.post('/:templateId/submit', authenticate, async (req, res) => {
         const { templateId } = req.params;
         const respondentId = req.userId;
 
-        if (!answers || !Array.isArray(answers)) {
-            return res.status(400).json({ message: 'Answers must be an array' });
+        if (typeof answers !== 'object' || answers === null) {
+            return res.status(400).json({ message: 'Answers must be an object' });
         }
 
         const form = await FormResponse.create({
