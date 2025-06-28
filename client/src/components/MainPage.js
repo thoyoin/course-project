@@ -31,9 +31,9 @@ const MainPage = () => {
             }
             const data = await response.json();
             const userTemplates = data.filter(template => template.ownerId === currentUserId);
-            console.log('Your drafts:', userTemplates);
-            setTemplates(userTemplates.filter(template => template.isPublished === false));
-            setPublishedTemp(userTemplates.filter(template => template.isPublished));
+            console.log('Your templates:', userTemplates);
+            setTemplates(data.filter(template => template.isPublished === false));
+            setPublishedTemp(data.filter(template => template.isPublished));
         } catch (error) {
             console.error('Error fetching templates:', error);
         }
@@ -115,8 +115,8 @@ const MainPage = () => {
                             onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                             >
                                 <p style={{maxWidth:'140px', maxHeight:'120px', whiteSpace:'normal', overflowWrap: 'break-word'}}>{template.description || t('no-desc')}</p>
-                                <span style={{top:'170px'}} className={`badge position-absolute w-50 opacity-75 ${template.isPublished ? 'bg-success' : 'bg-warning text dark'}`}>
-                                    {template.isPublished ? t('published') : t('draft')}
+                                <span style={{top:'170px'}} className='badge position-absolute w-50 opacity-75 bg-warning text dark'>
+                                    {t('draft')}
                                 </span>
                         </button>
                      </div>
@@ -137,12 +137,25 @@ const MainPage = () => {
                 <div style={{maxWidth:'100%', height:'100%'}} className='w-100 text-center mx-3 d-flex flex-column justify-content-start'>
                     <ul className="nav nav-tabs d-flex flex-row justify-content-center" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
-                            <button className="nav-link active tab-btn" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="templates" aria-selected="true">
+                            <button className='nav-link active tab-btn' 
+                                id="templates-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#templates" 
+                                type="button" role="tab" 
+                                aria-controls="templates" 
+                                aria-selected="true">
                                 {t('my-temp')}
                             </button>
                         </li>
                         <li className="nav-item" role="presentation">
-                            <button className="nav-link tab-btn" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">
+                            <button 
+                                className='nav-link tab-btn' 
+                                id="forms-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#forms" 
+                                type="button" role="tab" 
+                                aria-controls="forms" 
+                                aria-selected="false">
                                 {t('my-forms')}
                             </button>
                         </li>

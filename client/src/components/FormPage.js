@@ -9,6 +9,7 @@ const FormPage = () => {
     const { templateId } = useParams();
     const [template, setTemplate] = useState(null);
     const [answers, setAnswers] = useState({});
+    const [deleteAlert, setDeleteAlert] = useState('');
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -75,6 +76,26 @@ const FormPage = () => {
         return <div className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>;
     };
 
+    const handleDeleteTemplate = async () => {
+        try {
+            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`,{
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete template')
+            }
+
+            setDeleteAlert('Template deleted successfully!')
+            setTimeout(() => {
+                setDeleteAlert('')
+                navigate('/MainPage');
+            }, 1000);
+        } catch (err) {
+            console.error('Failed deleting template:', err);
+        }
+    }
+
     console.log('Loaded template:', template);
 
     return (
@@ -113,7 +134,7 @@ const FormPage = () => {
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{t('cancel')}</button>
                                 <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
                                 onClick={() => {
-                                  /*   handleDeleteTemplate(); */
+                                    handleDeleteTemplate();
                                 }}>{t('delete')}</button>
                             </div>
                             </div>
@@ -198,6 +219,7 @@ const FormPage = () => {
                     ))}
                     <button type="submit" className="btn btn-success mt-2 mb-5 mx-3">Submit form</button>
                 </form>
+                {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
             </div>
         </div>
     );
