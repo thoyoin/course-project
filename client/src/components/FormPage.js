@@ -23,6 +23,7 @@ const FormPage = () => {
             const res = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`);
             const data = await res.json();
             setTemplate(data);
+            console.log('Loaded template:', data);
         } catch (err) {
             console.error('Failed to load template', err);
         }
@@ -81,7 +82,7 @@ const FormPage = () => {
     }, [answers]);
     
     if (!template) {
-        return <div className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>;
+        return <div style={{left:'49%', top:'49%'}} className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>;
     };
 
     const handleDeleteTemplate = async () => {
@@ -103,8 +104,6 @@ const FormPage = () => {
             console.error('Failed deleting template:', err);
         }
     }
-
-    console.log('Loaded template:', template);
 
     return (
         <div>
