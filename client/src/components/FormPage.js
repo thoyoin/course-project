@@ -10,6 +10,8 @@ const FormPage = () => {
     const [template, setTemplate] = useState(null);
     const [answers, setAnswers] = useState({});
     const [deleteAlert, setDeleteAlert] = useState('');
+    const [submitAlert, setSubmitAlert] = useState('');
+    const [submitErrorAlert, setSubmitErrorAlert] = useState('');
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -48,10 +50,16 @@ const FormPage = () => {
         });
 
         if (res.ok) {
-            alert('Form submitted!');
-            navigate('/me');
+            setSubmitAlert('Form submitted!')
+            setTimeout(() => {
+                setSubmitAlert('')
+                navigate('/MainPage');
+            }, 1000)
         } else {
-            alert('Failed to submit form.');
+            setSubmitErrorAlert('Failed to submit form.')
+            setTimeout(() => {
+                setSubmitErrorAlert('')
+            }, 2000)
         }
         } catch (err) {
         console.error('Submit error:', err);
@@ -220,6 +228,9 @@ const FormPage = () => {
                     <button type="submit" className="btn btn-success mt-2 mb-5 mx-3">Submit form</button>
                 </form>
                 {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
+                {submitAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{submitAlert}</div>}
+                {submitErrorAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{submitErrorAlert}</div>}
+
             </div>
         </div>
     );
