@@ -160,7 +160,7 @@ const MainPage = () => {
                             </button>
                         </li>
                     </ul>
-                    <div className="tab-content bg-body-tertiary" id="myTabContent" style={{flexGrow: 1}}>
+                    <div className="tab-content bg-body" id="myTabContent" style={{flexGrow: 1}}>
                         <div className="tab-pane fade show active mt-3 mx-5" id="templates" role="tabpanel" aria-labelledby="templates-tab">
                         <div className="d-flex flex-wrap justify-content-center px-3">
                             {publishedTemp.filter(t => t.isPublished).map((template, index) => (
@@ -179,7 +179,7 @@ const MainPage = () => {
                         </div>
                         </div>
                         <div className="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
-                            <p className="mt-3">Ваши заполненные формы появятся здесь.</p>
+                            <p className="mt-3">{t('filled-forms')}</p>
                         </div>
                     </div>
                 </div>

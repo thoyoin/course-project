@@ -48,10 +48,10 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
     border-color: #198754 !important;
 }
 
-/* .tab-btn.active {
-    color: #2b3035 !important;
-}
-
 .tab-btn {
     color: #1a8654 !important;
-} */
+}
+
+.tab-btn.active {
+    color: #858585 !important;
+}
