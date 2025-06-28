@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, createRef } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Creatable from 'react-select/creatable';
@@ -18,7 +18,6 @@ const CreateTemplate = () => {
     const [deleteAlert, setDeleteAlert] = useState('');
     const [optionError, setOptionError] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
-    const [questionImage, setQuestionImage] = useState(null)
     const [isNavigating, setIsNavigating] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -86,7 +85,7 @@ const CreateTemplate = () => {
                 });
                 }
             }
-        }, [templateId]);
+    }, [templateId]);
 
     const initialValues = React.useMemo(() => savedForm, [savedForm]);
     
@@ -146,11 +145,17 @@ const CreateTemplate = () => {
         setSavedForm(formik.values);
     }, [formik.values, templateId]);
 
-    const fileInputRef = useRef();
-
     useEffect(() => {
         setColorMode(colorMode)
     }, []);
+
+    const fileInputRefs = useRef([]);
+
+    useEffect(() => {
+        fileInputRefs.current = formik.values.newQuestion.map(
+            (_, i) => fileInputRefs.current[i] || React.createRef()
+        );
+    }, [formik.values.newQuestion]);
 
     const items = [
         {value: 'short text', 
@@ -261,24 +266,6 @@ const CreateTemplate = () => {
             return () => sortable.destroy();
         }
     }, [localQuestions]);
-
-/*     const addQuestion = () => {
-        const newQ = {
-          id: Date.now(),
-          text: '',
-          questionType: 'short text',
-          checkboxOptions: [''],
-          image: null,
-        };
-    
-        setLocalQuestions(prev => [...prev, newQ]);
-    
-        // Обновление formik с задержкой, чтобы дождаться рендера
-        setTimeout(() => {
-          formik.setFieldValue('newQuestion', [...formik.values.newQuestion, newQ]);
-        }, 0);
-      }; */
-    
 
     return (
         <div>
@@ -500,21 +487,31 @@ const CreateTemplate = () => {
                                             <i 
                                                 className="bi bi-card-image fs-3 text-secondary"
                                                 role='button'
-                                                onClick={() => fileInputRef.current.click()}
+                                                onClick={() => {
+                                                    if (fileInputRefs.current[index]?.current) {
+                                                        fileInputRefs.current[index].current.click();
+                                                    } else {
+                                                        console.error(`Ref for index ${index} is not initialized`);
+                                                    }
+                                                }}
                                                 title='Attach image'
                                                 >
                                             </i>
-                                            {questionImage && 
+                                            {q.image && 
                                                 <i 
                                                     className="bi bi-x-lg fs-5 ms-3"
-                                                    onClick={() => setQuestionImage(null)}
+                                                    onClick={() => {
+                                                        const updatedQuestions = [...formik.values.newQuestion];
+                                                        updatedQuestions[index].image = null;
+                                                        formik.setFieldValue('newQuestion', updatedQuestions);
+                                                    }}
                                                     style={{cursor:'pointer'}}
                                                 ></i>
                                             }
                                             <input
                                                 type='file'
                                                 accept='image/*'
-                                                ref={fileInputRef}
+                                                ref={fileInputRefs.current[index]}
                                                 style={{display:'none'}}
                                                 onChange={async (e) => {
                                                     const file = e.target.files[0];
@@ -528,7 +525,9 @@ const CreateTemplate = () => {
                                                             body: formData
                                                         });
                                                         const data = await res.json();
-                                                        setQuestionImage(data.secure_url);
+                                                        const updatedQuestions = [...formik.values.newQuestion];
+                                                        updatedQuestions[index].image = data.secure_url; 
+                                                        formik.setFieldValue('newQuestion', updatedQuestions);
                                                     } catch (err) {
                                                         console.error('Image upload failed', err);
                                                     }
@@ -590,9 +589,9 @@ const CreateTemplate = () => {
                                             />
                                         </div>
                                     </div>
-                                    {questionImage && (
+                                    {q.image && (
                                         <div className='w-100 px-4 my-3 d-flex flex-column justify-content-start align-items-center position-relative'>
-                                            <img style={{maxHeight:'200px'}} src={questionImage} alt='questionImage' className='img-fluid rounded'></img>
+                                            <img style={{maxHeight:'200px'}} src={q.image} alt='questionImage' className='img-fluid rounded'></img>
                                         </div>
                                     )}
                                     <div className='d-flex flex-row justify-content-between'>

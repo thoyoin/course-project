@@ -34,10 +34,6 @@ const Template = sequelize.define('Template', {
         type: DataTypes.JSON,
         allowNull: true,
     },
-    image: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
 }, {
     tableName: 'templates',
     timestamps: true,

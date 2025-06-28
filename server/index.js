@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5050;
 
-sequelize.sync()
+sequelize.sync({force: true})
   .then(() => {
     console.log('Database connected');
     app.listen(PORT, () => {
