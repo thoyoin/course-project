@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 import Sortable from 'sortablejs';
 
 const CreateTemplate = () => {
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const navigate = useNavigate();
     const [typeError, setTypeError] = useState('');
     const [deleteAlert, setDeleteAlert] = useState('');
@@ -43,7 +45,7 @@ const CreateTemplate = () => {
 
     useEffect(() => {
         const fetchTemplate = async () => {
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`);
+            const response = await fetch(`${API_URL}/api/templates/${templateId}`);
             const data = await response.json();
             
         if (data) {
@@ -213,7 +215,7 @@ const CreateTemplate = () => {
 
     const handleDeleteTemplate = async () => {
         try {
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`, {
+            const response = await fetch(`${API_URL}/api/templates/${templateId}`, {
                 method: 'DELETE',
             });
 

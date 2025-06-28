@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next'
 import { jwtDecode } from 'jwt-decode';
 
 const MainPage = () => {
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const navigate = useNavigate();
     const [templates, setTemplates] = useState([]);
     const [publishedTemp, setPublishedTemp] = useState([]);
@@ -26,15 +28,15 @@ const MainPage = () => {
             const decoded = token ? jwtDecode(token) : null;
             const currentUserId = decoded?.userId;
 
-            const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates/all');
+            const response = await fetch(`${API_URL}/api/templates/all`);
             if (!response.ok) {
                 throw new Error('Failed to fetch templates');
             }
             const data = await response.json();
             const userTemplates = data.filter(template => template.ownerId === currentUserId);
             console.log('Your templates:', userTemplates);
-            setTemplates(data.filter(template => template.isPublished === false));
-            setPublishedTemp(data.filter(template => template.isPublished));
+            setTemplates(userTemplates.filter(template => template.isPublished === false));
+            setPublishedTemp(userTemplates.filter(template => template.isPublished));
         } catch (error) {
             console.error('Error fetching templates:', error);
         }
@@ -51,7 +53,7 @@ const MainPage = () => {
                 const decoded = token ? jwtDecode(token) : null;
                 const currentUserId = decoded?.userId;
 
-                const response = await fetch('https://course-project-back-tv8f.onrender.com/api/forms', {
+                const response = await fetch(`${API_URL}/api/forms`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -78,7 +80,7 @@ const MainPage = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch('https://course-project-back-tv8f.onrender.com/api/templates', {
+            const response = await fetch(`${API_URL}/api/templates`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

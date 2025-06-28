@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive'
 
 const FormPage = () => {
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const { templateId } = useParams();
     const [template, setTemplate] = useState(null);
     const [answers, setAnswers] = useState({});
@@ -20,7 +22,7 @@ const FormPage = () => {
     useEffect(() => {
         const fetchTemplate = async () => {
         try {
-            const res = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`);
+            const res = await fetch(`${API_URL}/api/templates/${templateId}`);
             const data = await res.json();
             setTemplate(data);
             console.log('Loaded template:', data);
@@ -41,7 +43,7 @@ const FormPage = () => {
         const token = localStorage.getItem('token');
 
         try {
-        const res = await fetch(`https://course-project-back-tv8f.onrender.com/api/forms/${templateId}/submit`, {
+        const res = await fetch(`${API_URL}/api/forms/${templateId}/submit`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -63,7 +65,7 @@ const FormPage = () => {
             }, 2000)
         }
         } catch (err) {
-        console.error('Submit error:', err);
+            console.error('Submit error:', err);
         }
     };
 
@@ -87,7 +89,7 @@ const FormPage = () => {
 
     const handleDeleteTemplate = async () => {
         try {
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId}`,{
+            const response = await fetch(`${API_URL}/api/templates/${templateId}`,{
                 method: 'DELETE',
             });
 

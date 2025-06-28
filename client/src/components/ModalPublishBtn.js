@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom';
 
 const ModalPublishBtn = ({templateId, formikValues}) => {
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const [accessType, setAccessType] = useState('private');
     const [publishAlert, setPublishAlert] = useState('');
     const [publishErrorAlert, setPublishErrorAlert] = useState('');
@@ -43,7 +45,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                 visibility: accessType,
             };
     
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
+            const response = await fetch(`${API_URL}/api/templates/${templateId || ''}`, {
                 method: templateId ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,7 +87,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                 isPublished: true,
             };
 
-            const response = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${templateId || ''}`, {
+            const response = await fetch(`${API_URL}/api/templates/${templateId || ''}`, {
                 method: templateId ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',

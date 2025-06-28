@@ -3,6 +3,8 @@ import axios from '../axios';
 import { useNavigate } from 'react-router-dom';
 
 const Registration = () => {
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -30,8 +32,8 @@ const Registration = () => {
         };
 
         try {
-            await axios.post('/api/auth/register', {name, email, password});
-            const res = await axios.post('/api/auth/login', {email, password});
+            await axios.post(`${API_URL}/api/auth/register`, {name, email, password});
+            const res = await axios.post(`${API_URL}/api/auth/login`, {email, password});
             console.log('Login response:', res.data);
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('name', res.data.user ? res.data.user.name : '');

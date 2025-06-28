@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const FilledFormPage = () => {
-  const { formId } = useParams();
-  const navigate = useNavigate();
-  const [formResponse, setFormResponse] = useState(null);
-  const [template, setTemplate] = useState(null);
-  const [loading, setLoading] = useState(true);
+    const API_URL = process.env.REACT_APP_API_URL;
+
+    const { formId } = useParams();
+    const navigate = useNavigate();
+    const [formResponse, setFormResponse] = useState(null);
+    const [template, setTemplate] = useState(null);
+    const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchFormData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`https://course-project-back-tv8f.onrender.com/api/forms/${formId}`, {
+        const res = await fetch(`${API_URL}/api/forms/${formId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -20,7 +22,7 @@ const FilledFormPage = () => {
         const data = await res.json();
         setFormResponse(data);
         
-        const templateRes = await fetch(`https://course-project-back-tv8f.onrender.com/api/templates/${data.templateId}`);
+        const templateRes = await fetch(`${API_URL}/api/templates/${data.templateId}`);
         const templateData = await templateRes.json();
         setTemplate(templateData);
       } catch (err) {
