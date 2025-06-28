@@ -30,4 +30,14 @@ router.post('/:templateId/submit', authenticate, async (req, res) => {
     }
 });
 
+router.get('/', authenticate, async (req, res) => {
+    try {
+        const forms = await FormResponse.findAll();
+        res.status(200).json(forms);
+    } catch (err) {
+        console.error('Error fetching form responses:', err);
+        res.status(500).json({message: 'Failed to fetch form responses'});
+    }
+})
+
 module.exports = router;
