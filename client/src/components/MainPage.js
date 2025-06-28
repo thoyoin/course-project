@@ -29,6 +29,7 @@ const MainPage = () => {
                 throw new Error('Failed to fetch templates');
             }
             const data = await response.json();
+            console.log('All templates:', data)
             const userTemplates = data.filter(template => template.ownerId === currentUserId).filter(template => template.isPublished === false);
             console.log('Your templates:', userTemplates);
             setTemplates(userTemplates);

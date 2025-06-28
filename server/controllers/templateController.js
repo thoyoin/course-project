@@ -13,11 +13,6 @@ exports.createTemplate = async (req, res) => {
             questions: questions || [],
             ownerId: req.userId || 1,
         }); 
-        
-        console.log('Creating template with:', {
-            body: req.body,
-            ownerId: req.userId
-        });
 
         res.status(201).json({ id: newTemplate.id });
     } catch (err) {
