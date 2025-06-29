@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authenticate = require('../middleware/authenticate');
 const FormResponse = require('../models/FormResponse');
+const Template = require('../models/Template')
 
 router.post('/:templateId/submit', authenticate, async (req, res) => {
     try {
