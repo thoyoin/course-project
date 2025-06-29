@@ -4,7 +4,8 @@ const dotenv = require('dotenv');
 const { sequelize } = require('./models/index');
 const authRoutes = require('./routes/auth');
 const templateRoutes = require('./routes/template');
-const formRoutes = require('./routes/form')
+const formRoutes = require('./routes/form');
+const userRoutes = require('./routes/users')
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/templates', templateRoutes);
 app.use('/api/forms', formRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is working!');

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, createRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Creatable from 'react-select/creatable';
@@ -41,6 +41,7 @@ const CreateTemplate = () => {
         }],
         tags: [],
         visibility: 'public',
+        allowedUsers: [],
     });
 
     useEffect(() => {
@@ -84,6 +85,7 @@ const CreateTemplate = () => {
                     }],
                     tags: [],
                     visibility: 'public',
+                    allowedUsers: [],
                 });
                 }
             }

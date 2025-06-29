@@ -3,6 +3,7 @@ import ChangeLang from './ChangeLang'
 import LogOutBtn from './LogOutBtn'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
 
 const HomePage = () => {
     const API_URL = process.env.REACT_APP_API_URL;
@@ -33,7 +34,20 @@ const HomePage = () => {
             if (!res.ok) throw new Error('Failed to fetch templates');
 
             const data = await res.json();
-            setTemplates(data.filter(t => t.isPublished === true));
+            /* setTemplates(data.filter(t => t.isPublished === true).filter(t => t.visibility === 'public')); */
+            const token = localStorage.getItem('token')
+            let currentUser
+            const decoded = token ? jwtDecode(token) : null
+            currentUser = decoded?.userId
+
+/*             setTemplates(data.filter(t => t.isPublished === true).filter(t => t.visibility === 'public').filter(t => t.visibility === 'private' && t.allowedUsers.includes(currentUser)));
+ */         setTemplates(data.filter(t =>
+                t.isPublished === true &&
+                (
+                    t.visibility === 'public' ||
+                    (t.visibility === 'private' && t.allowedUsers?.includes(currentUser))
+                )
+            ));
         } catch (err) {
             setError(err.message);
         } finally {
