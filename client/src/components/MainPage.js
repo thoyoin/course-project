@@ -5,6 +5,8 @@ import { useMediaQuery } from 'react-responsive'
 import ChangeLang from './ChangeLang'
 import { useTranslation } from 'react-i18next'
 import { jwtDecode } from 'jwt-decode';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Collapse from 'bootstrap/js/dist/collapse';
 
 const MainPage = () => {
     const API_URL = process.env.REACT_APP_API_URL;
@@ -13,7 +15,7 @@ const MainPage = () => {
     const [templates, setTemplates] = useState([]);
     const [publishedTemp, setPublishedTemp] = useState([]);
     const [userForms, setUserForms] = useState([]);
-    /* const [viewAll, setViewAll] = useState(false); */
+    const [viewAllVisible, setViewAllVisible] = useState(false);
     const isLaptop = useMediaQuery({maxWidth: 1024})
     const isTablet = useMediaQuery({maxWidth: 875})
     const isMobile = useMediaQuery({maxWidth: 685})
@@ -72,9 +74,9 @@ const MainPage = () => {
         getUserForms();
     }, []);
     
-/*     useEffect(() => {
-        templates.length > 1 ? setViewAll(true) : setViewAll(false)
-    }) */
+    useEffect(() => {
+        setViewAllVisible(templates.length > visibleTemplates);
+    }, [templates, visibleTemplates]);
     
     const createNewTemplate = async () => {
         const token = localStorage.getItem('token');
@@ -150,17 +152,51 @@ const MainPage = () => {
                         </button>
                      </div>
                     ))}
-                    {/* {viewAll &&
+                    {viewAllVisible && (
                         <div className='ms-3 me-4'>
-                            <a href='#viewAll' role="button" aria-expanded="false" aria-controls="viewAll" data-bs-toggle="collapse" className='link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover'>View All</a>
+                            <button
+                              className="btn btn-link link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-50-hover"
+                              type="button"
+                              onClick={() => {
+                                  const collapseElement = document.getElementById('viewAllCollapse');
+                                  if (collapseElement) {
+                                      const bsCollapse = new Collapse(collapseElement, {
+                                          toggle: false
+                                      });
+                                      if (collapseElement.classList.contains('show')) {
+                                          bsCollapse.hide();
+                                      } else {
+                                          bsCollapse.show();
+                                      }
+                                  }
+                              }}
+                            >
+                              {t('view-all')}
+                            </button>
                         </div>
-                    } */}
+                    )}
                 </div>
-                {/* <div className="collapse w-100 border-0" id="viewAll">
-                    <div className="card card-body w-100">
-                        Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                <div className="collapse w-100 border-0" id="viewAllCollapse">
+                    <div className="card card-body p-0 border-0 w-100 bg-body d-flex flex-row flex-wrap justify-content-center">
+                        {templates.slice(visibleTemplates).map((template, index) => (
+                            <div key={index} style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative mx-2 mb-5 d-flex flex-column align-items-center'>
+                                <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
+                                <button 
+                                    style={{maxWidth:'160px', height:'120px'}}
+                                    className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'
+                                    onClick={() => navigate(`/CreateTemplate/${template.id}`)}
+                                >
+                                    <p className='m-0' style={{maxWidth:'140px', maxHeight:'120px', whiteSpace:'normal', overflowWrap: 'break-word', overflow:'hidden'}}>
+                                        {template.description || t('no-desc')}
+                                    </p>
+                                    <span style={{top:'170px'}} className='badge position-absolute w-50 opacity-75 bg-warning text dark'>
+                                        {t('draft')}
+                                    </span>
+                                </button>
+                            </div>
+                        ))}
                     </div>
-                </div> */}
+                </div>
             </div> 
             <div style={{flexGrow:'1'}} className='d-flex flex-column justify-content-start align-items-center'>
                 <div style={{maxWidth:'100%', height:'100%'}} className='w-100 text-center mx-3 d-flex flex-column justify-content-start'>
@@ -189,7 +225,7 @@ const MainPage = () => {
                             </button>
                         </li>
                     </ul>
-                    <div className="tab-content bg-body" id="myTabContent" style={{flexGrow: 1}}>
+                    <div className="tab-content bg-body mb-5" id="myTabContent" style={{flexGrow: 1}}>
                         <div className="tab-pane fade show active mt-3 mx-5" id="templates" role="tabpanel" aria-labelledby="templates-tab">
                         <div className="d-flex flex-wrap justify-content-center px-3">
                             {publishedTemp.filter(t => t.isPublished).map((template, index) => (
@@ -215,9 +251,9 @@ const MainPage = () => {
                                 {userForms.map((form, index) => (
                                     <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight: '8rem' }}>
                                     <div className="card-body d-flex flex-column justify-content-between align-items-center">
-                                        <h6 className="card-subtitle mb-2 text-muted">{form.Template.templateName}</h6>
-                                        <p className="text-muted small">{new Date(form.createdAt).toLocaleDateString()}</p>
-                                        <a href={`/FormResponse/${form.id}`} className="btn btn-sm btn-outline-success mt-2">
+                                        <h5 className="card-title mb-2">{form.Template.templateName}</h5>
+                                        <div className='border-bottom mb-2 w-100 border-success'><p className="text-muted mt-4 small">{t('filled')}: {new Date(form.createdAt).toLocaleDateString()}</p></div>
+                                        <a style={{minWidth:'70px'}} href={`/FormResponse/${form.id}`} className="btn btn-sm btn-outline-success mt-2">
                                         {t('view')}
                                         </a>
                                     </div>

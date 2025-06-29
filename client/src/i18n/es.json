@@ -45,5 +45,7 @@
     "my-temp": "Mis plantillas",
     "my-forms": "Mis formularios",
     "edit": "Editar",
-    "filled-forms": "Sus formularios rellenados aparecerán aquí."
+    "filled-forms": "Sus formularios rellenados aparecerán aquí.",
+    "filled": "Rellenado",
+    "view-all": "Ver todos"
 }
