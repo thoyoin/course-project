@@ -215,7 +215,7 @@ const MainPage = () => {
                                 {userForms.map((form, index) => (
                                     <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight: '8rem' }}>
                                     <div className="card-body d-flex flex-column justify-content-between align-items-center">
-                                        <h6 className="card-subtitle mb-2 text-muted">{t('submitted')}:</h6>
+                                        <h6 className="card-subtitle mb-2 text-muted">{form.Template.templateName}</h6>
                                         <p className="text-muted small">{new Date(form.createdAt).toLocaleDateString()}</p>
                                         <a href={`/FormResponse/${form.id}`} className="btn btn-sm btn-outline-success mt-2">
                                         {t('view')}

@@ -32,7 +32,9 @@ router.post('/:templateId/submit', authenticate, async (req, res) => {
 
 router.get('/', authenticate, async (req, res) => {
     try {
-        const forms = await FormResponse.findAll();
+        const forms = await FormResponse.findAll({
+            include: [{ model: Template, attributes: ['templateName']}],
+        });
         res.status(200).json(forms);
     } catch (err) {
         console.error('Error fetching form responses:', err);
