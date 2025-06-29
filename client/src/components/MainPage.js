@@ -179,7 +179,7 @@ const MainPage = () => {
                 <div className="collapse w-100 border-0" id="viewAllCollapse">
                     <div className="card card-body p-0 border-0 w-100 bg-body d-flex flex-row flex-wrap justify-content-center">
                         {templates.slice(visibleTemplates).map((template, index) => (
-                            <div key={index} style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative mx-2 mb-5 d-flex flex-column align-items-center'>
+                            <div key={index} style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative w-100 mx-2 mb-5 d-flex flex-column align-items-center'>
                                 <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
                                 <button 
                                     style={{maxWidth:'160px', height:'120px'}}

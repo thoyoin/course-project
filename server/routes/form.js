@@ -43,4 +43,20 @@ router.get('/', authenticate, async (req, res) => {
     }
 })
 
+router.get('/:formId', authenticate, async (req, res) => {
+    try {
+        const { formId } = req.params;
+        const form = await FormResponse.findByPk(formId, {
+            include: [{ model: Template, attributes: ['templateName']}],
+        });
+        if (!form) {
+            return res.status(404).json({ message: 'Form not found'});
+        }
+        res.status(200).json(form);
+    } catch (err) {
+        console.error('Error fetching form:', err);
+        res.status(500).json({ message: 'Failed to fetch form'});
+    }
+});
+
 module.exports = router;

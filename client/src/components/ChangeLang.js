@@ -16,7 +16,7 @@ const ChangeLang = () => {
   return (
     <div className='dropdown mx-5'>
         <button className="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-translate"></i>
+            <i className="bi bi-translate"></i>
         </button>
         <ul className="dropdown-menu custom-dropdown">
             <li><h6 className="dropdown-header">{t('pick')}</h6></li>
