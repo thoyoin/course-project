@@ -124,7 +124,7 @@ const PersonalPage = () => {
                         <li><button 
                                 className="dropdown-item"
                                 onClick={() => navigate('/HomePage')}
-                            >To all templates</button></li>
+                            >{t('public-temp')}</button></li>
                     </ul>
                 </div>
                 <form className="d-flex justify-content-center my-3 mx-auto w-100" role="search">
@@ -141,7 +141,7 @@ const PersonalPage = () => {
                     <div style={{maxWidth:'200px', minWidth:'120px'}} className='w-100 mx-2 d-flex flex-column align-items-center'>
                         <h5 className='fw-bold'>{t('create-new')}</h5>
                         <button 
-                            style={{maxWidth:'160px', height:'120px'}} 
+                            style={{maxWidth: '15rem', minHeight:'11rem'}} 
                             className='btn btn-outline-light border border-success text-success w-100 m-3'
                             onClick={createNewTemplate}
                             >
@@ -152,7 +152,7 @@ const PersonalPage = () => {
                         <div style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative w-100 mx-2 d-flex flex-column align-items-center'>
                             <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
                             <button 
-                                style={{maxWidth:'160px', height:'120px'}} 
+                                style={{maxWidth: '15rem', minHeight:'11rem'}} 
                                 className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'
                                 onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                                 >
@@ -242,10 +242,11 @@ const PersonalPage = () => {
                         <div className="d-flex flex-wrap justify-content-center px-3">
                             {publishedTemp.filter(t => t.isPublished).map((template, index) => (
                                 <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
-                                    <div className="card-body d-flex flex-column justify-content-between align-items-center">
-                                        <h5 className="card-title">{template.templateName || t('no-title')}</h5>
+                                    <div className="card-body d-flex flex-column justify-content-between align-items-center p-2">
+                                        <p className='fw-light text-muted m-0'>{t('access')}: {template.visibility}</p>
+                                        <h4 className="card-title">{template.templateName || t('no-title')}</h4>
                                         <div className="w-100">
-                                            <div style={{maxWidth:'15rem'}} className='w-100 mb-2 border-bottom border-success'><p style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-text mb-2">{template.description || t('no-desc')}</p></div>
+                                            <div style={{maxWidth:'15rem'}} className='w-100 mb-1 border-bottom border-success'><p style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-text mb-1">{template.description || t('no-desc')}</p></div>
                                             <a href={`/FormPage/${template.id}`} style={{minWidth:'70px'}} className="btn btn-sm btn-outline-success mt-2">
                                             {t('view')}
                                             </a>

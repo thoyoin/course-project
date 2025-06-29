@@ -34,6 +34,10 @@ const Template = sequelize.define('Template', {
         type: DataTypes.JSON,
         allowNull: true,
     },
+    allowedUsers: {
+        type: DataTypes.JSON,
+        allowNull: true,
+    },
 }, {
     tableName: 'templates',
     timestamps: true,

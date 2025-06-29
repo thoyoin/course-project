@@ -54,6 +54,7 @@ const HomePage = () => {
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column'}}>
             <div style={{zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-end align-items-center bg-body-tertiary position-fixed top-0 border-bottom'>
+                <a href='#' style={{marginLeft:'20px', marginRight:'30px'}} className='navbar-brand text-success link-ease-in-out' onClick={() => navigate('/PersonalPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
                 <form className="d-flex justify-content-center my-3 mx-auto w-100" role="search">
                     <div className='input-group' style={{maxWidth:'600px', height:'40px'}}>
                         <span className='input-group-text rounded-start-4'><i className="bi bi-search p-1"></i></span>
@@ -70,14 +71,14 @@ const HomePage = () => {
                 <ChangeLang/>
                 <LogOutBtn/>
             </div>
-            <div style={{marginTop:'100px', marginLeft:'100px', marginRight:'100px'}} className='d-flex flex-column'>
-                <h1>{t('latest')}</h1>
-                <div style={{maxWidth:'100%', height:'300px'}} className='bg-body text-center d-flex flex-row justify-content-center align-items-center'>
+            <div style={{marginTop:'100px', marginLeft:'50px', marginRight:'50px'}} className='d-flex flex-column'>
+                <div style={{minWidth:'210px'}} className='mb-4 border-bottom border-success w-50'><h1>{t('latest')}</h1></div>
+                <div style={{maxWidth:'100%', height:'300px', marginTop:'20px'}} className='bg-body text-center d-flex flex-wrap justify-content-center align-items-start'>
                     {loading && <div className="spinner-border text-success position-absolute" role="status"><span className="visually-hidden">Loading...</span></div>}
                     {templates.map((template) => (
                         <div key={template.id} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
                             <div className="card-body d-flex flex-column justify-content-between align-items-center">
-                                <h5 className="card-title mb-4">{template.templateName || t('no-title')}</h5>
+                                <h5 style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-title mb-4">{template.templateName || t('no-title')}</h5>
                                 <div className="w-100">
                                     <div style={{maxWidth:'15rem'}} className='w-100 mb-2 border-bottom border-success'><p style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-text mb-2">{template.description || t('no-desc')}</p></div>
                                     <p className='mb-2 text-muted'>{template.owner?.name ? `${t('by')} ${template.owner.name}` : ''}</p>
