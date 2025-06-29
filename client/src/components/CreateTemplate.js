@@ -226,7 +226,7 @@ const CreateTemplate = () => {
             setDeleteAlert('Template deleted successfully!')
             setTimeout(() => {
                 setDeleteAlert('')
-                navigate('/MainPage');
+                navigate('/PersonalPage');
             }, 1000);
         } catch (err) {
             console.error('Error deleting template:', err);
@@ -273,7 +273,7 @@ const CreateTemplate = () => {
         <div>
             <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
                 <div className='ms-4 d-flex flex-row align-items-center gap-4'>
-                    <a href='/MainPage' className='text-success link-ease-in-out' onClick={() => navigate('/MainPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
+                    <a href='#' className='navbar-brand text-success link-ease-in-out' onClick={() => navigate('/PersonalPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
                     <h4 className='fw-bold m-0'>{formik.values.templateName}</h4>
                 </div>
                 <div className='d-flex flex-row align-items-center'>

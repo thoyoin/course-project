@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Template } = require('../models');
+const { Template, User } = require('../models');
 const templateController = require('../controllers/templateController')
 
 const authenticate = require('../middleware/authenticate');
@@ -10,6 +10,11 @@ router.post('/', authenticate, templateController.createTemplate);
 router.get('/all', async (req, res) => {
     try {
         const templates = await Template.findAll({
+            include: {
+                model: User,
+                as: 'owner',
+                attributes: ['name', 'email'],
+            },
             order: [['updatedAt', 'DESC']],
         });
 

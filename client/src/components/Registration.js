@@ -37,7 +37,7 @@ const Registration = () => {
             console.log('Login response:', res.data);
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('name', res.data.user ? res.data.user.name : '');
-            navigate('/MainPage');
+            navigate('/PersonalPage');
         } catch (err) {
             console.error('Registration error:', err);
             setErrors({server: 'Registration failed'});

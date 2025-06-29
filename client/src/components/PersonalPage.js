@@ -8,7 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Collapse from 'bootstrap/js/dist/collapse';
 
-const MainPage = () => {
+const PersonalPage = () => {
     const API_URL = process.env.REACT_APP_API_URL;
 
     const navigate = useNavigate();
@@ -116,6 +116,17 @@ const MainPage = () => {
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column'}}>
             <div style={{zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-end align-items-center bg-body-tertiary position-fixed top-0 border-bottom'>
+                <div className='mx-3 dropdown'>
+                    <button style={{height:'30px', width:'40px'}} data-bs-toggle="dropdown" aria-expanded="false" className='btn btn-outline-success p-0 d-flex align-items-center justify-content-center'>
+                        <i className="bi bi-three-dots fs-4"></i>
+                    </button>
+                    <ul className="dropdown-menu bg-transparent bg-opacity-50" style={{backdropFilter:'blur(3px)'}}>
+                        <li><button 
+                                className="dropdown-item"
+                                onClick={() => navigate('/HomePage')}
+                            >To all templates</button></li>
+                    </ul>
+                </div>
                 <form className="d-flex justify-content-center my-3 mx-auto w-100" role="search">
                     <div className='input-group' style={{maxWidth:'600px', height:'40px'}}>
                         <span className='input-group-text rounded-start-4'><i className="bi bi-search p-1"></i></span>
@@ -139,18 +150,18 @@ const MainPage = () => {
                     </div>
                     {templates.slice(0, visibleTemplates).map((template) => (
                         <div style={{maxWidth:'200px', minWidth:'120px'}} className='position-relative w-100 mx-2 d-flex flex-column align-items-center'>
-                        <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
-                        <button 
-                            style={{maxWidth:'160px', height:'120px'}} 
-                            className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'
-                            onClick={() => navigate(`/CreateTemplate/${template.id}`)}
-                            >
-                                <p className='m-0' style={{maxWidth:'140px', maxHeight:'120px', whiteSpace:'normal', overflowWrap: 'break-word', overflow:'hidden'}}>{template.description || t('no-desc')}</p>
-                                <span style={{top:'170px'}} className='badge position-absolute w-50 opacity-75 bg-warning text dark'>
-                                    {t('draft')}
-                                </span>
-                        </button>
-                     </div>
+                            <h5 className='fw-bold' style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{template.templateName || 'New template'}</h5>
+                            <button 
+                                style={{maxWidth:'160px', height:'120px'}} 
+                                className='btn btn-outline-light border fw-lighter border-success text-success w-100 m-3 d-flex flex-column align-items-center justify-content-start'
+                                onClick={() => navigate(`/CreateTemplate/${template.id}`)}
+                                >
+                                    <p className='m-0' style={{maxWidth:'140px', maxHeight:'120px', whiteSpace:'normal', overflowWrap: 'break-word', overflow:'hidden'}}>{template.description || t('no-desc')}</p>
+                                    <span style={{top:'170px'}} className='badge position-absolute w-50 opacity-75 bg-warning text dark'>
+                                        {t('draft')}
+                                    </span>
+                            </button>
+                        </div>
                     ))}
                     {viewAllVisible && (
                         <div className='ms-3 me-4'>
@@ -232,7 +243,7 @@ const MainPage = () => {
                             {publishedTemp.filter(t => t.isPublished).map((template, index) => (
                                 <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
                                     <div className="card-body d-flex flex-column justify-content-between align-items-center">
-                                        <h5 className="card-title">{template.templateName || t('unknown')}</h5>
+                                        <h5 className="card-title">{template.templateName || t('no-title')}</h5>
                                         <div className="w-100">
                                             <div style={{maxWidth:'15rem'}} className='w-100 mb-2 border-bottom border-success'><p style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-text mb-2">{template.description || t('no-desc')}</p></div>
                                             <a href={`/FormPage/${template.id}`} style={{minWidth:'70px'}} className="btn btn-sm btn-outline-success mt-2">
@@ -270,4 +281,4 @@ const MainPage = () => {
     )
 }
 
-export default MainPage
+export default PersonalPage

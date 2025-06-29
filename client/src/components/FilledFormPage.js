@@ -40,14 +40,14 @@ const FilledFormPage = () => {
     fetchFormData();
   }, [formId]);
 
-  if (loading) return <p className="m-4">Загрузка данных формы...</p>;
-  if (!formResponse || !template) return <p className="m-4 text-danger">Ошибка загрузки данных.</p>;
+  if (loading)  return <div style={{left:'49%', top:'49%'}} className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>;
+  if (!formResponse || !template) return <p className="m-4 text-danger">Failed to load form.</p>;
 
   return (
     <div>
         <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
             <div className='ms-4 d-flex flex-row align-items-center gap-4'>
-                <a href='/MainPage' className='text-success link-ease-in-out' onClick={() => navigate('/MainPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
+                <a href='/PersonalPage' className='text-success link-ease-in-out' onClick={() => navigate('/PersonalPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
             </div>
             <div className='d-flex flex-row align-items-center'>
                 <ChangeLang/>
@@ -71,6 +71,11 @@ const FilledFormPage = () => {
                     <div className='d-flex flex-row justify-content-center align-items-center'>
                         <div style={{minHeight:'150px', marginTop:'15px'}} className='bg-body-tertiary w-100 mx-3 text-start border rounded-4 d-flex flex-column justify-content-start'>
                             <label className="form-label p-4 fs-5">{q.text}</label>
+                            {q.image && (
+                                <div className='w-100 px-4 my-3 d-flex flex-column justify-content-start align-items-center position-relative'>
+                                    <img style={{maxHeight:'200px'}} src={q.image} alt='questionImage' className='img-fluid rounded'></img>
+                                </div>
+                            )}
                             {q.questionType === 'short text' && (
                                 <input 
                                     type="text" 

@@ -37,6 +37,7 @@
     "logout": "Cerrar sesión",
     "sure?": "¿Estás seguro de que quieres eliminar esta plantilla?",
     "no-desc": "Sin descripción",
+    "no-title": "Sin título",
     "draft": "Borrador",
     "published": "Publicado",
     "myAnswer": "Mi respuesta",
@@ -48,5 +49,7 @@
     "filled-forms": "Sus formularios rellenados aparecerán aquí.",
     "filled": "Rellenado",
     "view-all": "Ver todos",
-    "back": "Volver"
+    "back": "Volver",
+    "latest": "Último",
+    "by": "por"
 }

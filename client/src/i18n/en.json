@@ -37,6 +37,7 @@
     "logout": "Logout",
     "sure?": "Are you sure you want to delete this template?",
     "no-desc": "No description",
+    "no-title": "Untitled",
     "draft": "Draft",
     "published": "Published",
     "myAnswer": "My answer",
@@ -48,5 +49,7 @@
     "no-forms": "Your filled out forms will appear here.",
     "filled": "Filled out",
     "view-all": "View all",
-    "back": "Get back"
+    "back": "Get back",
+    "latest": "Latest templates",
+    "by": "by"
 }

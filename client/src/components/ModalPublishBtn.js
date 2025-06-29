@@ -100,7 +100,7 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                 setPublishAlert('Template published successfully!')
                 setTimeout(() => {
                     setPublishAlert('')
-                    navigate('/MainPage');
+                    navigate('/PersonalPage');
                 }, 2000);
             } else {
                 const errorData = await response.json();

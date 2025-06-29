@@ -45,7 +45,7 @@ const Login = () => {
                 console.error('Failed to decode token:', err);
             }
 
-            navigate('/MainPage');
+            navigate('/PersonalPage');
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 setErrors({ server: 'Invalid email or password' });
