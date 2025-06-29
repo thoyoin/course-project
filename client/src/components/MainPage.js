@@ -202,7 +202,8 @@ const MainPage = () => {
                 <div style={{maxWidth:'100%', height:'100%'}} className='w-100 text-center mx-3 d-flex flex-column justify-content-start'>
                     <ul className="nav nav-tabs d-flex flex-row justify-content-center" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
-                            <button className='nav-link active tab-btn' 
+                            <button 
+                                className='nav-link active tab-btn' 
                                 id="templates-tab" 
                                 data-bs-toggle="tab" 
                                 data-bs-target="#templates" 
