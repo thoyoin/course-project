@@ -20,7 +20,7 @@ const Like = sequelize.define('Like', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id',
         },
         onDelete: 'CASCADE',
