@@ -11,7 +11,7 @@ const Comment = sequelize.define('Comment', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: 'Templates',
+            model: 'templates',
             key: 'id',
         },
         onDelete: 'CASCADE',
