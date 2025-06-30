@@ -248,7 +248,7 @@ const FormPage = () => {
                             </div>
                         </div>
                     ))}
-                    <button type="submit" className="btn btn-success mt-2 mb-5 mx-3">Submit form</button>
+                    <button type="submit" className="btn btn-success mt-2 mb-5 mx-3">{t('submit')}</button>
                 </form>
                 <Comments templateId={templateId}/>
                 {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
