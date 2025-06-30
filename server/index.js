@@ -5,7 +5,10 @@ const { sequelize } = require('./models/index');
 const authRoutes = require('./routes/auth');
 const templateRoutes = require('./routes/template');
 const formRoutes = require('./routes/form');
-const userRoutes = require('./routes/users')
+const userRoutes = require('./routes/users');
+const commentRoutes = require('./routes/comments');
+const likeRoutes = require('./routes/likes');
+
 
 dotenv.config();
 
@@ -21,6 +24,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/templates', templateRoutes);
 app.use('/api/forms', formRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/templates', likeRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is working!');
@@ -28,7 +33,7 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5050;
 
-sequelize.sync({alter: true})
+sequelize.sync()
     .then(() => {
         console.log('Database connected');
         app.listen(PORT, () => {

@@ -5,6 +5,7 @@ import LogOutBtn from './LogOutBtn';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive'
 import { jwtDecode } from 'jwt-decode';
+import Comments from './Comments';
 
 const FormPage = () => {
     const API_URL = process.env.REACT_APP_API_URL;
@@ -249,6 +250,7 @@ const FormPage = () => {
                     ))}
                     <button type="submit" className="btn btn-success mt-2 mb-5 mx-3">Submit form</button>
                 </form>
+                <Comments templateId={templateId}/>
                 {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
                 {submitAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{submitAlert}</div>}
                 {submitErrorAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{submitErrorAlert}</div>}

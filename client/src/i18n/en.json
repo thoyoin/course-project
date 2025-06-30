@@ -55,5 +55,12 @@
     "by": "by",
     "public-temp": "Public templates",
     "add": "Add users",
-    "formtags": "Tags"
+    "formtags": "Tags",
+    "comments": "Comments",
+    "tocomment": "Add a comment...",
+    "send": "Send",
+    "nocomment": "No comments yet.",
+    "you": "You",
+    "like": "Like",
+    "unlike": "Unlike"
 }

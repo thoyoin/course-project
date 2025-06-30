@@ -12,11 +12,9 @@ const ModalPublishBtn = ({templateId, formik}) => {
     const [publishErrorAlert, setPublishErrorAlert] = useState('');
     const [saveAlert, setSaveAlert] = useState('');
     const [allowedUsers, setAllowedUsers] = useState([]);
-    const [userInput, setUserInput] = useState('');
     const [allUsers, setAllUsers] = useState([]);
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const animatedComponents = makeAnimated()
 
     const access = [
         {value:'public',

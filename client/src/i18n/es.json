@@ -55,5 +55,12 @@
     "by": "por",
     "public-temp": "Plantillas públicas",
     "add": "Agregar usuarios",
-    "formtags": "Etiquetas"
+    "formtags": "Etiquetas",
+    "comments": "Comentarios",
+    "tocomment": "Comentar...",
+    "send": "Enviar",
+    "nocomment": "No hay comentarios",
+    "you": "Tú",
+    "like": "Me gusta",
+    "unlike": "No me gusta"
 }
