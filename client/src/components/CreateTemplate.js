@@ -18,9 +18,7 @@ const CreateTemplate = () => {
     const navigate = useNavigate();
     const [typeError, setTypeError] = useState('');
     const [deleteAlert, setDeleteAlert] = useState('');
-    const [optionError, setOptionError] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
-    const [isSaving, setIsSaving] = useState(false);
 
     const { t } = useTranslation();
 
@@ -109,16 +107,8 @@ const CreateTemplate = () => {
 
     const handleAddOption = (index) => {
         const updatednewQuestion = [...formik.values.newQuestion];
-        if (updatednewQuestion[index].checkboxOptions.length < 4) {
-            updatednewQuestion[index].checkboxOptions.push('');
-            formik.setFieldValue('newQuestion', updatednewQuestion);
-        } else {
-            setOptionError(`Maximum 4 options allowed.`);
-            setTimeout(() => {
-                setOptionError('');
-            }, 3000);
-            return;
-        }
+        updatednewQuestion[index].checkboxOptions.push('');
+        formik.setFieldValue('newQuestion', updatednewQuestion);
     };
 
     const handleAddQuestion = (type) => {
@@ -667,9 +657,6 @@ const CreateTemplate = () => {
                                             >
                                                 {t('add-option')}
                                             </button>
-                                            {optionError && (
-                                                <span className="text-danger ms-3 small">{optionError}</span>
-                                            )}
                                             </div>
                                         </div>
                                         )}
@@ -716,7 +703,6 @@ const CreateTemplate = () => {
                  </div>
                 {typeError && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)', backgroundColor: 'rgba(249, 231, 74, 0.4)'}} className="alert alert-light position-fixed fw-bold" role="alert">{typeError}</div>}
                 {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
-                {isSaving && <div style={{bottom:'50px', zIndex:'100'}} className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>}
             </div>
         </div>
     )

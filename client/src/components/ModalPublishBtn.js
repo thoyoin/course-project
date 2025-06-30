@@ -168,7 +168,7 @@ const ModalPublishBtn = ({templateId, formik}) => {
                         <h1 className="modal-title fs-4" id="staticBackdropLabel">{t('publication')}</h1>
                     </div>
                     <div className="modal-body d-flex flex-row align-items-center">
-                        <h5 className='fw-light'>{t('shared-access')}:</h5>
+                        <h5 style={{width:'130px'}} className='fw-light'>{t('shared-access')}:</h5>
                         <Select
                             options={access}
                             isSearchable={false}
@@ -221,9 +221,9 @@ const ModalPublishBtn = ({templateId, formik}) => {
                         />
                     </div>
                         {accessType === 'private' && (
-                                <div className="w-100 px-3 d-flex flex-row gap-2">
+                                <div className="w-100 px-3 d-flex flex-row">
                                     <div className="d-flex flex-row justify-content-between align-items-center">
-                                        <label><h5 className="fw-light">{t('add')}:</h5></label>
+                                        <label><h5 style={{width:'130px'}} className="fw-light">{t('add')}:</h5></label>
                                     </div>
                                     <Select
                                         value={allowedUsers}
