@@ -36,6 +36,7 @@
     "access": "Acceso",
     "logout": "Cerrar sesión",
     "sure?": "¿Estás seguro de que quieres eliminar esta plantilla?",
+    "sure?form": "¿Estás seguro de que quieres eliminar este formulario?",
     "no-desc": "Sin descripción",
     "no-title": "Sin título",
     "draft": "Borrador",

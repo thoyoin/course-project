@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom';
 import makeAnimated from 'react-select/animated';
 
-const ModalPublishBtn = ({templateId, formikValues}) => {
+const ModalPublishBtn = ({templateId, formik}) => {
     const API_URL = process.env.REACT_APP_API_URL;
 
     const [accessType, setAccessType] = useState('private');
@@ -53,23 +53,26 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
     }, []);
 
     useEffect(() => {
-        if (formikValues.allowedUsers && allUsers.length > 0) {
-            const matched = formikValues.allowedUsers
+        if (
+            Array.isArray(formik.values.allowedUsers) &&
+            formik.values.allowedUsers.length > 0
+        ) {
+            const matched = formik.values.allowedUsers
                 .map(id => {
                     const user = allUsers.find(u => u.id === id);
                     return user ? { value: user.id, label: `${user.name} (${user.email})` } : null;
                 })
                 .filter(Boolean);
+
             setAllowedUsers(matched);
         }
-    }, [formikValues.allowedUsers, allUsers]);
-/*     console.log(formikValues)
- */
+    }, [formik.values.allowedUsers, allUsers]);
+
     const saveTemplateToServer = async () => {
         try {
             const payload = {
-                ...formikValues,
-                questions: formikValues.newQuestion.map((q) => ({
+                ...formik.values,
+                questions: formik.values.newQuestion.map((q) => ({
                     ...q,
                     checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
                 })),
@@ -110,8 +113,8 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
             const token = localStorage.getItem('token');
 
             const payload = {
-                ...formikValues,
-                questions: formikValues.newQuestion.map((q) => ({
+                ...formik.values,
+                questions: formik.values.newQuestion.map((q) => ({
                     ...q,
                     checkboxOptions: q.checkboxOptions.filter(opt => opt.trim() !== ''),
                 })),
@@ -218,71 +221,71 @@ const ModalPublishBtn = ({templateId, formikValues}) => {
                         />
                     </div>
                         {accessType === 'private' && (
-                            <div className="w-100 px-3 d-flex flex-row gap-2">
-                                <div className="d-flex flex-row justify-content-between align-items-center">
-                                    <label><h5 className="fw-light">{t('add')}:</h5></label>
-                                </div>
-                                <Select
-                                    value={allowedUsers}
-                                    options={allUsers
-                                        .map(user => ({
-                                            value: user.id,
-                                            label: `${user.name} (${user.email})`,
-                                        }))
-                                    }
-                                    onChange={(selected) => {
-                                        setAllowedUsers(selected || []);
-                                    }}
-                                    isClearable
-                                    isMulti
-                                    components={animatedComponents}
-                                    placeholder="Type to search users..."
-                                    classNamePrefix="react-select"
-                                    className='w-100'
-                                    theme={(theme) => ({
-                                        ...theme,
-                                        colors: {
-                                            ...theme.colors,
-                                            primary:'rgba(123, 122, 122, 0.38)',
-                                            primary50:'rgba(123, 122, 122, 0.38)',
-                                            neutral80: colorMode === 'dark' ? 'white' : 'black',
-                                            neutral10: 'transparent'
+                                <div className="w-100 px-3 d-flex flex-row gap-2">
+                                    <div className="d-flex flex-row justify-content-between align-items-center">
+                                        <label><h5 className="fw-light">{t('add')}:</h5></label>
+                                    </div>
+                                    <Select
+                                        value={allowedUsers}
+                                        options={allUsers
+                                            .map(user => ({
+                                                value: user.id,
+                                                label: `${user.name} (${user.email})`,
+                                            }))
                                         }
-                                    })}
-                                    styles={{
-                                        container: (base) => ({ 
-                                            ...base, 
-                                            maxWidth: '350px', 
-                                            margin:'15px',
-                                        }),
-                                        control: (base, state) => ({
-                                            ...base,
-                                            backgroundColor: 'bg-body-tertiary',
-                                            borderColor: state.isFocused ? '#198754' : '#ccc',
-                                            boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
-                                            '&:hover': { borderColor: '#198754' },
-                                            minHeight: '45px',
-                                            fontWeight: 'light'
-                                        }),
-                                        menu: (base) => ({
-                                            ...base,
-                                            borderRadius: '8px',
-                                            padding: '5px',
-                                            backdropFilter:'blur(10px)',
-                                            backgroundColor: 'bg-body-tertiary',
-                                            zIndex:'10'
-                                        }),
-                                        option: (base, state) => ({
-                                            ...base,
-                                            padding: '10px',
-                                            marginBottom: '5px',
-                                            borderRadius: '5px',
-                                            backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.19)' : '',
-                                            cursor: 'pointer',
-                                        }),
-                                    }}
-                                />
-                            </div>
+                                        onChange={(selected) => {
+                                            setAllowedUsers(selected || []);
+                                            formik.setFieldValue('allowedUsers', selected ? selected.map(user => user.value) : []);
+                                        }}
+                                        isClearable
+                                        isMulti
+                                        placeholder="Type to search users..."
+                                        classNamePrefix="react-select"
+                                        className='w-100'
+                                        theme={(theme) => ({
+                                            ...theme,
+                                            colors: {
+                                                ...theme.colors,
+                                                primary:'rgba(123, 122, 122, 0.38)',
+                                                primary50:'rgba(123, 122, 122, 0.38)',
+                                                neutral80: colorMode === 'dark' ? 'white' : 'black',
+                                                neutral10: 'transparent'
+                                            }
+                                        })}
+                                        styles={{
+                                            container: (base) => ({ 
+                                                ...base, 
+                                                maxWidth: '350px', 
+                                                margin:'15px',
+                                            }),
+                                            control: (base, state) => ({
+                                                ...base,
+                                                backgroundColor: 'bg-body-tertiary',
+                                                borderColor: state.isFocused ? '#198754' : '#ccc',
+                                                boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
+                                                '&:hover': { borderColor: '#198754' },
+                                                minHeight: '45px',
+                                                fontWeight: 'light'
+                                            }),
+                                            menu: (base) => ({
+                                                ...base,
+                                                borderRadius: '8px',
+                                                padding: '5px',
+                                                backdropFilter:'blur(10px)',
+                                                backgroundColor: 'bg-body-tertiary',
+                                                zIndex:'10'
+                                            }),
+                                            option: (base, state) => ({
+                                                ...base,
+                                                padding: '10px',
+                                                marginBottom: '5px',
+                                                borderRadius: '5px',
+                                                backgroundColor: state.isSelected ? 'rgba(210, 211, 212, 0.38)' : state.isFocused ? 'rgba(233, 233, 233, 0.19)' : '',
+                                                cursor: 'pointer',
+                                            }),
+                                        }}
+                                    />
+                                </div>
                         )}
                     <div className="modal-footer">
                         <button className='btn btn-outline-success' onClick={() => saveTemplateToServer()}>{t('save')}</button>

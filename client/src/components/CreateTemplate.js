@@ -20,7 +20,6 @@ const CreateTemplate = () => {
     const [deleteAlert, setDeleteAlert] = useState('');
     const [optionError, setOptionError] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
-    const [isNavigating, setIsNavigating] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
     const { t } = useTranslation();
@@ -54,6 +53,7 @@ const CreateTemplate = () => {
             if (!localData || localData === '{}' || localData === 'null') {
                 setSavedForm({
                     ...data,
+                    allowedUsers: [],
                     newQuestion: data.newQuestion || [{
                         id: Date.now(),
                         text: '',
@@ -304,7 +304,7 @@ const CreateTemplate = () => {
                             </div>
                         </div>
                     </div>
-                    <ModalPublishBtn templateId={templateId} formikValues={formik.values}/>
+                    <ModalPublishBtn templateId={templateId} formik={formik}/>
                     <ChangeLang/>
                     <LogOutBtn/>
                 </div>

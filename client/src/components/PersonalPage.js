@@ -244,7 +244,7 @@ const PersonalPage = () => {
                                 <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
                                     <div className="card-body d-flex flex-column justify-content-between align-items-center p-2">
                                         <p className='fw-light text-muted m-0'>{t('access')}: {template.visibility}</p>
-                                        <h4 className="card-title">{template.templateName || t('no-title')}</h4>
+                                        <h5 style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-title">{template.templateName || t('no-title')}</h5>
                                         <div className="w-100">
                                             <div style={{maxWidth:'15rem'}} className='w-100 mb-1 border-bottom border-success'><p style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-text mb-1">{template.description || t('no-desc')}</p></div>
                                             <a href={`/FormPage/${template.id}`} style={{minWidth:'70px'}} className="btn btn-sm btn-outline-success mt-2">
@@ -264,9 +264,9 @@ const PersonalPage = () => {
                                 {userForms.map((form, index) => (
                                     <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight: '8rem' }}>
                                     <div className="card-body d-flex flex-column justify-content-between align-items-center">
-                                        <h5 className="card-title mb-2">{form.Template.templateName}</h5>
+                                        <h5 style={{maxWidth:'200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} className="card-title mb-2">{form.Template.templateName}</h5>
                                         <div className='border-bottom mb-2 w-100 border-success'><p className="text-muted mt-4 small">{t('filled')}: {new Date(form.createdAt).toLocaleDateString()}</p></div>
-                                        <a style={{minWidth:'70px'}} href={`/FormResponse/${form.id}`} className="btn btn-sm btn-outline-success mt-2">
+                                        <a style={{minWidth:'70px'}} href={`/FilledFormPage/${form.id}`} className="btn btn-sm btn-outline-success mt-2">
                                         {t('view')}
                                         </a>
                                     </div>

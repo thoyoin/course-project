@@ -23,7 +23,7 @@ function App() {
         <Route path='/TemplateView/:templateId' element={<TemplateView />} />
         <Route path='/CreateTemplate/:templateId' element={<CreateTemplate />} />
         <Route path='/FormPage/:templateId' element={<FormPage />} />
-        <Route path='/FormResponse/:formId' element={<FilledFormPage />} />
+        <Route path='/FilledFormPage/:formId' element={<FilledFormPage />} />
       </Routes>
     </div>
   );

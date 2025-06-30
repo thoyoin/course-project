@@ -8,39 +8,61 @@ const FilledFormPage = () => {
     const API_URL = process.env.REACT_APP_API_URL;
 
     const { formId } = useParams();
+    const { templateId } = useParams();
     const navigate = useNavigate();
     const [formResponse, setFormResponse] = useState({});
     const [template, setTemplate] = useState(null);
     const [loading, setLoading] = useState(true);
     const { t } = useTranslation();
+    const [deleteAlert, setDeleteAlert] = useState('');
 
-  useEffect(() => {
-    const fetchFormData = async () => {
+    useEffect(() => {
+        const fetchFormData = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/api/forms/${formId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                });
+                const data = await res.json();
+                const parsedAnswers = typeof data.answers === 'string' ? JSON.parse(data.answers) : data.answers;
+                setFormResponse({ ...data, answers: parsedAnswers });
+
+                const templateRes = await fetch(`${API_URL}/api/templates/${data.templateId}`);
+                const templateData = await templateRes.json();
+                setTemplate(templateData);
+            } catch (err) {
+                console.error('Failed to load form or template', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchFormData();
+    }, [formId]);
+
+    const handleDeleteTemplate = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`${API_URL}/api/forms/${formId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            const response = await fetch(`${API_URL}/api/forms/${formId}`,{
+                method: 'DELETE',
             });
-            const data = await res.json();
-            const parsedAnswers = typeof data.answers === 'string' ? JSON.parse(data.answers) : data.answers;
-            setFormResponse({ ...data, answers: parsedAnswers });
 
-            const templateRes = await fetch(`${API_URL}/api/templates/${data.templateId}`);
-            const templateData = await templateRes.json();
-            setTemplate(templateData);
+            if (!response.ok) {
+                throw new Error('Failed to delete form')
+            }
+
+            setDeleteAlert('Form deleted successfully!')
+            setTimeout(() => {
+                setDeleteAlert('')
+                navigate(-1);
+            }, 1000);
         } catch (err) {
-            console.error('Failed to load form or template', err);
-        } finally {
-            setLoading(false);
+            console.error('Failed deleting form:', err);
         }
-    };
-    
-    fetchFormData();
-  }, [formId]);
+    }
 
-  if (loading)  return <div style={{left:'49%', top:'49%'}} className="spinner-border text-success position-absolute" role="status"><span class="visually-hidden">Loading...</span></div>;
+  if (loading)  return <div style={{left:'49%', top:'49%'}} className="spinner-border text-success position-absolute" role="status"><span className="visually-hidden">Loading...</span></div>;
   if (!formResponse || !template) return <p className="m-4 text-danger">Failed to load form.</p>;
 
   return (
@@ -51,6 +73,31 @@ const FilledFormPage = () => {
                 <h3 className='fw-light m-0 ms-3'>{template.templateName}</h3>
             </div>
             <div className='d-flex flex-row align-items-center'>
+                    <button 
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                        style={{height:'35px'}} 
+                        className='btn btn-danger px-2 py-2 d-flex flex-row align-items-center'
+                        >
+                        <i className="bi bi-trash me-2"></i>
+                        {t('delete')}
+                    </button>
+                <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">{t('sure?form')}</h1>
+                        </div>
+                        <div className="modal-footer ">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{t('cancel')}</button>
+                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
+                            onClick={() => {
+                                handleDeleteTemplate();
+                            }}>{t('delete')}</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
                 <ChangeLang/>
                 <LogOutBtn/>
             </div>
@@ -123,6 +170,7 @@ const FilledFormPage = () => {
                 ))}
                 <button type="button" onClick={() => navigate(-1)} className="btn btn-success my-5">{t('back')}</button>
             </form>
+            {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
         </div>
     </div>
   );

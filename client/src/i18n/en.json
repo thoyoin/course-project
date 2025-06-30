@@ -36,6 +36,7 @@
     "access": "Access",
     "logout": "Logout",
     "sure?": "Are you sure you want to delete this template?",
+    "sure?form": "Are you sure you want to delete this form?",
     "no-desc": "No description",
     "no-title": "Untitled",
     "draft": "Draft",

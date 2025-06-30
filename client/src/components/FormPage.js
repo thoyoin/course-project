@@ -8,7 +8,6 @@ import { jwtDecode } from 'jwt-decode';
 
 const FormPage = () => {
     const API_URL = process.env.REACT_APP_API_URL;
-
     const { templateId } = useParams();
     const [template, setTemplate] = useState(null);
     const [answers, setAnswers] = useState({});
@@ -177,12 +176,14 @@ const FormPage = () => {
             <div className='d-flex flex-column justify-content-start align-items-center'>
                     <div style={{maxWidth:'700px', minHeight:'170px', marginTop:'100px'}} className="w-100">
                             <div style={{minHeight:'170px'}} className='bg-body-tertiary mx-3 mb-4 text-start rounded-4 border border-success border-1 rounded-4'>
-                                <h2
-                                    className="mt-3 ps-4 fs-1 fw-bold form-control border-0 rounded-0 bg-body-tertiary" 
-                                    >{template.templateName}</h2>
-                                <p 
-                                    className='form-control ps-4 text-muted border-0 border-bottom border-success rounded-0 bg-body-tertiary'
-                                    >{template.description}</p>
+                                <h2 className="mt-3 ps-4 fs-1 fw-bold form-control border-0 rounded-0 bg-body-tertiary">{template.templateName}</h2>
+                                <p className='form-control ps-4 text-muted border-0 border-bottom border-success rounded-0 bg-body-tertiary'>{template.description}</p>
+                                <div className='d-flex flex-row'>
+                                {template.tags.length > 0 &&  <p className='m-0 ms-4 fw-light'>Tags:</p>}
+                                    {template.tags?.map((q, idx) => (
+                                        <div key={idx} className='ms-3 opacity-75'><span className="badge text-bg-success">{q.label}</span></div>
+                                    ))}
+                                </div>
                             </div>
                     </div>
                 <form style={{maxWidth:'700px'}} className='w-100 text-center' onSubmit={handleSubmit}>

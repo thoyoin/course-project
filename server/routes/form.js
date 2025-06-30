@@ -59,4 +59,21 @@ router.get('/:formId', authenticate, async (req, res) => {
     }
 });
 
+router.delete('/:formId', async (req, res) => {
+    try {
+        const { formId } = req.params;
+
+        const deletedForm = await FormResponse.destroy({ where: { id: formId } });
+
+        if (!deletedForm) {
+            return res.status(404).json({ message: 'Form not found' });
+        }
+
+        res.status(200).json({ message: 'Form deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting template:', err);
+        res.status(500).json({ message: 'Failed to delete form' });
+    }
+})
+
 module.exports = router;
