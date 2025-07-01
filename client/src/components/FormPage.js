@@ -28,7 +28,6 @@ const FormPage = () => {
             const res = await fetch(`${API_URL}/api/templates/${templateId}`);
             const data = await res.json();
             setTemplate(data);
-            console.log('Loaded template:', data);
 
             const token = localStorage.getItem('token');
             if (!token) {

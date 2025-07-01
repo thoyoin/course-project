@@ -102,8 +102,6 @@ const ModalPublishBtn = ({templateId, formik}) => {
                     setSaveAlert('')
                 }, 2000);
             }
-    
-            console.log('Template saved to server');
         } catch (error) {
             console.error('Error saving template:', error);
         }

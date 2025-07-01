@@ -36,7 +36,6 @@ const PersonalPage = () => {
             }
             const data = await response.json();
             const userTemplates = data.filter(template => template.ownerId === currentUserId);
-            console.log('Your templates:', userTemplates);
             setTemplates(userTemplates.filter(template => template.isPublished === false));
             setPublishedTemp(userTemplates.filter(template => template.isPublished));
         } catch (error) {
@@ -66,7 +65,6 @@ const PersonalPage = () => {
                 const data = await response.json();
                 const userForms = data.filter(f => f.respondentId === currentUserId);
                 setUserForms(userForms);
-                console.log('User forms:', userForms);
             } catch (err) {
                 console.error('Error to fetch forms', err);
             }
@@ -105,7 +103,6 @@ const PersonalPage = () => {
 
             const data = text ? JSON.parse(text) : {};
 
-            console.log('Template created:', data);
             navigate(`/CreateTemplate/${data.id}`)
 
         } catch (error) {

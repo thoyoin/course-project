@@ -29,9 +29,6 @@ const Login = () => {
 
         try {
             const res = await axios.post(`${API_URL}/api/auth/login`, { email, password });
-            console.log('Login response:', res);
-            console.log('Status:', res.status);
-            console.log('Headers:', res.headers);
             if (!res.data.token) {
                 setErrors({ server: 'Invalid email or password' });
                 return;
