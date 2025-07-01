@@ -20,10 +20,8 @@ const CreateTemplate = () => {
     const [typeError, setTypeError] = useState('');
     const [deleteAlert, setDeleteAlert] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
-    const isLaptop = useMediaQuery({maxWidth: 1024})
     const isTablet = useMediaQuery({maxWidth: 800})
     const isMobile = useMediaQuery({maxWidth: 575})
-    const isLil = useMediaQuery({maxWidth: 485})
 
     const { t } = useTranslation();
 
@@ -65,8 +63,6 @@ const CreateTemplate = () => {
                         image: null,
                     }],
                 });
-                } else {
-                    console.log('Skipped overwriting: localStorage has data');
                 }
         };
         }
@@ -182,6 +178,13 @@ const CreateTemplate = () => {
                 {t('checkbox')}
             </span>)}
     ];
+    
+    const questionTypes = {
+        short_text: 'short text',
+        long_text: 'long text',
+        integer: 'integer',
+        checkbox: 'checkbox'
+    }
 
     const themes = [
         {value: 'education',
@@ -595,7 +598,7 @@ const CreateTemplate = () => {
                                         </div>
                                     )}
                                     <div className='d-flex flex-row justify-content-between'>
-                                        {q.questionType === 'short text' && (
+                                        {q.questionType === questionTypes.short_text && (
                                             <input
                                             style={{borderBottom:'1px dashed'}}
                                             type='text'
@@ -604,7 +607,7 @@ const CreateTemplate = () => {
                                             disabled
                                             />
                                         )}
-                                        {q.questionType === 'long text' && (
+                                        {q.questionType === questionTypes.long_text && (
                                             <input
                                             style={{borderBottom:'1px dashed'}}
                                             type='text'
@@ -613,7 +616,7 @@ const CreateTemplate = () => {
                                             disabled
                                             />
                                         )}
-                                        {q.questionType === 'integer' && (
+                                        {q.questionType === questionTypes.integer && (
                                             <input
                                             style={{borderBottom:'1px dashed'}}
                                             type='number'
@@ -623,7 +626,7 @@ const CreateTemplate = () => {
                                             min={0}
                                             />
                                         )}
-                                        {q.questionType === 'checkbox' && (
+                                        {q.questionType === questionTypes.checkbox && (
                                         <div className='w-100'>
                                             {q.checkboxOptions.map((opt, idx) => (
                                             <div key={idx} className='d-flex flex-row align-items-end mb-3'>

@@ -47,6 +47,8 @@
     "my-temp": "Mis plantillas",
     "my-forms": "Mis formularios",
     "edit": "Editar",
+    "no-forms": "Sus formularios rellenados aparecerán aquí.",
+    "no-temp": "Sus plantillas publicadas aparecerán aquí.",
     "filled-forms": "Sus formularios rellenados aparecerán aquí.",
     "filled": "Rellenado",
     "view-all": "Ver todos",
@@ -63,5 +65,6 @@
     "you": "Tú",
     "like": "Me gusta",
     "unlike": "No me gusta",
-    "submit": "Presentar"
+    "submit": "Presentar",
+    "no-templates-found": "No se encontraron plantillas"
 }

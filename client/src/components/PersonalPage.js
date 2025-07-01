@@ -240,7 +240,10 @@ const PersonalPage = () => {
                     <div className="tab-content bg-body mb-5" id="myTabContent" style={{flexGrow: 1}}>
                         <div className="tab-pane fade show active mt-3 mx-5" id="templates" role="tabpanel" aria-labelledby="templates-tab">
                         <div className="d-flex flex-wrap justify-content-center px-3">
-                            {publishedTemp.filter(t => t.isPublished).map((template, index) => (
+                            {publishedTemp.length === 0 ? (
+                                <p className="mt-3">{t('no-temp')}</p>
+                            ) : (
+                            publishedTemp.filter(t => t.isPublished).map((template, index) => (
                                 <div key={index} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
                                     <div className="card-body d-flex flex-column justify-content-between align-items-center p-2">
                                         <p className='fw-light text-muted m-0'>{t('access')}: {template.visibility}</p>
@@ -253,7 +256,7 @@ const PersonalPage = () => {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            )))}
                         </div>
                         </div>
                         <div className="tab-pane fade mt-3 mx-5" id="forms" role="tabpanel" aria-labelledby="forms-tab">

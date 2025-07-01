@@ -39,6 +39,13 @@ const TemplateView = () => {
 
     if (!template) return <p className="m-4 text-danger">Failed to load template.</p>;
 
+    const questionTypes = {
+        short_text: 'short text',
+        long_text: 'long text',
+        integer: 'integer',
+        checkbox: 'checkbox'
+    }
+
     return (
         <div>
             <div
@@ -86,28 +93,28 @@ const TemplateView = () => {
                             />
                             </div>
                         )}
-                        {q.questionType === 'short text' && (
+                        {q.questionType === questionTypes.short_text && (
                             <input
                             type="text"
                             className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary"
                             disabled
                             />
                         )}
-                        {q.questionType === 'integer' && (
+                        {q.questionType === questionTypes.integer && (
                             <input
                             type="number"
                             className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary"
                             disabled
                             />
                         )}
-                        {q.questionType === 'long text' && (
+                        {q.questionType === questionTypes.long_text && (
                             <textarea
                             style={{ resize: 'none' }}
                             className="form-control ms-4 mb-4 mt-2 p-0 w-50 border-0 border-bottom border-success rounded-0 bg-body-tertiary"
                             disabled
                             />
                         )}
-                        {q.questionType === 'checkbox' &&
+                        {q.questionType === questionTypes.checkbox &&
                             q.checkboxOptions?.map((opt, i) => (
                             <div key={i} className="form-check">
                                 <input

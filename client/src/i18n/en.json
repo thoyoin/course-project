@@ -48,6 +48,7 @@
     "my-forms": "My forms",
     "edit": "Edit",
     "no-forms": "Your filled out forms will appear here.",
+    "no-temp": "Your published templates will appear here.",
     "filled": "Filled out",
     "view-all": "View all",
     "back": "Get back",
@@ -63,5 +64,6 @@
     "you": "You",
     "like": "Like",
     "unlike": "Unlike",
-    "submit": "Submit form"
+    "submit": "Submit form",
+    "no-templates-found": "No templates found"
 }

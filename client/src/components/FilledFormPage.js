@@ -59,10 +59,17 @@ const FilledFormPage = () => {
             setTimeout(() => {
                 setDeleteAlert('')
                 navigate(-1);
-            }, 1000);
+            }, 1500);
         } catch (err) {
             console.error('Failed deleting form:', err);
         }
+    }
+
+    const questionTypes = {
+        short_text: 'short text',
+        long_text: 'long text',
+        integer: 'integer',
+        checkbox: 'checkbox'
     }
 
   if (loading)  return <div style={{left:'49%', top:'49%'}} className="spinner-border text-success position-absolute" role="status"><span className="visually-hidden">Loading...</span></div>;
@@ -127,21 +134,21 @@ const FilledFormPage = () => {
                                     <img style={{maxHeight:'200px'}} src={q.image} alt='questionImage' className='img-fluid rounded'></img>
                                 </div>
                             )}
-                            {q.questionType === 'short text' && (
+                            {q.questionType === questionTypes.short_text && (
                                 <input 
                                     type="text" 
                                     className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                     value={formResponse.answers[idx] || ''} 
                                     disabled />
                             )}
-                            {q.questionType === 'integer' && (
+                            {q.questionType === questionTypes.integer && (
                                 <input 
                                     type="number" 
                                     className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                     value={formResponse.answers[idx] || ''} 
                                     disabled />
                             )}
-                            {q.questionType === 'long text' && (
+                            {q.questionType === questionTypes.long_text && (
                                 <textarea 
                                     ref={(el) => {
                                         if (el) {
@@ -154,7 +161,7 @@ const FilledFormPage = () => {
                                     value={formResponse.answers[idx] || ''} 
                                     disabled />
                             )}
-                            {q.questionType === 'checkbox' && q.checkboxOptions?.map((opt, i) => (
+                            {q.questionType === questionTypes.checkbox && q.checkboxOptions?.map((opt, i) => (
                                 <div key={i} className="form-check">
                                     <input
                                     type="checkbox"

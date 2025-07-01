@@ -87,6 +87,7 @@ const HomePage = () => {
                 <div style={{minWidth:'210px'}} className='mb-4 border-bottom border-success w-50'><h1>{t('latest')}</h1></div>
                 <div style={{maxWidth:'100%', height:'300px', marginTop:'20px'}} className='bg-body text-center d-flex flex-wrap justify-content-center align-items-start'>
                     {loading && <div className="spinner-border text-success position-absolute" role="status"><span className="visually-hidden">Loading...</span></div>}
+                    {!loading && templates.length === 0 && (<p className="text-muted">{t('no-templates-found')}</p>)}
                     {templates.map((template) => (
                         <div key={template.id} className="card m-2 shadow-sm border border-success w-100" style={{ maxWidth: '16rem', minHeight:'12rem' }}>
                             <div className="card-body d-flex flex-column justify-content-between align-items-center">

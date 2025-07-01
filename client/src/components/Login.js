@@ -8,6 +8,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState('');
+    const [showToast, setShowToast] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const savedTheme = localStorage.getItem('theme')
@@ -109,8 +110,13 @@ const Login = () => {
                 <div className='text-center mt-5'><button type="submit" className="btn btn-outline-success" onClick={handleLogin}>Sign In</button></div>
                 <div className='d-flex flex-row justify-content-between w-100'>
                     <a className='link-secondary' href='/Registration'>Don't have an account?</a>
-                    <a className='link-secondary' href='1'>Forgot password?</a>
+                    <a className='link-secondary' onClick={() => setShowToast(true)} href='#'>Forgot password?</a>
                 </div>
+                {showToast && (
+                    <div className="alert alert-success alert-dismissible fade show position-absolute m-5 bottom-0 end-0" role="alert">
+                    Write to <a href='mailto:lukharchik@gmail.com' target='_blank'>this email</a> to reset your password.
+                    <button type="button" className="btn-close p-3" onClick={() => setShowToast(false)}></button>
+                </div>)}
             </div>
         </div>
     </div>

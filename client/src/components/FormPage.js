@@ -75,7 +75,7 @@ const FormPage = () => {
             setTimeout(() => {
                 setSubmitAlert('')
                 navigate('/PersonalPage');
-            }, 1000)
+            }, 1500)
         } else {
             setSubmitErrorAlert('Failed to submit form.')
             setTimeout(() => {
@@ -119,10 +119,17 @@ const FormPage = () => {
             setTimeout(() => {
                 setDeleteAlert('')
                 navigate('/PersonalPage');
-            }, 1000);
+            }, 1500);
         } catch (err) {
             console.error('Failed deleting template:', err);
         }
+    }
+
+    const questionTypes = {
+        short_text: 'short text',
+        long_text: 'long text',
+        integer: 'integer',
+        checkbox: 'checkbox'
     }
 
     return (
@@ -199,7 +206,7 @@ const FormPage = () => {
                                             <img style={{maxHeight:'200px'}} src={q.image} alt='questionImage' className='img-fluid rounded'></img>
                                         </div>
                                     )}
-                                    {q.questionType === 'short text' && (
+                                    {q.questionType === questionTypes.short_text && (
                                     <input
                                         type="text" 
                                         placeholder={t('myAnswer')}
@@ -207,7 +214,7 @@ const FormPage = () => {
                                         className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                         onChange={e => handleChange(idx, e.target.value)} />
                                     )}
-                                    {q.questionType === 'integer' && (
+                                    {q.questionType === questionTypes.integer && (
                                     <input
                                         type="number" 
                                         placeholder={t('myAnswer')}
@@ -215,7 +222,7 @@ const FormPage = () => {
                                         className="form-control w-50 ms-4 mb-5 mt-2 p-0 pb-1 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                         onChange={e => handleChange(idx, e.target.value)}/>
                                     )}
-                                    {q.questionType === 'long text' && (
+                                    {q.questionType === questionTypes.long_text && (
                                     <textarea 
                                         ref={(el) => {
                                             if (el) {
@@ -228,7 +235,7 @@ const FormPage = () => {
                                         className="form-control ms-4 mb-4 mt-2 p-0 w-50 border-0 border-bottom border-success rounded-0 bg-body-tertiary" 
                                         onChange={e => handleChange(idx, e.target.value)}/>
                                     )}
-                                    {q.questionType === 'checkbox' && q.checkboxOptions?.map((opt, i) => (
+                                    {q.questionType === questionTypes.checkbox && q.checkboxOptions?.map((opt, i) => (
                                     <div key={i} className="form-check">
                                         <input
                                         type="checkbox"
