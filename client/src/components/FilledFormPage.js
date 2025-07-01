@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ChangeLang from './ChangeLang';
 import LogOutBtn from './LogOutBtn';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from 'react-responsive'
 
 const FilledFormPage = () => {
     const API_URL = process.env.REACT_APP_API_URL;
@@ -15,6 +16,8 @@ const FilledFormPage = () => {
     const [loading, setLoading] = useState(true);
     const { t } = useTranslation();
     const [deleteAlert, setDeleteAlert] = useState('');
+
+    const isTablet = useMediaQuery({maxWidth: 580})
 
     useEffect(() => {
         const fetchFormData = async () => {
@@ -70,7 +73,7 @@ const FilledFormPage = () => {
         <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
             <div className='ms-4 d-flex flex-row align-items-center gap-4'>
                 <a href='/PersonalPage' className='text-success link-ease-in-out' onClick={() => navigate('/PersonalPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
-                <h3 className='fw-light m-0 ms-3'>{template.templateName}</h3>
+                {!isTablet && <h3 className='fw-light m-0 ms-3'>{template.templateName}</h3>}
             </div>
             <div className='d-flex flex-row align-items-center'>
                     <button 

@@ -157,7 +157,7 @@ const PersonalPage = () => {
                                 onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                                 >
                                     <p className='m-0' style={{maxWidth:'140px', maxHeight:'120px', whiteSpace:'normal', overflowWrap: 'break-word', overflow:'hidden'}}>{template.description || t('no-desc')}</p>
-                                    <span style={{top:'170px'}} className='badge position-absolute w-50 opacity-75 bg-warning text dark'>
+                                    <span style={{top:'200px'}} className='badge position-absolute w-50 opacity-75 bg-warning text dark'>
                                         {t('draft')}
                                     </span>
                             </button>

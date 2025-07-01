@@ -20,6 +20,7 @@ const FormPage = () => {
     const { t } = useTranslation();
 
     const isTablet = useMediaQuery({maxWidth: 580})
+    const isMobile = useMediaQuery({maxWidth: 475})
 
     useEffect(() => {
         const fetchTemplate = async () => {
@@ -136,20 +137,20 @@ const FormPage = () => {
                         <div className='d-flex flex-row align-items-center'>
                             <button 
                                 className='btn btn-success mx-3 px-2'
-                                style={{height:'35px', minWidth:'65px'}}
+                                style={{height:'35px', width: `${isMobile ? '45px' : '65px'}`}}
                                 onClick={() => navigate(`/CreateTemplate/${template.id}`)}
                                 >
                                 <i class="bi bi-pencil me-2"></i>
-                                {t('edit')}
+                                {!isMobile && t('edit')}
                             </button>
                             <button 
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteModal"
-                                style={{height:'35px'}} 
+                                style={{height:'35px', width: `${isMobile ? '45px' : '80px'}`}} 
                                 className='btn btn-danger px-2 py-2 d-flex flex-row align-items-center'
                                 >
                                 <i className="bi bi-trash me-2"></i>
-                                {t('delete')}
+                                {!isMobile && t('delete')}
                             </button>
                         </div>
                     )}
@@ -252,7 +253,7 @@ const FormPage = () => {
                 </form>
                 <Comments templateId={templateId}/>
                 {deleteAlert && <div style={{zIndex:'100', bottom:'0', backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{deleteAlert}</div>}
-                {submitAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{submitAlert}</div>}
+                {submitAlert && <div style={{zIndex:'100', bottom:'0px', left:'45%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{submitAlert}</div>}
                 {submitErrorAlert && <div style={{zIndex:'100', bottom:'0px', left:'42%',  backdropFilter:'blur(3px)'}} className="alert alert-success position-fixed fw-bold" role="alert">{submitErrorAlert}</div>}
             </div>
         </div>

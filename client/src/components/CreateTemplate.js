@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Sortable from 'sortablejs';
+import { useMediaQuery } from 'react-responsive'
 
 const CreateTemplate = () => {
     const API_URL = process.env.REACT_APP_API_URL;
@@ -19,6 +20,10 @@ const CreateTemplate = () => {
     const [typeError, setTypeError] = useState('');
     const [deleteAlert, setDeleteAlert] = useState('');
     const [colorMode, setColorMode] = useState(localStorage.getItem('theme'))
+    const isLaptop = useMediaQuery({maxWidth: 1024})
+    const isTablet = useMediaQuery({maxWidth: 800})
+    const isMobile = useMediaQuery({maxWidth: 575})
+    const isLil = useMediaQuery({maxWidth: 485})
 
     const { t } = useTranslation();
 
@@ -266,17 +271,17 @@ const CreateTemplate = () => {
             <div style={{height:'68px', zIndex:'100'}} className='container-fluid d-flex flex-row justify-content-between align-items-center position-fixed bg-body-tertiary top-0 border-bottom'>
                 <div className='ms-4 d-flex flex-row align-items-center gap-4'>
                     <a href='#' className='navbar-brand text-success link-ease-in-out' onClick={() => navigate('/PersonalPage')}><i alt='home' className="bi bi-file-earmark-text-fill fs-2"></i></a>
-                    <h4 className='fw-bold m-0'>{formik.values.templateName}</h4>
+                    {!isTablet && <h4 className='fw-bold m-0'>{formik.values.templateName}</h4>}
                 </div>
                 <div className='d-flex flex-row align-items-center'>
                     <button 
                         data-bs-toggle="modal"
                         data-bs-target="#deleteModal"
-                        style={{height:'35px'}} 
-                        className='btn btn-danger mx-5 px-3 py-2 d-flex flex-row align-items-center'
+                        style={{height:'35px', maxWidth: `${isMobile ? '45px' : '150px'}`}} 
+                        className={`btn btn-danger ${isMobile ? 'mx-3' : 'mx-5'} px-3 py-2 d-flex flex-row align-items-center`}
                     >
                         <i className="bi bi-trash me-2"></i>
-                        {t('delete')}
+                        {!isMobile && t('delete')}
                     </button>
                     <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered">
@@ -300,7 +305,7 @@ const CreateTemplate = () => {
                 </div>
             </div>
             <div className='d-flex flex-column justify-content-start align-items-center'>
-                <div style={{maxWidth:'800px', minHeight:'170px', marginTop:'80px'}} className='bg-body w-100 text-center border rounded-4 mx-3 d-flex flex-column justify-content-start'>
+                <div style={{maxWidth:'800px', minHeight:'170px', marginTop:'80px'}} className='bg-body w-100 text-center border rounded-4 d-flex flex-column justify-content-start'>
                     <div style={{maxWidth:'800px', minHeight:'170px'}} className='bg-body-tertiary w-100 text-center rounded-4'>
                         <div className="mb-3">
                             <div className='d-flex flex-row'>
@@ -335,7 +340,8 @@ const CreateTemplate = () => {
                                     styles={{
                                         container: (base) => ({ 
                                             ...base, 
-                                            minWidth: '210px', 
+                                            maxWidth: '210px', 
+                                            width:'100%',
                                             margin:'15px',
                                         }),
                                         control: (base, state) => ({

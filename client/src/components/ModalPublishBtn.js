@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Select from 'react-select';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom';
-import makeAnimated from 'react-select/animated';
+import { useMediaQuery } from 'react-responsive'
 
 const ModalPublishBtn = ({templateId, formik}) => {
     const API_URL = process.env.REACT_APP_API_URL;
@@ -15,6 +15,9 @@ const ModalPublishBtn = ({templateId, formik}) => {
     const [allUsers, setAllUsers] = useState([]);
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const isMobile = useMediaQuery({maxWidth: 575})
+
+    const media575 = isMobile ?? true
 
     const access = [
         {value:'public',
@@ -155,9 +158,9 @@ const ModalPublishBtn = ({templateId, formik}) => {
 
     return (
         <div>
-            <button style={{ height:'35px'}} className='btn btn-success py-1 px-3 me-5' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button style={{ height:'35px', maxWidth:`${media575 ? '45px' : '150px'}`}} className='btn btn-success py-1 px-3  d-flex flex-row align-items-center' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <i className="bi bi-upload me-2"></i>
-                {t('save&publish')}
+                <p className='m-0' style={{maxWidth:'100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{t('save&publish')}</p>
             </button>
             <div className="modal fade" id="staticBackdrop" data-bs-keyboard="true" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
