@@ -23,7 +23,7 @@ const CreateTemplate = () => {
     const isTablet = useMediaQuery({maxWidth: 800})
     const isMobile = useMediaQuery({maxWidth: 575})
 
-    const { t } = useTranslation();
+    const { t } = useTranslation(); 
 
     const { templateId } = useParams();
 
@@ -425,7 +425,7 @@ const CreateTemplate = () => {
                                                 }),
                                                 control: (base, state) => ({
                                                     ...base,
-                                                    backgroundColor: 'bg-body-tertiar',
+                                                    backgroundColor: 'bg-body-tertiary',
                                                     borderColor: state.isFocused ? '#198754' : '#ccc',
                                                     boxShadow: state.isFocused ? '0 0 1px .2px #198754' : 'none',
                                                     '&:hover': { borderColor: '#198754' },
